@@ -1,0 +1,121 @@
+<style>
+body {
+  background: #20262E;
+  padding: 20px;
+  font-family: Helvetica;
+}
+
+#app {
+  background: #fff;
+  border-radius: 4px;
+  padding: 20px;
+  transition: all 0.2s;
+}
+
+li {
+  margin: 8px 0;
+}
+
+h2 {
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+</style>
+
+<div id="app"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.24.0/babel.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.js"></script>
+
+<script type='text/babel'>
+class BaseComponent1 extends React.Component {
+	render() {
+    const { save, load, remove } = this.props;
+		return (
+      <div>
+        <h2>BaseComponent 1</h2>
+        <button onClick={() => save('B1', 'B1 data')}>Save</button>
+        <button onClick={() => load('B1')}>Show</button>
+        <button onClick={() => remove('B1')}>Remove</button>
+      </div>
+		);
+	}
+}
+
+class BaseComponent2 extends React.Component {
+	render() {
+    const { save, load, remove } = this.props;
+		return (
+      <div>
+        <h2>BaseComponent 2</h2>
+        <button onClick={() => save('B2', 'B2 data')}>Save</button>
+        <button onClick={() => load('B2')}>Show</button>
+        <button onClick={() => remove('B2')}>Remove</button>
+      </div>
+		);
+	}
+}
+
+const withStorage = (WrappedComponent) => {
+	class HOC extends React.Component {
+
+    componentDidMount() {
+      this.checkLocalStorageExists();
+    }
+  
+    checkLocalStorageExists() {
+      const testKey = 'test';
+
+      try {
+          localStorage.setItem(testKey, testKey);
+          localStorage.removeItem(testKey);
+          this.setState({ localStorageAvailable: true });
+      } catch(e) {
+          this.setState({ localStorageAvailable: false });
+      } 
+    }
+		
+    load = (key) => {
+      if (this.state.localStorageAvailable) {
+        alert(localStorage.getItem(key) || 'Data not found for key ' + key);
+        return;
+      }
+    }
+    
+    save = (key, data) => {
+      if (this.state.localStorageAvailable) {
+        localStorage.setItem(key, data);
+      }
+    }
+    
+    remove = (key) => {
+      if (this.state.localStorageAvailable) {
+        localStorage.removeItem(key);
+      }
+    }
+
+		render() {
+			return (
+        <WrappedComponent
+          load={this.load}
+          save={this.save}
+          remove={this.remove}
+          {...this.props}
+        />
+      );
+		}
+	}
+	
+	return <HOC />;
+	
+}
+
+ReactDOM.render(
+  (<div>
+    {withStorage(BaseComponent1)}
+    {withStorage(BaseComponent2)}
+  </div>),
+  document.querySelector("#app")
+)
+
+</script>

@@ -1,0 +1,116 @@
+Acceptance criteria:
+  - We should show todos list if pre-available
+  - User should be able to add a new todo item : Show add button at the bottom or top
+  - Show a text box, save button, cancel button to enter a new todo : On clicking 
+  - User should be able to complete a todo item(srike off) : On clicking todo
+  - User should be able to toggle back complete state of todo(remove strike off) : On clicking todo
+  - User should be able to remove todo item : show x icon against each todo
+  - User should be able to save todos : a clickable button to save
+  - User should be able to reset todos : a clickable button to reset
+  - Show message if todos are saved
+  - Show error if some error happens while saving
+  - ***Ask if its data is managed by central store or local state. Accordingly, props and state will change.***
+  - Assuming here data is managed by central store
+  - Good to have: sorting for todo items
+  - Good to have: Todos can be arranged in any sequence: Up button to move it up and down button to move it down in sequence
+  - Good to have: Todos can be edited
+
+** What todosList will be like:
+todosList => [
+  {
+    description: string,
+    complete: true / false
+  },
+  ...
+]
+
+** Todos Props
+{
+  initialTodos,
+  // If store is used
+  todosSaved,
+  error,
+  saveTodos
+}
+
+** We will save initial todos in the state
+InitialState : {
+  todosList => [
+    ...initialTodos
+  ],
+  addTodo: true / false
+  newTodo: entered description
+  showSaved: true / false,
+  showError: someError,
+}
+
+// Show form to addTodo
+showTodoForm = (bool) => {
+  {
+    ...state,
+    addTodo: bool
+  }
+}
+
+// Add a new todo in the state
+addTodo => () => {
+  todosList => [
+    ...todosList,
+    {
+      description: new description,
+      complete: false
+    }
+  ]
+}
+
+// Change the state of todo item
+toggleTodo => (index) => {
+  todosList => [
+    ...todosList,
+    todosList[0] = {
+      description: old,
+      complete: toggle boolean
+    }
+  ]
+}
+
+// Remove todo item
+removeTodo => (index) => {
+  todosList => [
+    ...todosList,
+    remove todosList[0]
+  ]
+}
+
+// Save todos
+If we are talking to a store, we will expose saveTodos to the parent
+{todosSaved, error}
+If we need to save it locally, we will handle in TodosComp and update state accordingly
+saveTodos(todosList) => {
+  call parent saveTodos if passed from parent
+  or
+  do what you want locally
+}
+
+// Reset todos
+resetTodos() => {
+  todosList => [
+    ...initialTodos
+  ]
+}
+
+Component Breakdown:
+
+TodoApp
+  - Save Todos button
+  - Reset Todos button
+  - AddTodoComp
+    - Add button
+    - New todo form, save button and cancel button
+  - TodoList
+    - Todo item
+      - Description (triggers state of todoItem)
+      - x icon to remove todoItem
+  - MessageComp
+    - Error message
+    - All records fetched message

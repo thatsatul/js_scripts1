@@ -1,0 +1,21 @@
+Why to use hooks over classes?
+
+How to handle heavy calculation or computation in web page? (web workers)
+
+Difference between mounting and rendering.
+
+// https://docs.google.com/document/d/15Z7NoG_zMleMWkTzYXt4s9ulIg0WPGVnYTKftj7-654/edit
+
+let myObj = {
+ price: 40,
+ getPrice:() =>
+ {
+   return this.price;
+ }
+}
+let customObj = Object.create(myObj);
+customObj.price = 19;
+console.log(customObj.price);
+delete customObj.price;
+console.log(customObj.price);
+console.log(customObj.getPrice());

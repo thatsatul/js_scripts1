@@ -1,0 +1,53 @@
+There may be two cases :
+  - Pagination is implemented completely at fetch
+  - Pagination is implemented at BE side + FE side
+
+Here, we are assuming pagination is done with BE
+Acceptance criteria:
+  - Will show a list of paginated records
+  - Will accept number of records to be shown per page say 50
+  - Will show next 50 records on clicking next
+  - Will show previous 50 records on clicking previous
+  - Emit an event if next paginated records are not present and lastRecord is less than totalRecords
+  - Can show total number of pages
+  - User can enter any specific page number to get that page records
+  - Can explain current sequence of records being shown: Showing 51 to 100 records out of 500
+  - Should be reusable for different list components
+  - Should show loader if records are getting fetched
+  - should show Error if any
+  - User can fetch more records if available but not fetched
+  - Good to have relevant page buttons in the bottom
+  - Good to have sorting based on the column
+
+Props:
+  list
+  recordsPerPage
+  showRecords(firstCount, lastCount),
+  totalRecords
+  showLoader
+  showError
+  recordsList
+  cursor
+  getRecords(cursor)
+  
+state:
+  currentPageNumber: 1
+  disableNextClick
+  disablePreviousClick
+
+Action:
+  showRecords(firstCount, lastCount) => {
+    // show records if already present
+    // fetch records and set loader as true
+    // on successful fetch, update the list and set loader as false
+    // on error, set error as true
+  }
+
+Api contract to get more list:
+  getMoreList(cursor, limit) => {
+    data: newList,
+    cursor: newCursor
+  } => [
+    ...prevList,
+    ...newList
+  ] and update cursor

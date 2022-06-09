@@ -1,0 +1,45 @@
+<!-- https://developer.mozilla.org/en-US/docs/Web/API/Window/innerHeight -->
+<!-- https://stackoverflow.com/questions/22675126/what-is-offsetheight-clientheight-scrollheight -->
+<style>
+  #root {
+    height: 500px;
+    width: 200px;
+    background-color: red;
+    color: yellow;
+    padding: 20px;
+    border: 5px solid black;
+    margin-left: 20px;
+    margin-top: 2000px;
+  }
+</style>
+<body>
+  <div id="root">This is root</div>
+</body>
+<script>
+  const el = document.getElementById('root');
+  const br = document.createElement('BR');
+  el.appendChild(br);
+  el.append(" : clientHeight - " + el.clientHeight);
+  el.appendChild(br);
+  el.append(" : clientWidth - " + el.clientHeight);
+  el.appendChild(br);
+  el.append(" : offsetHeight - " + el.offsetHeight);
+  el.appendChild(br);
+  el.append(" : offsetWidth - " + el.offsetWidth);
+  el.appendChild(br);
+  el.append(" : offsetLeft - " + el.offsetLeft);
+  el.appendChild(br);
+  el.append(" : offsetTop - " + el.offsetTop);
+  el.appendChild(br);
+  el.append(" : window.innerHeight - " + window.innerHeight);
+  el.appendChild(br);
+  el.append(" : window.innerWidth - " + window.innerWidth);
+  el.appendChild(br);
+  el.append(" : window.outerHeight - " + window.outerHeight);
+  el.appendChild(br);
+  el.append(" : window.outerWidth - " + window.outerWidth);
+  document.addEventListener('scroll', () => {
+    console.log('scrolling ... window.innerHeight, window.scrollY, document.body.scrollHeight, document.body.offsetHeight :', window.innerHeight, window.scrollY, document.body.scrollHeight, document.body.offsetHeight);
+  });
+  console.dir(document.body);
+</script>

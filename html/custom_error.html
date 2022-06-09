@@ -1,0 +1,35 @@
+<script>
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error
+
+
+  class CustomError extends Error {
+    constructor(customMessage, ...params) {
+      super(...params);
+      if (Error.captureStackTrace) {
+        Error.captureStackTrace(this, CustomError);
+      }
+
+      this.customMessage = customMessage;
+      this.timestamp = new Date();
+    }
+  }
+
+  function giveError() {
+    try {
+      throw new CustomError('This is custom error');
+    } catch (err) {
+      console.log(err);
+      console.log(err.customMessage);
+      console.log(err.timestamp);
+    }
+  }
+
+  // Function to create stacktrace chain
+  function intermediateFunction() {
+    giveError();
+  }
+
+  (function(){
+    intermediateFunction();
+  }());
+</script>

@@ -1,0 +1,56 @@
+Ask about assumptions first:
+  - Is it independent and can be used with multiple components (Product list, Cart Items)
+    => Yes
+  - Does the design vary for the list according to parent components?
+    => Yes
+  - We reached to the bottom of the page. Now how do we identify from which record should we start to fetch?
+    => Using a cursor
+  - There will be some limit for the next number of records to be fetched. We need to pass that limit.
+    => Yes
+  - We need to show some message if list is empty
+    => Yes
+  - We need to show loader while fetching records?
+    => Yes
+  - We need to show some message once all records are fetched.
+    => Yes : We will show them below the current list
+  - We need to show some error if we were unable to fetch last list
+    => Yes : We will show them below the current list
+  - Once all records are fetched or list is empty, no need of further api calls.
+  - We can pass some filters from parent while fetching next list.
+  - Is it using some central store or localState
+    => store (But it should be independent of store)
+
+Props:
+{
+  ListComp: <ProductListComp> / <CartListComp>,
+  cursor,
+  limit,
+  showLoader,
+  allRecordsFetched,
+  error,
+  filters.
+  getMoreList
+}
+
+State: {}
+
+Api Contract to get more list items:
+getMoreList(cursor, limit, filters) => {
+  list: [<Product> / <CartItem>],
+  meta: {
+    total: 2000,
+    cursor: 'x'
+  }
+};
+
+// On reaching bottom
+reachBottom = () => {
+  getMoreList(cursor, limit, filters)
+}
+
+End condition:
+if (allRecordsFetched || error) {
+  // no further api calls
+}
+
+See Infinite-Scroll Draw.io

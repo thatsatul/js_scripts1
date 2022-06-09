@@ -1,0 +1,51 @@
+In my last blog (Part 1), I explained about browsers and what a website is. I am starting off at a very base level so that people who want to learn about website creation but does not have any knowledge in it can also understand the concept in a simplified way. Once the basic is understood, we will move to advanced concepts and implementations.
+
+Today we will talk about two very important part of the website development: HTML and CSS. What is a language? It's a way how once person communicates with other.So, We talk with each other through different languages like English, Hindi, French, Spanish, etc. Similarly, we communicate with a browser using HTML language.
+
+HTML: 
+
+HTML stands for Hyper Text Markup Language. This is the standard markup language for which is used to design a web page and display it in a browser. Consider a website as your house. Your house consists of different sections like rooms, hall, kitchen, bathrooms, etc. Similarly, a website consists of different web pages like login page, profile page, products page, cart page, payment page, etc. Each web page is an HTML document consisting of many HTML elements. Let us understand what an HTML element is:
+
+Create a file firstHtmlPage.html.
+Copy the below code into the file:
+
+<html>
+  <head>
+    <title>First HTML Page</title>
+  </head>
+  <body>
+    <div>This is my first HTML page</div>
+  </body>
+</html>
+
+Open the above file in any browser. You will see 'First HTML Page' in the tab and 'My first HTML page' in the browser.
+
+---TitleImage---
+---DocumentImage---
+
+HTML Elements: Parts needed to build a house
+
+We can compare webpage with a house where HTML elements are similar to different parts of the house like, door, window, room, etc. In the above code: 'html', 'head', 'title', 'body' and 'div' are examples of html tags and are recognised by their declaration inside an angle bracket. An HTML element is defined as the piece of code between an open and corresponding self-named closing tag, for eg. <html> and </html>, <div> and </div>, etc. The purpose of an HTML element is to convey special meaning to the browser about the type of content enclosed within its tags.
+
+HTML tags and their use are explained below:
+
+<html> - Conveys that all the code written inside this tag is written in HTML and treated as such
+<head> - Used to add resources and meta information needed for the webpage
+<body> - Used to contain and display the content about the webpage
+<title> - Displays the title of the webpage in the browser tab
+<div> - Displays the content in the browser window
+
+You can read more about different html tags from https://www.w3schools.com/html/.
+
+Now lets change the color of the text 'This is my first HTML page' to red. But how do we do it? It's really simple. Just add 'style="color: red"' to the div element. Replace '<div>This is my first HTML page</div>' with '<div style="color: red">This is my first HTML page</div>' and reopen the file firstHtmlPage.html in browser. See what happens.
+
+---- Div color image ----
+
+You will find that color of text 'This is my first HTML page' is changed from black to red. How did this happen? This was done by the attribute 'style' that we passed in the div element. Each HTML element or tag takes in certain set of parameters in key-value pair called attributes. They contain the meta information of the element. For eg.
+
+<div id="current-div" style="color: red">This is my first HTML page</div>
+
+Here 'id' and 'style' are the attributes of div element. id is used to give a unique id to the element and style is used to give specific appearance to the div content like showing the color of content as red.
+
+CSS: Painting the house
+

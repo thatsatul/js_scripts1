@@ -1,0 +1,49 @@
+<style>
+  .article {
+    width: 300px;
+    margin: auto;
+    text-align: center;
+  }
+</style>
+<div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+<script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+
+<script type='text/babel'>
+
+  function App() {
+    const [tm, setTm] = React.useState(0);
+
+    const startTimer = () => {
+      // this will work
+      const tmOut = setTimeout(() => {
+        setTm(tm + 1);
+        clearTimeout(tmOut);
+      }, 1);
+    };
+
+    React.useEffect(() => {
+      if(tm === 0) {
+        return;
+      }
+      const tmOut = setTimeout(() => {
+        clearTimeout(tmOut);
+        setTm(tm + 1);
+      }, 1);
+    }, [tm]);
+
+    return (
+      <div className="article">
+        <div>
+          <button onClick={() => startTimer()}>Click</button>
+          <span>{tm}</span>
+        </div>
+      </div>
+    );
+  }
+
+  const rootElement = document.getElementById("root");
+  ReactDOM.render(<App />, rootElement);
+
+</script>

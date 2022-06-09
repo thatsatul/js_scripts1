@@ -1,0 +1,61 @@
+<!-- https://www.w3schools.com/jsref/prop_node_nodetype.asp -->
+<style>
+  .custom-font {
+    font-size: 30px;
+  }
+</style>
+<div id="root">
+  This is Root
+  <div>Adding new node in 2 secs</div>
+</div>
+
+<script>
+  var rootEl = document.getElementById('root');
+  rootEl.addEventListener('mouseover', function() {
+    rootEl.style.background = 'lightpink';
+  });
+
+  rootEl.addEventListener('mouseout', function() {
+    rootEl.style = 'background: yellow';
+  });
+
+  var tmOut1 = setTimeout(() => {
+    var childNode = document.createElement('DIV');
+    var childTextNode = document.createTextNode('Hello');
+    childNode.setAttribute('style', 'color: red');
+    childNode.classList.add('custom-font');
+    childNode.appendChild(childTextNode);
+    rootEl.appendChild(childNode);
+
+    var childNode1 = document.createElement('DIV');
+    var childTextNode1 = document.createTextNode('Copying above elements using cloneNode');
+    childNode1.appendChild(childTextNode1);
+    rootEl.appendChild(childNode1);
+    var br = document.createElement('BR');
+    rootEl.appendChild(br);
+    rootEl.appendChild(br);
+    clearTimeout(tmOut1);
+  }, 2000);
+
+  var tmOut2 = setTimeout(() => {
+    var els = document.querySelectorAll('*');
+    console.log(els);
+    var rootEl = document.querySelector('#root');
+    var rootCopy1 = rootEl.cloneNode(true); // true for deep clone
+    var rootCopy2 = rootEl.cloneNode(false); // false for shallow clone : will clone div:id = root
+    document.body.appendChild(rootCopy1);
+    document.body.appendChild(rootCopy2);
+    clearTimeout(tmOut2);
+  }, 4000);
+
+  var tmOut3 = setTimeout(() => {
+    document.write('Other document operations in console');
+    console.dir(document);
+    clearTimeout(tmOut3);
+  }, 6000);
+
+  // document.anchors
+  // document.links
+  // document.images
+  // document.applets
+</script>

@@ -1,0 +1,35 @@
+<!-- https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click -->
+<style>
+  * {
+    box-sizing: border-box; 
+  }
+</style>
+<div id="root">
+  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+  <input id="inp" type="text" />
+  <!-- <img src="https://image.shutterstock.com/z/stock-photo--micro-peacock-feather-hd-image-best-texture-background-colourful-indian-peacock-feather-1127238599.jpg" alt="" />
+  <img src="https://cdn.pixabay.com/photo/2016/12/16/15/25/christmas-1911637_1280.jpg" alt="" /> -->
+</div>
+
+<script>
+  const el = document.getElementById('root');
+
+  el.addEventListener('click', () => console.log('** click event **'));
+  el.addEventListener('mousedown', () => console.log('** mousedown event **'));
+  el.addEventListener('mouseup', () => {
+    console.log('** mouseup event **');
+    console.log(window.getSelection().getRangeAt(0));
+    console.log(window.getSelection().toString());
+  });
+  el.addEventListener('mouseover', () => console.log('** mouseover event **'));
+  el.addEventListener('mouseout', () => console.log('** mouseout event **'));
+
+  const inpEl = document.getElementById('inp');
+  inpEl.addEventListener('keydown', () => console.log('** keydown event **'));
+  inpEl.addEventListener('keyup', () => console.log('** keyup event **'));
+  inpEl.addEventListener('keypress', () => console.log('** keypress event **'));
+
+  document.addEventListener('load', () => console.log('** document load **'));
+  document.addEventListener('DOMContentLoaded', () => console.log('** document DOMContentLoaded **'));
+  window.addEventListener('load', () => console.log('** window load **'), false )
+</script>

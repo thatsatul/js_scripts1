@@ -1,0 +1,26 @@
+Proper practices:
+
+Understand requirement first before coding
+
+Proper folder structure - Should be an exact replica of your application or resemble your application
+
+Loosely coupled component - To reduce dependency among each other
+
+Always try to implement more reusable component - easy modification, handles multiple scenario with one place modification and bug fixes
+DRY and KISS principle
+
+Segragate common entities in separate files like urls, navigation functions, date functions, validation functions
+
+proper nomenclature - To understand code
+
+unit testing
+
+avoid unnecessary api calls
+
+Try to perform as less query operations as possible
+
+Avoid injecting duplicate instance of classes
+
+Try to create first code as neat, clean and proper as possible. Its difficult to find or track unorganized code later
+
+Do not use hard coded value of location path for images, css and other files : Declare them in environment variable or in a global constant

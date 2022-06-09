@@ -1,0 +1,59 @@
+
+<style>
+  .slider_flex {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+
+  .slider_img {
+    width: 150px;
+    margin-right: 10px;
+    display: inline-block;
+  }
+
+  .slider_img1 {
+    width: 150px;
+    height: 100px;
+  }
+  
+  .slider_items {
+    overflow: hidden;
+    width: 150px;
+  }
+</style>
+<body>
+  <div id="app">
+    <div class="slider_comp">
+      <button onclick="slide(-1)">Previous</button>
+      <button onclick="slide(1)">
+        Next
+      </button>
+      <div class="slider_items" id="slider_items">
+        <div class="slider_flex" id="slider_flex">
+          <div class="slider_img">
+            <img class="slider_img1" src="https://www.gstatic.com/webp/gallery3/1.png" />
+          </div>
+          <div class="slider_img">
+            <img class="slider_img1" src="https://www.gstatic.com/webp/gallery3/2.png" />
+          </div>
+          <div class="slider_img">
+            <img class="slider_img1" src="https://www.gstatic.com/webp/gallery3/3.png" />
+          </div>
+          <div class="slider_img">
+            <img class="slider_img1" src="https://www.gstatic.com/webp/gallery3/4.png" /> 
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script>
+  let initial = 0;
+  function slide(slideDir) {
+    initial += slideDir;
+    const sliderEl = document.getElementById('slider_flex');
+    sliderEl.style.transform = "translate(" + -initial * 160 + "px)";
+    sliderEl.style.transition = "all 1s linear";
+  }
+</script>

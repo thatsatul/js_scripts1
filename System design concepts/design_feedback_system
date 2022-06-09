@@ -1,0 +1,15 @@
+Acceptance criteria
+  - On entering, User should see all the feedbacks
+  - We should provide a set of feedback form templates (templatetype - feedback, eventType - general)
+  - We should provide a set of feedback questionnaire components (eventType - general)
+  - User can create a new event like (Company Annual Feedback 2021)
+  - User can choose any template and create a new feedback instance
+  - User should be able to modify feedback form
+  - User should be able to generate a new unique url for that feedback and share
+  - Any custom feedback form generated should be later accessible to User
+  - Feedback form can be submitted one time only
+  - On revisiting submitted feedback page, submitter should see submitted details
+  - User can reset the form and share the same link again for resubmitting
+  - User can add multiple email Ids and create multiple feedback links at once and share
+  - User can add multiple ids in a group (HR, Project Manager, Engineering, etc)
+

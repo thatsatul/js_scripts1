@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+  <h1>Example using IndexDB</h1>
+  <div id="divId">
+    </id>
+    <script>
+      let myRId = document.getElementById('myResultId');
+      let i = 0;
+      const versionDB = 1;
+      //1
+      let indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
+      //2
+      var open = indexedDB.open("CarDatabase", versionDB);
+      //3
+      open.onupgradeneeded = function () {
+        let db = open.result;
+        let store = db.createObjectStore("CarsTable", { keyPath: "id" });
+        let index = store.createIndex("CIndex", ["brand", "model"]);
+      };
+      //4
+      open.onsuccess = function () {
+        //5
+        let db = open.result;
+        //6
+        let tx = db.transaction("CarsTable", "readwrite");
+        //7
+        let store = tx.objectStore("CarsTable");
+        //8  
+        let index = store.index("CIndex");
+        //9
+        store.put({ id: 1, brand: "Ford", model: "Sierra" });
+        store.put({ id: 2, brand: "Mercedes", model: "500" });
+
+        //10
+        let getAll = store.getAll();
+        getAll.onsuccess = function () {
+          for (i = 0; i < getAll.result.length; i++)
+            divId.innerHTML += getAll.result[i].brand + "-"+getAll.result[i].model+" <br>";
+        }
+        //11 
+        tx.oncomplete = function () {
+          db.close();
+        };
+      }
+    </script>
+</body>
+
+</html>

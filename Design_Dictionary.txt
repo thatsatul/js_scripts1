@@ -1,0 +1,36 @@
+// Given that you have a JSON of dictionary containing word - meaning pair (around 1 million words), how will you design your application (UX design, store structure, Database)
+
+UX design:
+1. We can segregate the data alphabetwise (A, B, C, D)
+2. We can provide functionality to search data on basis of word / part of word or meaning / part of meaning
+3. User can add word as favorite
+4. On side panel, user can show similar words / opposite words.
+5. If data is available - user can show sentences / examples to demonstrate word usage
+
+Store Structure:
+1. Store structure would be something like :
+  {
+    collection: {
+        A: {
+        word : {
+          meaning: ,
+          examples: ,
+          relatedWords: {
+            synonymn: ,
+            antonymn: ,
+          },
+        },
+      },
+      B: {
+        ...
+      },
+    },
+    favorites: {
+      ...
+    },
+    searchResults: {
+      ...
+    },
+  }
+
+2. Database :

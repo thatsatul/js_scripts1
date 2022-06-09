@@ -1,0 +1,45 @@
+{
+  "name": "js_scripts",
+  "version": "1.0.0",
+  "description": "JS module dependency",
+  "main": "array.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "libuv": "set UV_THREADPOOL_SIZE=120 && node ./libuv_threads.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thatsatul/js_scripts.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thatsatul/js_scripts/issues"
+  },
+  "homepage": "https://github.com/thatsatul/js_scripts#readme",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "common-utils-aa": "^1.0.0",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.1.1",
+    "express": "^4.17.1",
+    "node-fetch": "^2.6.0",
+    "passbook": "^2.3.0",
+    "redux": "^4.1.0",
+    "request": "^2.88.2",
+    "socket.io": "^4.4.1",
+    "uuid": "^8.3.0",
+    "v8": "^0.1.0",
+    "xmlhttprequest": "^1.8.0"
+  },
+  "engines": {
+    "node": ">=10.0.0",
+    "npm": ">=6.0.0"
+  },
+  "engineStrict": true,
+  "devDependencies": {
+    "@babel/core": "^7.14.6",
+    "@babel/plugin-transform-classes": "^7.14.5"
+  }
+}

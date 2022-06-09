@@ -1,0 +1,48 @@
+<div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+<script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+
+<script type='text/babel'>
+
+  const list = [
+    'atul',
+    'mukul',
+    'anamika',
+    'kumud'
+  ];
+  const CustomSelect = (props) => {
+
+    const [selectList, setSelectList] = React.useState(list);
+    const [form, showForm] = React.useState(false);
+    const [filter, setFilter] = React.useState('');
+    // Supports hooks
+    const [test, setTest] = React.useState(null);
+
+    const handleFilterChange = (val) => {
+      console.log(val);
+      setFilter(val);
+      if(!val) {
+        setSelectList(list);
+      } else {
+        const newList = [...list];
+        const finalList = newList.filter(el => el.includes(val));
+        console.log(finalList);
+        setSelectList(finalList);
+      }
+    }
+
+    return (
+      <div>
+        <input type="text" value={filter} onChange={(e) => handleFilterChange(e.target.value)} />
+        <div>
+          {selectList.map(el => <div key={el}>{el}</div>)}
+        </div>
+      </div>
+    );
+  }
+
+  const rootElement = document.getElementById("root");
+  ReactDOM.render(<CustomSelect />, rootElement);
+
+</script>

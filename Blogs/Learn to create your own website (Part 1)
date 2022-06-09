@@ -1,0 +1,23 @@
+Learn to create your own website (Part 1)
+
+We use many websites daily be it Amazon, Facebook, Flikpart or any other. It has become an integral part of our life and something we cannot live without. But have you ever wondered how these websites are developed or how do they work. If you have ever, then this is the right place to start.
+
+What is a website?
+Simple answer is it's simply a way to either show you some information or get some information from you or both. A website can be fancy like AirBnB or heavy like Facebook or complex and user-unfriendly like government's website (haha). Now suppose, in facebook, you are looking at one of your friend's profile. So, basically you are looking at some information of your fiend which facebook is providing. To show this information, facebook must have obtained that information from your friend (or any alternative source). So, we may conclude that websites are nothing but a medium to exchange information where information is the fuel of this system. In technical world, this information is also used alternatively with a very common term called 'Data'.
+
+Now it's time to go a bit technical. But don't worry.. We will be using only the technical terms at a very high level which can be understood by any non-technical person as well. Lets start with a very basic code implementation:
+
+1. Create a file called firstHtmlpage.html
+2. Copy the below code in the file and save it:
+<!DOCTYPE html>
+<html>
+<body>
+<h1>This is my first page</h1>
+</body>
+</html>
+3. Open Google chrome > Click on File > Open File > Select firstHtmlpage.html
+4. You will see 'This is my first page' in the browser and voila!!! There is your first web page. Dont worry about the inside content except it's written in HTML language, we will get to those as well.
+
+So to begin with, first thing we need to understand is a language called HTML (Hyper Text Markup Language). Any website is comprised of one or more HTML pages. You should have used Google chrome, Internet Explorer, Safari, etc to open the websites you like. These softwares (Google chrome, Internet Explorer, Safari) are also called browsers and the only way to make the browser understand what needs to be displayed is a piece of code written in HTML language.
+
+If you have read till here, then I am assuming you are curious to know more about the whole idea. In next part... we will be learning more about some more basic but imprtant information on how a website works. Good bye .. Take care .. Be safe :)

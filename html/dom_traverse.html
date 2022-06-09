@@ -1,0 +1,80 @@
+<!-- https://www.w3schools.com/jsref/prop_node_nodetype.asp -->
+<head>
+  <style>
+    .custom-font {
+      font-size: 30px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Just comment below two html trees alternatively and see the output diff (caused by \n) -->
+  <!-- <div id="root">
+    <div id="a">
+      A
+      <div id="a1">
+        A1
+      </div>
+      <div id="a2">
+        A2
+      </div>
+    </div>
+    <div id="b">
+      B
+      <div id="b1">
+        B1
+      </div>
+      <div id="b2">
+        B2
+        <div id="b2_1">
+          B2_1
+        </div>
+        <div id="b2_2">
+          B2_2
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  <div id="root"> <div id="a"> A <div id="a1"> A1 </div><div id="a2"> A2 </div></div><div id="b"> B <div id="b1"> B1 </div><div id="b2"> B2 <div id="b2_1"> B2_1 </div><div id="b2_2"> B2_2 </div></div></div></div>
+
+<script>
+  var rootEl = document.getElementById('root');
+  console.log('rootEl.children', rootEl.children);
+  console.log('rootEl.childNodes', rootEl.childNodes);
+  console.log('**** DOM Traversing ****');
+  // We dont use el.children. Reason below:
+  // https://stackoverflow.com/questions/15094886/why-is-foreach-not-working-for-children
+  function traverseDOM(rootNode){
+    if(rootNode.nodeType !== Node.ELEMENT_NODE) {
+      return;
+    }
+    console.log(rootNode.getAttribute('id'));
+    if(rootNode.childNodes.length <= 0) {
+      return;
+    }
+    rootNode.childNodes.forEach((child) => {
+      traverseDOM(child);
+    });
+  }
+
+  traverseDOM(rootEl);
+  console.log('**** DOM Traversing ends ****');
+
+  const b2 = document.getElementById("b2");
+  const b2_1El = document.getElementById("b2_1");
+  console.log("b2.children", b2.children);
+  console.log("b2.childNodes", b2.childNodes);
+  console.log("b2.childElementCount", b2.childElementCount);
+  console.log("b2_1El === b2.firstChild", b2_1El === b2.firstChild);
+  console.log("b2_1El === b2.firstElementChild", b2_1El === b2.firstElementChild);
+  const b2_1_nextSibling = b2_1El.nextSibling;
+  const b2_1_nextElSibling = b2_1El.nextElementSibling;
+  console.log("b2_1_nextSibling === b2.lastChild", b2_1_nextSibling === b2.lastChild);
+  console.log("b2_1_nextElSibling === b2.lastChild", b2_1_nextElSibling === b2.lastChild);
+  console.log("b2_1_nextSibling === b2.lastElementChild", b2_1_nextSibling === b2.lastElementChild);
+  console.log("b2_1_nextElSibling === b2.lastElementChild", b2_1_nextElSibling === b2.lastElementChild);
+  console.log("b2.parentElement", b2.parentElement);
+  console.log("b2.parentNode", b2.parentNode);
+</script>
+
+</body>

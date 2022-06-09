@@ -1,0 +1,27 @@
+// Which api response would you prefer for fast loading of react component and why?
+
+// [[name1, address1, zip1], [name2, address2, zip2], [name3, address3, zip3], ...]
+
+// {
+  detail1: {
+    name: <value>,
+    address: <value>,
+    zip: <value>
+  },
+  detail1: {
+    name: <value>,
+    address: <value>,
+    zip: <value>
+  },
+  detail1: {
+    name: <value>,
+    address: <value>,
+    zip: <value>
+  },
+  ...
+}
+
+Answer: 1st one
+Reason :
+1. Its smaller in size when sent as response
+2. Hash is unordered. So, record sequence may be changed.

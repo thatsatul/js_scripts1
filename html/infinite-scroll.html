@@ -1,0 +1,40 @@
+<!-- https://stackoverflow.com/questions/22675126/what-is-offsetheight-clientheight-scrollheight -->
+<body>
+  <div id="root"></div>
+</body>
+<script>
+  let counter = 1;
+  const root = document.getElementById('root');
+  console.log(root);
+  const getItems = () => {
+    for (i = counter; i < counter + 100; i++) {
+      const para = document.createElement("P");
+      const t = document.createTextNode("Item : " + i);
+      if (i % 2 == 0) {
+        para.setAttribute("class", "full_even");
+      } else {
+        para.setAttribute("class", "full_odd");
+      }
+      para.appendChild(t);
+      root.appendChild(para);
+    }
+  }
+
+  document.addEventListener('scroll', () => {
+    console.log('scrolling ...');
+    // ScrollHeight is more appropriate than offsetHeight for infinite scroll
+    if ((window.innerHeight + window.scrollY) >= document.body.scrollHeight) {
+      counter += 100;
+      getItems();
+    }
+  });
+getItems();
+</script>
+<style>
+  .full_odd {
+    color: red;
+  }
+  .full_even {
+    color: green;
+  }
+</style>

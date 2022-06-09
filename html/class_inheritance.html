@@ -1,0 +1,34 @@
+<script>
+  // How inheritance works is explained with respect to function in functional_inheritance.html
+  class Test {
+    constructor(x) {
+      this.x = x;
+    }
+
+    getX = function() {
+      return this.x;
+    }
+  }
+
+  class Child extends Test {
+    constructor(x, y) {
+      super(x);
+      this.y = y;
+    }
+
+    getY = function() {
+      return this.y;
+    }
+  }
+
+  const inst = new Child(1, 2);
+  inst.getX();
+  inst.getY();
+
+  console.log('***** Test prototype', Test.prototype);
+  // Child.prototype.__proto__ === Test.prototype
+  console.log('***** Child.prototype.__proto__', Child.prototype.__proto__);
+  // inst.__proto__ === Child.prototype
+  console.log('***** Child.prototype', Child.prototype);
+  console.log('***** instance __proto__', inst.__proto__);
+</script>

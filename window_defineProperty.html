@@ -1,0 +1,46 @@
+<script>
+// Run in browser as window is present in browser only
+Object.defineProperty(window, "test1", {
+  configurable: false,
+  writable: true,
+  value: "ABC"
+});
+
+console.log('Test 1 before changing', test1);
+
+test1 = 'KKK';
+
+console.log('Test 1 after changing', test1);
+
+
+Object.defineProperty(window, "test2", {
+  configurable: false,
+  writable: false,
+  value: "XYZ"
+});
+
+console.log('Test 2 before changing', test2);
+
+test2 = 'ZZZ';
+
+console.log('Test 2 after changing', test2);
+
+delete(window.test2);
+
+console.log('Test 2 after deleting', test2);
+
+
+
+Object.defineProperty(window, "test3", {
+  get: function() {
+    console.log('Getting value for test3 as window.test1 to avoid infinite recursion : ', window.test1);
+    return window.test1;
+  },
+  set: function(newValue) {
+    console.log('Setting value for test3 as : ', newValue);
+  }
+});
+
+test3 = 'RRR';
+console.log('Consoling test3 : ', test3);
+</script>

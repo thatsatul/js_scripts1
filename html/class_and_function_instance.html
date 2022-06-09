@@ -1,0 +1,40 @@
+<script>
+  // Class instance
+  class Test1 {
+    constructor(x) {
+      this.x = x;
+      console.log('This will run when creating instance for Test1');
+    }
+
+    protoFunc = function() {
+      console.log(this.x);
+    }
+  }
+
+  var inst1 = new Test1(1);
+
+  console.log('***** Test1 prototype : ', Test1.prototype);
+  console.log('***** inst1 __proto__ : ', inst1.__proto__);
+
+  // Running function in prototype
+  inst1.protoFunc();
+
+  // ************************************
+
+  function Test2(x) {
+    this.x = x;
+    console.log('This will run when creating instance for Test2');
+
+    this.protoFunc = function() {
+      console.log(this.x);
+    }
+  }
+
+  var inst2 = new Test2(2);
+
+  console.log('***** Test2 prototype : ', Test2.prototype);
+  console.log('***** inst2 __proto__ : ', inst2.__proto__);
+
+  // Running function in prototype
+  inst2.protoFunc();
+</script>

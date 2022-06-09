@@ -1,0 +1,62 @@
+<script>
+// Run this in browser to see the Object and prototype hierarchy
+
+// Object only has __proto__ and no prototype
+var obj1 = {
+  a: 1,
+};
+
+// Object.create creates a new object and stores source in prototype chain
+var obj2 = Object.create(obj1);
+obj2.b = 'new value2';
+console.log('****** var obj2 = Object.create(obj1); obj2, obj1, obj2.a', obj2, obj1, obj2.a);
+console.log('****** obj2.__proto__ ********', obj2.__proto__);
+
+// Object.assign copies obj1 into the blank object
+var obj3 = Object.assign({}, obj1); // obj3 will have reference of {} which is copy of obj1
+// var obj3 = Object.assign(obj1); // Try this: obj3 and obj1 will have same reference
+obj3.b = 'new value3';
+console.log('****** var obj3 = Object.create(obj1); obj3, obj1, obj1.a', obj3, obj1, obj3.a);
+console.log('****** obj2.__proto__, obj3.__proto__ ********', obj2.__proto__, obj3.__proto__);
+
+// Array, String, Object - all are instance of Object()
+console.log('******* Array.proto ********', Array.__proto__);
+console.log('******* Array.proto ********', Object.__proto__);
+console.log('******* String.proto ********', String.__proto__);
+console.log('******* Array instanceof Object ********', Array instanceof Object);
+console.log('******* Object instanceof Object ********', Object instanceof Object);
+console.log('******* String instanceof Object ********', String instanceof Object);
+
+// Use case of prototype
+if(!String.prototype.rep) {
+  String.prototype.rep = function() {
+    console.log('**** this inside String.prototype.rep ****', this);
+    try {
+      return this + 'REP' + this;
+    } catch (e) {
+      return 'error';
+    }
+  };
+}
+
+var color1 = new String("green");
+var color2 = "red";
+console.log('******* color1 instanceof String *****', color1 instanceof String); // true
+console.log('******* color1.length, color1.repeat *****', color1.length, color1.rep()); // 5 greenREPgreen
+console.log('******* color2.length, color2.repeat *****', color2.length, color2.rep()); // 3 redREPred
+console.log('******* color1, color2, color1.__proto__, color2.__proto__ *****', color1, color2, color1.__proto__, color2.__proto__);
+
+// function has both __proto__ and prototype
+function Test( key ) {
+  this.key = key;
+}
+
+Test.prototype.fn = function () {
+  return 'pqr';
+}
+
+// While creating an instance - inst.__proto__ = Test.prototype
+var inst = new Test('aaa');
+console.log('******* inst.key, inst.fn() ******', inst.key, inst.fn());
+
+</script>

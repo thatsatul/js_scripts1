@@ -1,0 +1,90 @@
+<style>
+body {
+  background: #20262E;
+  padding: 20px;
+  font-family: Helvetica;
+}
+
+#app {
+  background: #fff;
+  border-radius: 4px;
+  padding: 20px;
+  transition: all 0.2s;
+}
+
+
+* {
+	box-sizing: border-box;
+}
+
+.box {
+	display: inline-block;
+	height: 50px;
+	width: 50px;
+	border: 1px solid black;
+  cursor: pointer;
+  vertical-align: top;
+  padding: 15px 7px;
+}
+
+.row {
+	height: 50px;
+}
+</style>
+
+<div id="app"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.24.0/babel.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"></script>
+
+<script type='text/babel'>
+class Box extends React.Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			showContent: false,
+		};
+	}
+	
+	handleClick = () => {
+	const { showState } = this.state;
+		this.setState({
+			showState: !showState,
+		});
+	}
+	
+	render() {
+		const {i, j} = this.props;
+		const { showState } = this.state;
+    return (<div className="box" onClick={() => this.handleClick()}>
+      {showState ? <span>{i} , {j}</span> : null}
+		</div>);
+	}
+}
+
+class Row extends React.Component {
+	render () {
+		const { num, i } = this.props;
+		const boxes = [];
+		for(let j=0; j<num; j++) {
+			boxes.push(<Box key={`${i},${j}`} i={i} j={j}/>);
+		}
+		return <div className="row">{boxes}</div>;
+	}
+}
+
+class App extends React.Component {
+	render () {
+		const { num } = this.props;
+		const rows = [];
+		for(let i=0; i<num; i++) {
+			rows.push(<Row key={i} i={i} num={num} />);
+		}
+		return <div className="sudoku">{rows}</div>;
+	}
+}
+
+ReactDOM.render(<App num={9} />, document.querySelector("#app"))
+
+
+</script>

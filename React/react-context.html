@@ -1,0 +1,87 @@
+<div id="app"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+<script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+
+<script type='text/babel'>
+const themes = {
+  light: {
+    foreground: '#000000',
+    background: '#eeeeee',
+  },
+  dark: {
+    foreground: '#ffffff',
+    background: '#222222',
+  },
+};
+
+// Theme context, default to light theme
+const ThemeContext = React.createContext();
+
+
+class App extends React.Component {
+		constructor() {
+			super();
+			this.state = {
+				toggleTheme: this.toggleTheme,
+				theme: 'light'
+			};
+		}
+
+		toggleTheme = () => {
+			const { theme } = this.state;
+			this.setState({
+				theme: theme === 'light' ? 'dark' : 'light'
+			});
+		}
+
+  	render() {
+    // App component that provides initial context values
+    return (
+      <ThemeContext.Provider value={this.state}>
+				<Layout />
+				<Page />
+      </ThemeContext.Provider>
+    );
+  }
+}
+
+// One way to use it in tree is using static ContextType
+class Layout extends React.Component {
+	static contextType = ThemeContext;
+
+	render() {
+		console.log('***** ContextType ******', this.context, themes);
+		const { theme, toggleTheme } = this.context;
+		return (
+			<div style={{height: 100, backgroundColor: themes[theme].background}} onClick={() => toggleTheme()}>
+				<div style={{color: themes[theme].foreground}}>Hello</div>
+			</div>
+		);
+	}
+}
+
+// Othe way to use it in tree is using Consumer
+class Page extends React.Component {
+
+	render() {
+		return (
+			<ThemeContext.Consumer>
+				{(themeObj) => {
+					const { theme, toggleTheme } = themeObj;
+					console.log('***** Consumer ******', themeObj, themes);
+					return (
+						<div style={{height: 100, backgroundColor: themes[theme].background}} onClick={() => toggleTheme()}>
+							<div style={{color: themes[theme].foreground}}>Hi</div>
+						</div>
+					);
+				}}
+			</ThemeContext.Consumer>
+		);
+	}
+}
+
+ReactDOM.render(<App />, document.querySelector("#app"))
+
+
+</script>

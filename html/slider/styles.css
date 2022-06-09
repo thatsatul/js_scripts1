@@ -1,0 +1,53 @@
+.hide {
+  display:none;
+}
+
+.btn {
+  cursor: pointer;
+}
+
+.left {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  z-index: 1;
+}
+
+.right {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  z-index: 1;
+}
+
+.img {
+  width: 400px;
+  height: 400px;
+}
+
+#image-container {
+  text-align: center;
+  padding-top: 100px;
+  margin: 0px 50px;
+  overflow: hidden;
+}
+
+#img-cont {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+}
+
+#slidercontainer {
+  width: 500px;
+  display: inline-block;
+  position: relative;
+}
+
+.centered {
+  text-align: center;
+}
+
+.in-bl {
+  margin-right: 20px;
+}

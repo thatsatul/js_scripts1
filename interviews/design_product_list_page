@@ -1,0 +1,134 @@
+Acceptance criteria
+  - Should display a list of product
+  - Each product card should display
+    - Product title
+    - Image of the product
+    - Cost of product
+    - + button to add product in cart
+    - - button to remove product in cart
+    - Clicking on product image should take them to Product detail page
+    - Adding or removing product should show some message on success / error
+    - Do we need user to login to add / remove cart items?
+  - Show loader until product list is not fetched
+  - Show error if fetching product list
+  - Fetch 30 products in a single call and lazyload for next call
+  - Can show different categories for which other products lists are available
+  - Clicking on any catgeory will navigate to different product list of clicked catgeory
+  - Can show different filters available for the given product list
+  - Choosing filters will apply and narrow down the list (apply filters at FE side if all records are fetched || BE if all records are not present)
+  - Show header with logo, cart(items count), login / user icon
+  - Clicking on cart link shows a dropdown or sidebar with all items, proceed button and continue shopping
+  - Clicking on proceed takes you to cart page
+  - Continue shopping click will remove the dropdown / sidebar
+
+Component Hierarchy:
+- Product List page
+  - Header
+    - logo
+    - Cart link
+      - Cart Items dropdown
+    - Login / User
+  - Categories
+  - Product List
+    - [Product Cards]
+  - Filters
+
+Api contracts:
+  getProductList(category, filters, limit, cursor) => {
+    totalRecords,
+    cursor,
+    records: [
+      {
+        productId,
+        productSlug,
+        title,
+        imageUrl,
+        cost,
+      }
+    ],
+  }
+
+  getFilters(category) => {
+    filterType1: [<filters1],
+    filterType2: [<filters2]
+  }
+
+  getCategories() => [
+    {
+      categoryId,
+      categorySlug,
+      productListCount
+    }
+  ]
+
+  getCartSummary(userId) => {
+    products: [
+      {
+        productId,
+        costOfOneItem,
+        quantity,
+        totalCost
+      },
+    ],
+    summary: {
+      overallCost,
+      totalQuantity
+    }
+  }
+
+  addProductToCart = (userId, productId, quantity) => {
+    products: [
+      {
+        productId,
+        costOfOneItem,
+        quantity,
+        totalCost
+      },
+    ],
+    summary: {
+      overallCost,
+      totalQuantity
+    }
+  }
+
+  removeProductFromCart = (userId, productId, quantity) => {
+    products: [
+      {
+        productId,
+        costOfOneItem,
+        quantity,
+        totalCost
+      },
+    ],
+    summary: {
+      overallCost,
+      totalQuantity
+    }
+  }
+
+Store:
+
+{
+  productList: {
+    isFetching: true / false,
+    error: description,
+    <categoryId>: [<productList]
+  },
+  categories: {
+    isFetching,
+    error,
+    data: [<category>]
+  },
+  cart: {
+    isFetching,
+    error:
+    data:{
+      items: [<products>],
+      summary: <summaryObj>
+    }
+  }
+}
+
+Caching:
+  - Product list at store level
+  - Cart at store level

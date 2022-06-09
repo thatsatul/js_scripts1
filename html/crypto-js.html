@@ -1,0 +1,23 @@
+<html>
+  <head>
+    <script type="text/javascript" src="../node_modules/crypto-js/crypto-js.js"></script>
+    <script type="text/javascript">
+        function encryptOtp() {
+          var el = document.getElementById('otp');
+          var val = el.value;
+          console.log(' val1 ', val);
+          val = CryptoJS.AES.encrypt(
+            val,
+            '123456789',
+          ).toString();
+          console.log(' val2 ', val);
+          document.getElementById('encrypted-val').innerText = val;
+        }
+    </script>
+  </head>
+</html>
+<body>
+  <input type="text" id="otp" name="otp-field" />
+  <button onclick="encryptOtp()">Encrypt</button>
+  <div id="encrypted-val"></div>
+</body>

@@ -1,0 +1,15 @@
+cluster and child process module
+dispatcher in node JS
+what does module.exports do
+redis
+nosql
+Event loop
+fail-pass system
+sarata js
+
+const str = 'abc'; str has a prototype?
+const x = true;
+x has prototype?
+
+Data duplication and syncing issue in micro-services (like type mismatch: user_id is int in one and string in other)
+Setup and network issues while running an app

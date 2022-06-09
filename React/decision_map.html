@@ -1,0 +1,107 @@
+<style>
+</style>
+  
+<div id="app"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.24.0/babel.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"></script>
+
+<script type='text/babel'>
+
+  const decisionMapIdmapping = {};
+
+  function triggerDecisionMap(ids, currentFieldValue, passedValue) {
+    ids.forEach(id => {
+      decisionMapIdmapping[id](currentFieldValue, passedValue);
+    });
+  }
+
+  function decisionMap(curr, pass) {
+    console.log(this.state);
+    this.setState({
+      field1: curr + pass
+    });
+  }
+
+  class Input1 extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        field1: '',
+        name: 'id1'
+      };
+    }
+
+    onChange = (e) => {
+      this.setState({
+        field1: e.target.value
+      }, () => {
+        triggerDecisionMap(['id2', 'id3'], this.state.field1, '-pass')
+      });
+    }
+
+    render () {
+      return <input type='text' value={this.state.field} onChange={(e) => this.onChange(e)} />
+    }
+  }
+
+  class Input2 extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        field2: '',
+        name: 'id2'
+      };
+    }
+    componentDidMount() {
+      decisionMapIdmapping['id2'] = decisionMap.bind(this);
+    }
+
+    onChange = (e) => {
+      this.setState({
+        field2: e.target.value
+      });
+    }
+
+    render () {
+      return <input type='text' value={this.state.field2} onChange={(e) => this.onChange(e)} />
+    }
+  }
+
+  class Input3 extends React.Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        field3: '',
+        name: 'id3'
+      };
+    }
+    componentDidMount() {
+      decisionMapIdmapping['id3'] = decisionMap.bind(this);
+    }
+
+    onChange = (e) => {
+      this.setState({
+        field3: e.target.value
+      });
+    }
+
+    render () {
+      return <input type='text' value={this.state.field3} onChange={(e) => this.onChange(e)} />
+    }
+  }
+  
+  class App extends React.Component {
+    render () {
+      return (
+        <div>
+          <Input1 />
+          <Input2 />
+          <Input3 />
+        </div>
+      );
+    }
+  }
+  
+  ReactDOM.render(<App />, document.querySelector("#app"))
+</script>

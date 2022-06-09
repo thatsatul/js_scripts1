@@ -1,0 +1,23 @@
+<!-- Event Bubbling and Event Capturing -->
+<div id="root">
+  <div id="child1">
+    <div id="child2">
+      <div id="child3">Click here</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const els = document.querySelectorAll('*');
+  els.forEach(el => {
+    el.addEventListener('click', (e) => {
+      console.log('Event bubbling travelled to : ', el.tagName, el.getAttribute('id'));
+    }, false); //false for event bubbling
+  });
+
+  els.forEach(el => {
+    el.addEventListener('click', (e) => {
+      console.log('Event capturing travelled to : ', el.tagName, el.getAttribute('id'));
+    }, true); //true for event capturing
+  });
+</script>

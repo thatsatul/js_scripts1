@@ -1,0 +1,58 @@
+
+
+
+Docker commands:
+docker tag 7b2bca7dfc8b atul1anand/sapient:v1 // 7b2bca7dfc8b = imageId
+
+docker ps
+
+docker images
+
+docker rmi imageName 
+
+
+docker rm container
+
+docker container stop $(docker container ls -aq)
+
+docker container rm $(docker container ls -aq)
+
+Deploying to heroku : 
+
+heroku container:login
+
+heroku create // cryptic-citadel-91205
+
+docker build -t registry.heroku.com/cryptic-citadel-91205/web . // Dont forget .
+
+Acids-Macbook:react-ssr-basic atulanand$ docker images
+REPOSITORY                                               TAG                 IMAGE ID            CREATED             SIZE
+sapient                                                  latest              7b2bca7dfc8b        2 hours ago         1.04GB
+registry.heroku.com/cryptic-citadel-91205/web            latest              7b2bca7dfc8b        2 hours ago         1.04GB
+atul1anand/sapient                                       v1                  7b2bca7dfc8b        2 hours ago         1.04GB
+nginx                                                    latest              2622e6cca7eb        3 days ago          132MB
+node                                                     10                  e7671d9424c2        3 days ago          911MB
+Acids-Macbook:react-ssr-basic atulanand$ 
+
+docker run -p 8080:3000 registry.heroku.com/cryptic-citadel-91205
+
+docker push registry.heroku.com/cryptic-citadel-91205/web
+
+heroku container:release web
+
+docker tag 7b2bca7dfc8b registry.heroku.com/cryptic-citadel-91205/web
+
+Go to app
+
+heroku logs --tail
+
+heroku logs -t --app sapient-git
+
+heroku config:get PORT --app sapient-git
+
+heroku plugins:install heroku-repo
+heroku repo:purge_cache -a sapient-git
+
+heroku restart --app sapient-git
+
+heroku run bash --app sapient-g

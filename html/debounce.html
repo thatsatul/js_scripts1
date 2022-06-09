@@ -1,0 +1,33 @@
+<script>
+  const debounce = function(cb, tm) {
+    let timeOut;
+    this.retFun = this.retFun || function(args) {
+      clearTimeout(timeOut);
+      timeOut = setTimeout(() => {
+        cb(args);
+        clearTimeout(timeOut);
+      }, tm);
+    };
+    return this.retFun;
+  };
+
+  const handleInputChange = (e) => {
+    console.log(e.target.value);
+  }
+
+  const debounceInput = (e) => {
+    const debounceInst = debounce(handleInputChange, 600);
+    // Creating new function instance everytime so debouncing wont work below
+    // debounceInst = debounce(handleInputChange, 600);
+    debounceInst(e);
+  }
+
+</script>
+<div>Debounce not handled</div>
+<input type="textbox" onkeyup="handleInputChange(event)" />
+<br />
+<br />
+<br />
+<br />
+<div>Debounce handled</div>
+<input type="textbox" onkeyup="debounceInput(event)" />

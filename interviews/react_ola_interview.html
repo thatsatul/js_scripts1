@@ -1,0 +1,97 @@
+<style>
+  .article {
+    width: 300px;
+    margin: auto;
+    text-align: center;
+  }
+</style>
+<div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+<script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+
+<script type='text/babel'>
+
+  function App() {
+    const [tm, setTm] = React.useState(0);
+    const myRef = React.useRef(0);
+
+    // Timer to update state every 1 ms
+    const startTimer = () => {
+      // setting new value using useState is async
+  
+      // this wont work
+      // const inv = setInterval(() => {
+      //   setTm(tm + 1);
+      // }, 1);
+
+      // this wont work
+      // const inv = setInterval(() => {
+      //   const localTm = tm;
+      //   setTm(localTm + 1);
+      // }, 1);
+
+      // this wont work
+      // var func = (localTm) => {
+      //   setTm(localTm + 1);
+      // }
+      // const inv = setInterval(func.bind(this, tm), 1);
+
+      // even when interval is 1 sec, this wont work
+      // const inv = setInterval(() => {
+      //   setTm(tm + 1);
+      // }, 1000);
+
+      // this will work
+      const inv = setInterval(() => {
+        setTm((tm) => tm + 1);
+      }, 1);
+
+      // this will work
+      // const inv = setInterval(() => {
+      //   setTm(myRef.current);
+      //   myRef.current = myRef.current + 1;
+      // }, 1);
+
+    };
+
+    // Sort array with 0 at last
+    const sortArray = () => {
+      const arr = [0, 0, 0, 1, 1, 1, 0, 1, 2, 2, 2, 1, 2, 1, 0, 0];
+      let i = 0;
+      let j = arr.length - 1;
+      while (i <= j) {
+        if (arr[i] === 0 && arr[j] !== 0) {
+          arr[i] = arr[j];
+          arr[j] = 0;
+          i++;
+          j--;
+        } else if (arr[i] !== 0) {
+          i++;
+        } else if (arr[j] === 0) {
+          j--;
+        }
+      }
+      console.log(arr);
+    };
+
+    return (
+      <div className="article">
+        <div>
+          <button onClick={() => startTimer()}>Click</button>
+          <span>{tm}</span>
+          <div>
+            Note: Hooks are an experimental proposal to React. You don’t need to
+            learn about them right now. Also, note that this post contains my
+            personal opinions and doesn’t necessarily reflect the positions of the
+            React team.
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  const rootElement = document.getElementById("root");
+  ReactDOM.render(<App />, rootElement);
+
+</script>
