@@ -1,0 +1,28 @@
+<html lang="en">
+ 
+<head>
+<title>Shimmer</title>
+<style>
+    .shimmer {
+        color: grey;
+        display:inline-block;
+        -webkit-mask:linear-gradient(-60deg,#000 30%,#0005,#000 70%) right/300% 100%;
+        background-repeat: no-repeat;
+        animation: shimmer 2s infinite;
+        font-size: 50px;
+        height: 400px;
+        width: 100%;
+        background-color: red;
+    }
+    @keyframes shimmer {
+        100% {-webkit-mask-position:left}
+    }
+</style>
+</head>
+
+<body>
+
+<div class="shimmer"></div>
+
+</body>
+</html>
