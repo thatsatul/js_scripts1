@@ -1,0 +1,57 @@
+<!-- index.html -->
+<!-- https://www.npmjs.com/package/qrcode#installation -->
+<html>
+  <body>
+    <canvas id="canvas"></canvas>
+    <img src="" id="image">
+    <div>
+        <input type="text" value="test" id="txt">
+    </div>
+    <div>
+        <button id="encode">Encode</button>
+    </div>
+    <!-- <div>
+        <button id="decode">Decode</button>
+    </div> -->
+    <script src="../../node_modules/qrcode/build/qrcode.js"></script>
+    <script>
+        function drawQR() {
+            // Using canvas
+            var canvas = document.getElementById('canvas');
+            var txt = document.getElementById('txt');
+            QRCode.toCanvas(canvas, txt.value, function (error) {
+                if (error) console.error(error)
+                console.log('success!');
+            });
+
+
+            // Using DataURL
+            // QRCode.toDataURL(txt.value, opts, function (err, url) {})
+            var opts = {
+                errorCorrectionLevel: 'H',
+                type: 'image/jpeg',
+                quality: 0.3,
+                margin: 1,
+                color: {
+                    dark:"#010599FF",
+                    light:"#FFBF60FF"
+                }
+            }
+
+            QRCode.toDataURL(txt.value, function (err, url) {
+                if (err) throw err
+
+                var img = document.getElementById('image')
+                img.src = url
+            });
+        }
+        document.getElementById('encode').addEventListener('click', function() {
+            drawQR();
+        })
+        document.getElementById('decode').addEventListener('click', function() {
+            // decode QR
+            // Complicated.. So please download image and use any online decoder tool to check
+        })
+    </script>
+  </body>
+</html>
