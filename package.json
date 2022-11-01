@@ -20,9 +20,10 @@
   "homepage": "https://github.com/thatsatul/js_scripts#readme",
   "dependencies": {
     "axios": "^0.19.2",
-    "common-utils-aa": "^1.0.0",
+    "common-utils-aa": "^1.0.2",
     "cors": "^2.8.5",
     "crypto-js": "^4.1.1",
+    "esm": "^3.2.25",
     "express": "^4.17.1",
     "node-fetch": "^2.6.0",
     "passbook": "^2.3.0",

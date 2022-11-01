@@ -1,3 +1,4 @@
-import * as test from 'common-utils-aa';
+// const { printMsg, dateHelper } = require('common-utils-aa');
+import { printMsg } from 'common-utils-aa';
 
-test.printMsg();
+printMsg();
