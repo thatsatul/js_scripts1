@@ -1,0 +1,19 @@
+<div>
+</div>
+
+<script>
+  const obj = {
+    "make": "iPhone",
+    "model": "iPhone13",
+    "serialNumber": "53467890"
+  };
+
+  const enc = btoa(JSON.stringify(obj));
+
+  console.log('btoa : ', enc);
+
+  const dec = atob(enc);
+
+  console.log('atob : ', dec);
+
+</script>
