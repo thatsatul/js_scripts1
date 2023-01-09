@@ -4,6 +4,11 @@
   "description": "JS module dependency",
   "main": "array.js",
   "type": "module",
+  "exports": {
+    ".": {
+      "require": "./apps/app.js"
+    }
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "libuv": "set UV_THREADPOOL_SIZE=120 && node ./libuv_threads.js"
