@@ -1,0 +1,56 @@
+<div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+<script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+
+<script type='text/babel'>
+
+  /*** EMI formula
+
+    E = (P.r.(1+r)n) / ((1+r)n – 1)
+    Here, 
+    P = loan amount i.e principal amount 
+    R = Interest rate per month 
+    T = Loan time period in year
+  
+  ***/
+
+  // Initial requisite
+  const noOfYears = 30;
+  const noOfMonths = noOfYears * 12;
+  const principal = 8000000;
+  const interestRatePerYear = 9;
+  const interestRatePerMonth = interestRatePerYear / 12;
+  const interestRateForEMICalculator = interestRatePerYear / (12 * 100);
+
+  // const tr = Math.pow(2, 2);
+  const tr = Math.pow(1 + interestRateForEMICalculator, noOfMonths);
+  const emi = Math.floor((principal * interestRateForEMICalculator * tr) / (tr - 1));
+  console.log ('EMI amount is', emi);
+  let calculatedLoan = principal;
+
+  const LoanTable = () => {
+
+    const getRows = () => {
+      const columnList = [];
+      for (let i = 0; i <= noOfMonths && calculatedLoan >= 0; i++) {
+        const interest = Math.ceil(interestRatePerMonth * calculatedLoan * 1/100);
+        console.log('Month, Principal, interest, emi', i, calculatedLoan, interest, emi);
+        calculatedLoan = Math.ceil(calculatedLoan + interest - emi);
+        console.log('Principal for month', i + 1, calculatedLoan);
+      }
+      return <div>Test</div>;
+    }
+
+    return (
+      <div style={{ padding: 100 }}>
+        <h2>Loan progress:</h2>
+        {getRows()}
+      </div>
+    );
+  }
+
+  const rootElement = document.getElementById("root");
+  ReactDOM.render(<LoanTable />, rootElement);
+
+</script>

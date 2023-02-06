@@ -1,0 +1,53 @@
+<div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+<script crossorigin src="https://unpkg.com/react@17/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+
+<script type='text/babel'>
+
+  /*** EMI formula
+
+    E = (P.r.(1+r)n) / ((1+r)n – 1)
+    Here, 
+    P = loan amount i.e principal amount 
+    R = Interest rate per month 
+    T = Loan time period in year
+  
+  ***/
+
+  // Initial requisite
+  const noOfYears = 30;
+  const noOfMonths = noOfYears * 12;
+  const monthlyInvestment = 20000;
+  const interestRatePerYear = 12;
+  const interestRatePerMonth = interestRatePerYear / 12;
+
+  const totalInvestment = monthlyInvestment * noOfMonths;
+
+  const SIPsTable = () => {
+
+    const getRows = () => {
+      const columnList = [];
+      let principal = monthlyInvestment;
+      for (let i = 0; i <= noOfMonths; i++) {
+        const interest = Math.floor(interestRatePerMonth * principal * 1/100);
+        console.log('Month, Principal, interest', i, principal, interest);
+        principal = Math.floor(principal + interest) + monthlyInvestment;
+        console.log('Principal for month', i + 1, principal);
+      }
+      console.log ('Total investment, months, profit rate per year, Total profit', totalInvestment, noOfMonths, interestRatePerYear, principal - totalInvestment);
+      return <div>Test</div>;
+    }
+
+    return (
+      <div style={{ padding: 100 }}>
+        <h2>SIPs progress:</h2>
+        {getRows()}
+      </div>
+    );
+  }
+
+  const rootElement = document.getElementById("root");
+  ReactDOM.render(<SIPsTable />, rootElement);
+
+</script>
