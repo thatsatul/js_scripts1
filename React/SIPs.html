@@ -27,16 +27,27 @@
   const SIPsTable = () => {
 
     const getRows = () => {
-      const columnList = [];
+      const rowsList = [];
       let principal = monthlyInvestment;
       for (let i = 0; i <= noOfMonths; i++) {
         const interest = Math.floor(interestRatePerMonth * principal * 1/100);
         console.log('Month, Principal, interest', i, principal, interest);
+        const currentStatsRow = <div>
+          <div>Month {i}</div>
+          <div>Principal: {principal}</div>
+          <div>Interest: {interest}</div>
+          <div>Interest: {interest}</div>
+        </div>
         principal = Math.floor(principal + interest) + monthlyInvestment;
         console.log('Principal for month', i + 1, principal);
+        const row = <div style={{ marginBottom: '20px' }}>
+          {currentStatsRow}
+          <div>Principal for month {i+1} : {principal}</div>
+        </div>;
+        rowsList.push(row);
       }
       console.log ('Total investment, months, profit rate per year, Total profit', totalInvestment, noOfMonths, interestRatePerYear, principal - totalInvestment);
-      return <div>Test</div>;
+      return rowsList;
     }
 
     return (
