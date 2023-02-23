@@ -18,27 +18,35 @@
   // Initial requisite
   const noOfYears = 30;
   const noOfMonths = noOfYears * 12;
-  const principal = 8000000;
-  const interestRatePerYear = 9;
+  const principal = 7500000;
+  const interestRatePerYear = 7;
   const interestRatePerMonth = interestRatePerYear / 12;
   const interestRateForEMICalculator = interestRatePerYear / (12 * 100);
 
   // const tr = Math.pow(2, 2);
   const tr = Math.pow(1 + interestRateForEMICalculator, noOfMonths);
   const emi = Math.floor((principal * interestRateForEMICalculator * tr) / (tr - 1));
+  // Uncomment below if you want to get details by paying emi as per your choice
+  // const emi = 150000;
   console.log ('EMI amount is', emi);
   let calculatedLoan = principal;
 
   const LoanTable = () => {
 
     const getRows = () => {
+      let totalAmount = 0;
       const columnList = [];
-      for (let i = 0; i <= noOfMonths && calculatedLoan >= 0; i++) {
+      let i = 0;
+      for (i = 0; i <= noOfMonths && calculatedLoan >= 0; i++) {
         const interest = Math.ceil(interestRatePerMonth * calculatedLoan * 1/100);
-        console.log('Month, Principal, interest, emi', i, calculatedLoan, interest, emi);
+        console.log('Month, Principal, totalAmount, interest, emi', i, calculatedLoan, totalAmount, interest, emi);
         calculatedLoan = Math.ceil(calculatedLoan + interest - emi);
         console.log('Principal for month', i + 1, calculatedLoan);
+        if (calculatedLoan > 0) {
+          totalAmount = totalAmount + (emi < calculatedLoan ? emi : calculatedLoan);
+        }
       }
+      console.log('principal, totalPayment, interest, noOfMonths', principal, totalAmount, totalAmount - principal, i - 1);
       return <div>Test</div>;
     }
 
