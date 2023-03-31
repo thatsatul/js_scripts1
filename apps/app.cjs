@@ -25,6 +25,16 @@ app.get('/swipe', function (req, res) {
   res.sendFile('./test-app/swipe.html', {root: __dirname});
 });
 
+app.get('/oauth-login', function (req, res) {
+  res.status(200);
+  res.json({test: 1});
+});
+
+app.post('/oauth-login', function (req, res) {
+  res.status(201);
+  res.json({test: 2});
+});
+
 app.get('*', function (req, res) {
   res.status(404).send('Not Found');
 });
