@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js?v=2"></script>
+  <script type="text/javascript">
+    const $ = jQuery;
+    function videoInit() {
+
+        $('.video').each(function() {
+                $(this).removeAttr('autoplay');
+                 videosource = $(this).find('source').attr('src');
+                  if(videosource != ""){
+                    $(this).find('source').attr('data-src',videosource);
+                  }
+        })
+        jQuery(document).ready(function() {
+
+            var $w=$(window);
+            $.fn.visible = function(partial,hidden,direction,container){
+
+                if (this.length < 1)
+                    return;
+            direction = direction || 'both';
+                
+                var $t          = this.length > 1 ? this.eq(0) : this,
+                                isContained = typeof container !== 'undefined' && container !== null,
+                                $c				  = isContained ? $(container) : $w,
+                                wPosition        = isContained ? $c.position() : 0,
+                    t           = $t.get(0),
+                    vpWidth     = $c.outerWidth(),
+                    vpHeight    = $c.outerHeight(),
+                    clientSize  = hidden === true ? t.offsetWidth * t.offsetHeight : true;
+
+                if (typeof t.getBoundingClientRect === 'function'){
+
+                    // Use this native browser method, if available.
+                    var rec = t.getBoundingClientRect(),
+                        tViz = isContained ?
+                                                        rec.top - wPosition.top >= 0 && rec.top < vpHeight + wPosition.top :
+                                                        rec.top >= 0 && rec.top < vpHeight,
+                        bViz = isContained ?
+                                                        rec.bottom - wPosition.top > 0 && rec.bottom <= vpHeight + wPosition.top :
+                                                        rec.bottom > 0 && rec.bottom <= vpHeight,
+                        lViz = isContained ?
+                                                        rec.left - wPosition.left >= 0 && rec.left < vpWidth + wPosition.left :
+                                                        rec.left >= 0 && rec.left <  vpWidth,
+                        rViz = isContained ?
+                                                        rec.right - wPosition.left > 0  && rec.right < vpWidth + wPosition.left  :
+                                                        rec.right > 0 && rec.right <= vpWidth,
+                        vVisible   = partial ? tViz || bViz : tViz && bViz,
+                        hVisible   = partial ? lViz || rViz : lViz && rViz,
+                vVisible = (rec.top < 0 && rec.bottom > vpHeight) ? true : vVisible,
+                        hVisible = (rec.left < 0 && rec.right > vpWidth) ? true : hVisible;
+
+                    if(direction === 'both')
+                        return clientSize && vVisible && hVisible;
+                    else if(direction === 'vertical')
+                        return clientSize && vVisible;
+                    else if(direction === 'horizontal')
+                        return clientSize && hVisible;
+                } else {
+
+                    var viewTop 				= isContained ? 0 : wPosition,
+                        viewBottom      = viewTop + vpHeight,
+                        viewLeft        = $c.scrollLeft(),
+                        viewRight       = viewLeft + vpWidth,
+                        position          = $t.position(),
+                        _top            = position.top,
+                        _bottom         = _top + $t.height(),
+                        _left           = position.left,
+                        _right          = _left + $t.width(),
+                        compareTop      = partial === true ? _bottom : _top,
+                        compareBottom   = partial === true ? _top : _bottom,
+                        compareLeft     = partial === true ? _right : _left,
+                        compareRight    = partial === true ? _left : _right;
+
+                    if(direction === 'both')
+                        return !!clientSize && ((compareBottom <= viewBottom) && (compareTop >= viewTop)) && ((compareRight <= viewRight) && (compareLeft >= viewLeft));
+                    else if(direction === 'vertical')
+                        return !!clientSize && ((compareBottom <= viewBottom) && (compareTop >= viewTop));
+                    else if(direction === 'horizontal')
+                        return !!clientSize && ((compareRight <= viewRight) && (compareLeft >= viewLeft));
+                }
+            }
+
+              jQuery(window).scroll(function() {
+                    jQuery('video').each(function() {
+                        if (jQuery(this).visible(true)) {
+                            jQuery(this)[0].play();
+                        } else {
+                            jQuery(this)[0].pause();
+                        }
+                    })
+                });
+        });
+            setTimeout(function() {
+                    jQuery('video').each(function() {
+                			jQuery(this).removeAttr('autoplay');
+                    })
+            }, 2000);
+            
+            setTimeout(function() {
+                    jQuery('video').each(function() {
+                			jQuery(this).removeAttr('autoplay');
+                    })
+            }, 3000);
+            
+            setTimeout(function() {
+                    jQuery('video').each(function() {
+                			jQuery(this).removeAttr('autoplay');
+                    })
+            }, 5000);
+    }
+
+    $('video').each(function() {
+                newvideosource = $(this).find('source').attr('data-src');
+                if(newvideosource != ""){
+                  $(this).find('source').attr('src',newvideosource);
+                }
+              });
+
+        setTimeout(function() {
+            $('video').each(function() {
+                  $(this).removeAttr('autoplay');
+                  videosource = $(this).find('source').attr('src');
+                  if(videosource != ""){
+                    $(this).find('source').attr('data-src',videosource);
+                  }
+                })
+        }, 1000);
+        
+        setTimeout(function() {
+                $('video').each(function() {
+                    $(this).removeAttr('autoplay');
+                    videosource = $(this).find('source').attr('src');
+                    if(videosource != ""){
+                        $(this).find('source').attr('data-src',videosource);
+                    }
+                })
+        }, 2000);
+        
+        setTimeout(function() {
+            $('video').each(function() {
+                    $(this).removeAttr('autoplay');
+                    videosource = $(this).find('source').attr('src');
+                    if(videosource != ""){
+                        $(this).find('source').attr('data-src',videosource);
+                    }
+                })
+        }, 3000);
+        videoInit();
+
+</script>
+<body>
+  <div style="height: 400vh; background-color: red;">
+  </div>
+  <div>
+    <video playsinline="" muted="">
+      <source src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4">Your browser does not support the video tag.</video>
+  </div>
+</body>
+</html>

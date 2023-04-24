@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Page Title</title>
+<script>
+let x = null;
+const abc = (elm) => {
+	console.log('elm : ', elm);
+  const load = {};
+  let classes = elm.getAttribute('class');
+  classes = classes.split(' ');
+  classes = classes.filter(cl => /moe/.test(cl));
+  classes.forEach(cl => {
+    const entites = cl.split('_');
+    console.log('entites : ', entites);
+    load[entites[1]] = entites[2];
+  });
+  elm.addEventListener('click', () => {
+    console.log('load', load);
+  });
+  x = elm;
+}
+// Alternative to load event
+document.onreadystatechange = () => {
+  if (document.readyState === "complete") {
+    const links = document.querySelectorAll('a');
+    links.forEach(el => {
+      abc(el);
+    })
+  }
+};
+</script>
+</head>
+<body>
+
+<a class="a b moe_src_test1 moe_plf_test2" href="javascript:;" >Click</a>
+<a class="x y moe_src1_test3 moe_plf1_test4" href="javascript:;" >Click</a>
+
+</body>
+</html>
