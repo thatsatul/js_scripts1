@@ -7,13 +7,35 @@
                 padding: 0;
                 margin: 0;
             }
-            .toggle-cards-collection-outer {
-                /* display: inline-block; */
-                width: 1200px;
-                padding: 50px;
+            .fixed-toggle-card-slider-outer {
                 background-size: cover;
                 background-repeat: no-repeat;
                 background-color: black;
+                width: 100%;
+                text-align: center;
+                padding: 96px 62px;
+            }
+            .fixed-toggle-card-slider-outer .mgz-element-inner {
+            	text-align: center;
+            }
+            .fixed-toggle-card-slider-inner {
+                text-align: center;
+            }
+            .toggle-cards-collection-outer .title {
+            	font-family: 'Gentona-SemiBold';
+                font-style: normal;
+                font-weight: 600;
+                font-size: 48px;
+                line-height: 116%;
+                letter-spacing: -0.02em;
+                color: #F7FBFF;
+                margin-bottom: 34px;
+            }
+            .toggle-cards-collection-outer {
+                display: inline-block;
+                width: 1268px;
+                max-width: 1268px;
+                text-align: left;
             }
             .toggle-cards-collection-inner {
                 display: none;
@@ -28,7 +50,7 @@
             .toggle-cards-collection-inner .tile {
                 display: inline-block;
                 transition: all .5s;
-                height: 400px;
+                height: 455px;
                 padding: 0;
                 position: relative;
                 overflow: hidden;
@@ -36,26 +58,65 @@
                 cursor: pointer;
             }
             .toggle-cards-collection-inner .img {
-                max-width: auto;
-                height: 400px;
+                max-width: none;
+                height: 455px;
                 position: absolute;
-                width: 634px;
+                width: 606px;
                 transition: all 0.5s;
+            }
+            .toggle-cards-collection-inner .img:hover {
+                margin-top: -6px;
             }
             .toggle-cards-collection-inner .txt-block {
                 position: absolute;
                 z-index: 1;
-                left: 10%;
-                top: 5%;
+                top: 60%;
                 transition: all 0.5s;
                 font-size: 20px;
-                display: none;
+                color: white;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            .toggle-cards-collection-inner .txt-block .card-title {
+                display: inline-block;
+                width: 200px;
+                font-family: 'Gentona-Semibold-Italic';
+                font-weight: 400;
+                font-size: 33.1163px;
+                line-height: 117%;
+                /* identical to box height, or 39px */
+
+                letter-spacing: -0.03em;
+
+                color: #FFFFFF;
+                margin-bottom: 9px;
+            }
+            .toggle-cards-collection-inner .txt-block .card-desc {
+                display: inline-block;
+                width: 264px;
+                font-family: 'Gentona-Book';
+                font-style: normal;
+                font-weight: 400;
+                font-size: 18px;
+                line-height: 140%;
+                /* or 25px */
+
+                display: flex;
+                align-items: center;
+                text-align: center;
+
+                color: #9ACDF3;
+                transition: all 0.4s;
+
             }
             .toggle-cards-collection-inner-inner .vid {
                 display: none;
-                height: 400px;
+                height: 455px;
                 position: absolute;
-                width: 634px;
+                width: 606px;
                 transition: all 0.2s;
             }
             @keyframes fadeOut {
@@ -83,30 +144,38 @@
         </style>
     </head>
 <body>
-    <div id="toggle-cards-collection-bg" class="toggle-cards-collection-outer">
-        <div class="toggle-cards-collection-inner">
-            <div id="tile1" class="big tile tile1" onclick="toggleClass(event)">
-                <div class="txt-block">
-                    <h1>Test Text 1</h1>
+    <div id="fixed-toggle-card-slider-outer" class="fixed-toggle-card-slider-outer" > 
+        <div class="fixed-toggle-card-slider-inner">
+            <div class="toggle-cards-collection-outer">
+                <div class="title">Pro Design, Pro Tech<br>Pro Performance</div>
+                <div class="toggle-cards-collection-inner">
+                    <div id="tile1" class="big tile tile1" onclick="toggleClass(event)">
+                        <div class="txt-block">
+                            <div class="card-title">Party mode 1</div>
+                            <div class="card-desc">Turn any song into a synchronised into a light show, wherever you go</div>
+                        </div>
+                        <img class="img" src="https://evprodcdn.blob.core.windows.net/ev-discovery-platform/New-Homepage/slider-nav-video-img1.webp" />
+                        <div class="bg-info" data-url="https://cdn.olaelectric.com/ev-discovery-platform/New-Homepage/slider-for-bg-img1.webp"></div>
+                    </div><div id="tile2" class="small tile tile2" onclick="toggleClass(event)">
+                        <div class="txt-block">
+                            <div class="card-title">Party mode 2</div>
+                            <div class="card-desc">Turn any song into a synchronised into a light show, wherever you go</div>
+                        </div>
+                        <img class="img" src="https://evprodcdn.blob.core.windows.net/ev-discovery-platform/New-Homepage/slider-nav-video-img2.webp" />
+                        <div class="bg-info" data-url="https://cdn.olaelectric.com/ev-discovery-platform/New-Homepage/slider-for-bg-img2.webp"></div>
+                    </div><div id="tile3" class="small tile tile3" onclick="toggleClass(event)">
+                        <div class="txt-block">
+                            <div class="card-title">Party mode 3</div>
+                            <div class="card-desc">Turn any song into a synchronised into a light show, wherever you go</div>
+                        </div>
+                        <video class="vid" width="634" height="400" autoplay loop muted>
+                            <source src="https://cdn.olaelectric.com/ev-discovery-platform/video/proximity_web.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <img class="img" src="https://evprodcdn.blob.core.windows.net/ev-discovery-platform/New-Homepage/slider-nav-video-img3.webp" />
+                        <div class="bg-info" data-url="https://cdn.olaelectric.com/ev-discovery-platform/New-Homepage/slider-for-bg-img3.webp"></div>
+                    </div>
                 </div>
-                <img class="img" src="https://evprodcdn.blob.core.windows.net/ev-discovery-platform/New-Homepage/slider-nav-video-img1.webp" />
-                <video class="vid" width="634" height="400" controls>
-                    <source src="https://cdn.olaelectric.com/ev-discovery-platform/video/proximity_web.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-                </video>
-                <div class="bg-info" data-url="https://cdn.olaelectric.com/ev-discovery-platform/New-Homepage/slider-for-bg-img1.webp"></div>
-            </div><div id="tile2" class="small tile tile2" onclick="toggleClass(event)">
-                <div class="txt-block">
-                    <h1>Test Text 2</h1>
-                </div>
-                <img class="img" src="https://evprodcdn.blob.core.windows.net/ev-discovery-platform/New-Homepage/slider-nav-video-img2.webp" />
-                <div class="bg-info" data-url="https://cdn.olaelectric.com/ev-discovery-platform/New-Homepage/slider-for-bg-img2.webp"></div>
-            </div><div id="tile3" class="small tile tile3" onclick="toggleClass(event)">
-                <div class="txt-block">
-                    <h1>Test Text 3</h1>
-                </div>
-                <img class="img" src="https://evprodcdn.blob.core.windows.net/ev-discovery-platform/New-Homepage/slider-nav-video-img3.webp" />
-                <div class="bg-info" data-url="https://cdn.olaelectric.com/ev-discovery-platform/New-Homepage/slider-for-bg-img3.webp"></div>
             </div>
         </div>
     </div>
@@ -115,7 +184,7 @@
     <script type="text/javascript">
         const $ = jQuery;
         function toggleClass(evt = null, index) {
-            const cardWidth = 634;
+            const cardWidth = 606;
             const screenWidth = $('.toggle-cards-collection-outer').width();
             const allTiles = $('.tile');
             const smallCardWidth = ((screenWidth - cardWidth - 10 - (allTiles.length * 10)) / (allTiles.length - 1)) - 1;
@@ -137,17 +206,19 @@
                 imgEl && imgEl.css('width', cardWidth);
                 if($(element).hasClass('current')) {
                     const bgUrl = $(element).find('.bg-info').attr('data-url');
-                    $('#toggle-cards-collection-bg').css('background-image', `url(${bgUrl})`);
+                    $('#fixed-toggle-card-slider-outer').css('background-image', `url(${bgUrl})`);
                     $(element).removeClass('small');
                     $(element).css('width', cardWidth);
                     $(element).addClass('big');
                     imgEl && imgEl.css('transform', 'translate(0, 0)');
                     txtEl && txtEl.css('font-size', 20);
+                    txtEl && txtEl.find('.card-desc').css('opacity', 1);
                     const tmOut = setTimeout(function() {
                         if (videoEl && videoEl.length > 0) {
                             $(videoEl).removeClass('fadeOut');
                             $(videoEl).addClass('animated fadeIn');
                             $(videoEl).css('display', 'block');
+                            $(videoEl).get(0).play();
                             imgEl && imgEl.css('display', 'none');
                         }
                     }, 700);
@@ -155,7 +226,8 @@
                     $(element).removeClass('big');
                     $(element).css('width', smallCardWidth);
                     $(element).addClass('small');
-                    imgEl.css('transform', 'translate(-50%, 0)');
+                    imgEl.css('transform', 'translate(-30%, 0)');
+                    txtEl && txtEl.find('.card-desc').css('opacity', 0);
                     txtEl && txtEl.css('font-size', 0);
                     if (videoEl && videoEl.length > 0) {
                         $(videoEl).removeClass('fadeIn');
@@ -171,6 +243,7 @@
                 $('.toggle-cards-collection-inner').show();
             }
         }
-        toggleClass(null, 0);
+        toggleClass(null, 1);
     </script>
+</script>
 </html>
