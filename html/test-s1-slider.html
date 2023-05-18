@@ -2,10 +2,33 @@
 <html>
     <head>
         <style>
+            @font-face {
+                font-family: Gentona-Semibold;
+                src: url("https://OE.com/static/frontend/o-la/Electric/en_GB/css/fonts/Gentona-SemiBold.woff");
+                /* font-display: swap; */
+            }
+            @font-face {
+                font-family: Gentona-Semibold-Italic;
+                src: url("https://OE.com/static/frontend/o-la/Electric/en_GB/css/fonts/Gentona-SemiBoldItalic.woff");
+                /* font-display: swap; */
+            }
+            @font-face {
+                font-family: Gentona-Book;
+                src: url("https://OE.com/static/frontend/o-la/Electric/en_GB/css/fonts/Gentona-Book.woff");
+                /* font-display: swap; */
+            }
             * {
                 box-sizing: border-box;
                 padding: 0;
                 margin: 0;
+            }
+            /* Above part not required */
+
+
+            @media only screen and (max-width: 1024px) {
+                .fixed-toggle-card-slider-outer {
+                    display: none;
+                }
             }
             .fixed-toggle-card-slider-outer {
                 background-size: cover;
@@ -21,8 +44,8 @@
             .fixed-toggle-card-slider-inner {
                 text-align: center;
             }
-            .toggle-cards-collection-outer .title {
-            	font-family: 'Gentona-SemiBold';
+            .fixed-toggle-card-slider-outer .toggle-cards-collection-outer .title {
+            	font-family: 'Gentona-Semibold';
                 font-style: normal;
                 font-weight: 600;
                 font-size: 48px;
@@ -31,23 +54,23 @@
                 color: #F7FBFF;
                 margin-bottom: 34px;
             }
-            .toggle-cards-collection-outer {
+            .fixed-toggle-card-slider-outer .toggle-cards-collection-outer {
                 display: inline-block;
                 width: 1268px;
                 max-width: 1268px;
                 text-align: left;
             }
-            .toggle-cards-collection-inner {
+            .fixed-toggle-card-slider-outer .toggle-cards-collection-inner {
                 display: none;
                 padding-left: 10px;
             }
-            .toggle-cards-collection-inner .small {
+            .fixed-toggle-card-slider-outer .toggle-cards-collection-inner .small {
                 width: 10%;
             }
-            .toggle-cards-collection-inner .big {
+            .fixed-toggle-card-slider-outer .toggle-cards-collection-inner .big {
                 width: 44%;
             }
-            .toggle-cards-collection-inner .tile {
+            .fixed-toggle-card-slider-outer .toggle-cards-collection-inner .tile {
                 display: inline-block;
                 transition: all .5s;
                 height: 455px;
@@ -57,17 +80,20 @@
                 margin-right: 10px;
                 cursor: pointer;
             }
-            .toggle-cards-collection-inner .img {
+            .fixed-toggle-card-slider-outer .toggle-cards-collection-inner .img {
                 max-width: none;
                 height: 455px;
                 position: absolute;
                 width: 606px;
                 transition: all 0.5s;
             }
-            .toggle-cards-collection-inner .img:hover {
+            .fixed-toggle-card-slider-outer .toggle-cards-collection-inner .current .img:hover {
+                margin-top: 0px !important;
+            }
+            .fixed-toggle-card-slider-outer .toggle-cards-collection-inner .tile .img:hover {
                 margin-top: -6px;
             }
-            .toggle-cards-collection-inner .txt-block {
+            .fixed-toggle-card-slider-outer .toggle-cards-collection-inner .txt-block {
                 position: absolute;
                 z-index: 1;
                 top: 60%;
@@ -80,7 +106,7 @@
                 justify-content: center;
                 align-items: center;
             }
-            .toggle-cards-collection-inner .txt-block .card-title {
+            .fixed-toggle-card-slider-outer .toggle-cards-collection-inner .txt-block .card-title {
                 display: inline-block;
                 width: 200px;
                 font-family: 'Gentona-Semibold-Italic';
@@ -94,7 +120,7 @@
                 color: #FFFFFF;
                 margin-bottom: 9px;
             }
-            .toggle-cards-collection-inner .txt-block .card-desc {
+            .fixed-toggle-card-slider-outer .toggle-cards-collection-inner .txt-block .card-desc {
                 display: inline-block;
                 width: 264px;
                 font-family: 'Gentona-Book';
@@ -112,7 +138,7 @@
                 transition: all 0.4s;
 
             }
-            .toggle-cards-collection-inner-inner .vid {
+            .fixed-toggle-card-slider-outer .toggle-cards-collection-inner-inner .vid {
                 display: none;
                 height: 455px;
                 position: absolute;
@@ -127,15 +153,15 @@
                 0% {opacity: 0;}
                 100% {opacity: 1;} 
             }
-            .fadeOut {
+            .fixed-toggle-card-slider-outer .fadeOut {
                 -webkit-animation-name: fadeOut;
                 animation-name: fadeOut;
             }
-            .fadeIn {
+            .fixed-toggle-card-slider-outer .fadeIn {
                 -webkit-animation-name: fadeIn;
                 animation-name: fadeIn;
             }
-            .animated {
+            .fixed-toggle-card-slider-outer .animated {
                 -webkit-animation-duration: 0.5s;
                 animation-duration: 0.5s;
                 -webkit-animation-fill-mode: both;
@@ -155,25 +181,25 @@
                             <div class="card-desc">Turn any song into a synchronised into a light show, wherever you go</div>
                         </div>
                         <img class="img" src="https://evprodcdn.blob.core.windows.net/ev-discovery-platform/New-Homepage/slider-nav-video-img1.webp" />
-                        <div class="bg-info" data-url="https://cdn.olaelectric.com/ev-discovery-platform/New-Homepage/slider-for-bg-img1.webp"></div>
+                        <div class="bg-info" data-url="https://cdn.OE.com/ev-discovery-platform/New-Homepage/slider-for-bg-img1.webp"></div>
                     </div><div id="tile2" class="small tile tile2" onclick="toggleClass(event)">
                         <div class="txt-block">
                             <div class="card-title">Party mode 2</div>
                             <div class="card-desc">Turn any song into a synchronised into a light show, wherever you go</div>
                         </div>
                         <img class="img" src="https://evprodcdn.blob.core.windows.net/ev-discovery-platform/New-Homepage/slider-nav-video-img2.webp" />
-                        <div class="bg-info" data-url="https://cdn.olaelectric.com/ev-discovery-platform/New-Homepage/slider-for-bg-img2.webp"></div>
+                        <div class="bg-info" data-url="https://cdn.OE.com/ev-discovery-platform/New-Homepage/slider-for-bg-img2.webp"></div>
                     </div><div id="tile3" class="small tile tile3" onclick="toggleClass(event)">
                         <div class="txt-block">
                             <div class="card-title">Party mode 3</div>
                             <div class="card-desc">Turn any song into a synchronised into a light show, wherever you go</div>
                         </div>
                         <video class="vid" width="634" height="400" autoplay loop muted>
-                            <source src="https://cdn.olaelectric.com/ev-discovery-platform/video/proximity_web.mp4" type="video/mp4">
+                            <source src="https://cdn.OE.com/ev-discovery-platform/video/Web_Proximity_26042023.mp4" type="video/mp4">
                             Your browser does not support the video tag.
                         </video>
                         <img class="img" src="https://evprodcdn.blob.core.windows.net/ev-discovery-platform/New-Homepage/slider-nav-video-img3.webp" />
-                        <div class="bg-info" data-url="https://cdn.olaelectric.com/ev-discovery-platform/New-Homepage/slider-for-bg-img3.webp"></div>
+                        <div class="bg-info" data-url="https://cdn.OE.com/ev-discovery-platform/New-Homepage/slider-for-bg-img3.webp"></div>
                     </div>
                 </div>
             </div>
@@ -181,11 +207,19 @@
     </div>
 </body>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <script type="text/javascript">
+    <script type="text/javascript" defer>
         const $ = jQuery;
+
+        /* Above part not required */
         function toggleClass(evt = null, index) {
+            // Note: Need to state width and height as same everywhere in JS and CSS as required
             const cardWidth = 606;
-            const screenWidth = $('.toggle-cards-collection-outer').width();
+            if (window.innerWidth < $('.toggle-cards-collection-outer').width()) {
+                $('.toggle-cards-collection-outer').css('width', window.innerWidth);
+            } else {
+
+            }
+            let screenWidth = $('.toggle-cards-collection-outer').width();
             const allTiles = $('.tile');
             const smallCardWidth = ((screenWidth - cardWidth - 10 - (allTiles.length * 10)) / (allTiles.length - 1)) - 1;
             console.log('Screen, card width, small', screenWidth, cardWidth, smallCardWidth);
@@ -243,7 +277,9 @@
                 $('.toggle-cards-collection-inner').show();
             }
         }
-        toggleClass(null, 1);
+        document.addEventListener("DOMContentLoaded", () => {
+            toggleClass(null, 1);
+        });
     </script>
 </script>
 </html>
