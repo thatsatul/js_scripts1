@@ -1,79 +1,6 @@
 import _sodium from 'libsodium-wrappers';
 import _ from 'lodash';
-import { uuid } from 'uuidv4';
-
-const createSigningString = async (message, created, expires) => {
-    if (!created) created = Math.floor(new Date().getTime() / 1000).toString();
-    if (!expires) expires = (parseInt(created) + (1 * 60 * 60)).toString();
-
-    await _sodium.ready;
-
-    const sodium = _sodium;
-    console.log('sodium.from_string(message)', sodium.from_string(message));
-    const digest = sodium.crypto_generichash(64, sodium.from_string(message));
-    console.log('Blake digest: ', digest);
-    const digest_base64 = sodium.to_base64(digest, _sodium.base64_variants.ORIGINAL);
-    console.log('Blake digest_base64: ', digest_base64);
-
-    const signing_string =
-        `(created): ${created}
-(expires): ${expires}
-digest: BLAKE-512=${digest_base64}`
-console.log('Blake signing_string: ', signing_string);
-    return { signing_string, created, expires };
-}
-
-const signMessage = async (signing_string, privateKey) => {
-    await _sodium.ready;
-    const sodium = _sodium;
-
-    const signedMessage = sodium.crypto_sign_detached(
-        signing_string,
-        sodium.from_base64(privateKey, _sodium.base64_variants.ORIGINAL)
-    );
-    console.log('Blake signedMessage: ', signedMessage);
-    const signMessageBase64 = sodium.to_base64(signedMessage, _sodium.base64_variants.ORIGINAL);
-    console.log ('Blake signMessageBase64', signMessageBase64);
-    return signMessageBase64;
-}
-
-const createAuthorizationHeader = async (message) => {
-    console.log('');
-    console.log('');
-    console.log('********* Creating Signature started : ***********');
-    console.log('');
-    console.log('');
-    const {
-        signing_string,
-        expires,
-        created
-    } = await createSigningString(JSON.stringify(message));
-
-    const signature = await signMessage(signing_string, 'SPHSGdE7O2PAsTqlHe2TlBuaRuvGd5PwcikI2Enl20Swi6VOnQhKTkNzy0ap+66DqUMn6TWcQVDDbdI7va2ELQ==' || "");
-
-    const subscriber_id = 'olamoney-website-3000a.stg.corp.olacabs.com';
-    const unique_key_id = '643';
-    const header = `Signature keyId="${subscriber_id}|${unique_key_id}|ed25519",algorithm="ed25519",created="${created}",expires="${expires}",headers="(created) (expires) digest",signature="${signature}"`
-    console.log('Signature header', header);
-
-    console.log('');
-    console.log('');
-    console.log('********* Creating Signature Ended : ***********');
-    console.log('');
-    console.log('');
-    
-    return header;
-}
-
-let searchObj = {"context":{"domain":"nic2004:52110","country":"IND","city":"*","action":"search","core_version":"1.1.0","bap_id":"olamoney-website-3000a.stg.corp.olacabs.com","bap_uri":"https://olamoney-website-3000a.stg.corp.olacabs.com/ondc","transaction_id":uuid(),"message_id":uuid(),"timestamp":new Date().toISOString(),"ttl":"PT60S"},"message":{"intent":{"item":{"descriptor":{"name":"atta"}},"payment":{"@ondc/org/buyer_app_finder_fee_type":"percent","@ondc/org/buyer_app_finder_fee_amount":"3"}}}};
-// Fixed obj
-// let searchObj = {"context":{"domain":"nic2004:52110","country":"IND","city":"*","action":"search","core_version":"1.1.0","bap_id":"olamoney-website-3000a.stg.corp.olacabs.com","bap_uri":"https://olamoney-website-3000a.stg.corp.olacabs.com/ondc","transaction_id":"1f7bcc26-c0b4-4ba2-b69b-d4ce8a63d040","message_id":"ac9b8cb5-76ef-4965-928e-29fc668c8b99","timestamp":"2023-06-07T07:54:49.821Z","ttl":"P30M"},"message":{"intent":{"item":{"descriptor":{"name":"atta"}},"payment":{"@ondc/org/buyer_app_finder_fee_type":"percent","@ondc/org/buyer_app_finder_fee_amount":"3"}}}};
-console.log('searchObj', searchObj);
-
-let headerSignature = createAuthorizationHeader(searchObj).then(sig => headerSignature = sig);
-
-
-
+import { v4 as uuid } from 'uuid';
 
 
 
@@ -93,6 +20,107 @@ export const createKeyPair = async () => {
 
 
 
+
+
+
+
+
+const transactionId = uuid();
+const gps = "19.124398,72.910208";
+
+const createSigningString = async (message, created, expires) => {
+    if (!created) created = Math.floor(new Date().getTime() / 1000).toString();
+    if (!expires) expires = (parseInt(created) + (1 * 60 * 60)).toString();
+
+    await _sodium.ready;
+
+    const sodium = _sodium;
+    // console.log('sodium.from_string(message)', sodium.from_string(message));
+    const digest = sodium.crypto_generichash(64, sodium.from_string(message));
+    // console.log('Blake digest: ', digest);
+    const digest_base64 = sodium.to_base64(digest, _sodium.base64_variants.ORIGINAL);
+    // console.log('Blake digest_base64: ', digest_base64);
+
+    const signing_string =
+        `(created): ${created}
+(expires): ${expires}
+digest: BLAKE-512=${digest_base64}`
+// console.log('Blake signing_string: ', signing_string);
+    return { signing_string, created, expires };
+}
+
+const signMessage = async (signing_string, privateKey) => {
+    await _sodium.ready;
+    const sodium = _sodium;
+
+    const signedMessage = sodium.crypto_sign_detached(
+        signing_string,
+        sodium.from_base64(privateKey, _sodium.base64_variants.ORIGINAL)
+    );
+    // console.log('Blake signedMessage: ', signedMessage);
+    const signMessageBase64 = sodium.to_base64(signedMessage, _sodium.base64_variants.ORIGINAL);
+    // console.log ('Blake signMessageBase64', signMessageBase64);
+    return signMessageBase64;
+}
+
+const createAuthorizationHeader = async (message, type) => {
+    console.log('');
+    console.log('');
+    console.log('********* Creating Signature started : ***********');
+    console.log('');
+    console.log('');
+    const {
+        signing_string,
+        expires,
+        created
+    } = await createSigningString(JSON.stringify(message));
+
+    const signature = await signMessage(signing_string, 'SPHSGdE7O2PAsTqlHe2TlBuaRuvGd5PwcikI2Enl20Swi6VOnQhKTkNzy0ap+66DqUMn6TWcQVDDbdI7va2ELQ==' || "");
+
+    const subscriber_id = 'olamoney-website-3000a.stg.corp.olacabs.com';
+    const unique_key_id = '643';
+    const header = `Signature keyId="${subscriber_id}|${unique_key_id}|ed25519",algorithm="ed25519",created="${created}",expires="${expires}",headers="(created) (expires) digest",signature="${signature}"`
+    console.log('Signature header', type, header);
+
+    console.log('');
+    console.log('');
+    console.log('********* Creating Signature Ended : ***********');
+    console.log('');
+    console.log('');
+    
+    return header;
+}
+
+let searchObj = {
+	"context": {
+		"domain": "nic2004:52110",
+		"country": "IND",
+		"city": "*",
+		"action": "search",
+		"core_version": "1.1.0",
+		"bap_id": "olamoney-website-3000a.stg.corp.olacabs.com",
+		"bap_uri": "https://olamoney-website-3000a.stg.corp.olacabs.com/ondc",
+		"transaction_id": transactionId,
+		"message_id": uuid(),
+		"timestamp": new Date().toISOString(),
+		"ttl": "PT60S"
+	},
+	"message": {
+		"intent": {
+			"fulfillment": {
+				"type": "delivery"
+			},
+			"payment": {
+				"@ondc/org/buyer_app_finder_fee_type": "percent",
+				"@ondc/org/buyer_app_finder_fee_amount": "3"
+			}
+		}
+	}
+};
+const searchObjParsed = JSON.parse(JSON.stringify(searchObj));
+console.log('searchObj', JSON.stringify(searchObjParsed));
+
+let headerSignature = createAuthorizationHeader(searchObj, 'SEARCH').then(sig => headerSignature = sig);
 
 
 
@@ -167,11 +195,11 @@ const verifyHeader = async (headerParts, body, public_key) => {
 }
 
 export const isSignatureValid = async (header, body) => {
-    console.log('');
-    console.log('');
-    console.log('********* Validating signature started : header, body *******', header, body);
-    console.log('');
-    console.log('');
+    // console.log('');
+    // console.log('');
+    // console.log('********* Validating signature started : header, body *******', header, body);
+    // console.log('');
+    // console.log('');
     try {
         const headerParts = split_auth_header(header);
         const keyIdSplit = headerParts['keyId'].split('|')
@@ -223,6 +251,389 @@ export const formatRegistryRequest = async (request) => {
 const tmOut = setTimeout(async () => {
     // Just checking if signature is valid
     const isSignatureValidRes = await isSignatureValid(headerSignature, searchObj);
-    console.log('Signature valid: ', isSignatureValidRes);
+    // console.log('Signature valid: ', isSignatureValidRes);
     clearTimeout(tmOut);
 }, 5000);
+
+
+
+
+// ****************************************************************** Select starts ******************************************************************
+
+const selectPayload = {
+	"context": {
+		"domain": "nic2004:52110",
+		"action": "select",
+		"core_version": "1.1.0",
+		"bap_id": "olamoney-website-3000a.stg.corp.olacabs.com",
+		"bap_uri": "https://olamoney-website-3000a.stg.corp.olacabs.com/ondc",
+		"bpp_id": "seller.instastack.io",
+		"bpp_uri": "https://seller.instastack.io/api/",
+		"transaction_id": transactionId,
+		"message_id": uuid(),
+		"city": "*",
+		"country": "IND",
+		"timestamp": new Date().toISOString(),
+		"ttl": "PT60S"
+	},
+	"message": {
+		"order": {
+			"provider": {
+				"id": "e649c7a6-7cce-48bb-82bb-8d5341a0a9c7",
+				"locations": [{
+					"id": "f5f41af3-30ec-41be-bace-880c96e5f59e"
+				}]
+			},
+			"items": [{
+				"id": "143141",
+				"location_id": "f5f41af3-30ec-41be-bace-880c96e5f59e",
+				"quantity": {
+					"count": 1
+				}
+			}],
+			"fulfillments": [{
+				"end": {
+					"location": {
+						"gps": gps,
+						"address": {
+							"area_code": "400076"
+						}
+					}
+				}
+			}]
+		}
+	}
+};
+
+// const selectPayload = {"context":{"domain":"nic2004:52110","action":"select","core_version":"1.1.0","bap_id":"olamoney-website-3000a.stg.corp.olacabs.com","bap_uri":"https://olamoney-website-3000a.stg.corp.olacabs.com/ondc","bpp_id":"staging-ondc-seller.viranc.com","bpp_uri":"https://staging-ondc-seller.viranc.com/protocol/v1/retail","transaction_id":"16018b5c-96fe-472e-ab64-92ac9c7b0060","message_id":"184a20fd-7442-47e2-ab18-ff73d48a2aee","city":"std:080","country":"IND","timestamp":"2023-06-16T07:51:52.992Z","ttl":"PT60S"},"message":{"order":{"provider":{"id":"d04c6a6c-7601-11ed-b223-0242ac120003","locations":[{"id":"d04c6a6c-7601-11ed-b223-0242ac120003-location"}]},"items":[{"id":"d05a195a-7601-11ed-b223-0242ac120003","location_id":"d04c6a6c-7601-11ed-b223-0242ac120003-location","quantity":{"count":1}}],"fulfillments":[{"end":{"location":{"gps":gps,"address":{"area_code":"560068"}}}}]}}}const selectPayloadStr = JSON.stringify(selectPayload);
+const selectPayloadStr = JSON.stringify(selectPayload);
+console.log('selectPayloadStr', selectPayloadStr);
+
+let selectSignature = createAuthorizationHeader(selectPayloadStr, 'SELECT').then(sig => selectSignature = sig);
+
+
+
+
+// ****************************************************************** Select ends ******************************************************************
+
+// Same code as above
+const initPayload = {
+	"context": {
+		"domain": "nic2004:52110",
+		"action": "init",
+		"core_version": "1.1.0",
+		"bap_id": "olamoney-website-3000a.stg.corp.olacabs.com",
+		"bap_uri": "https://olamoney-website-3000a.stg.corp.olacabs.com/ondc",
+		"bpp_id": "seller.instastack.io",
+		"bpp_uri": "https://seller.instastack.io/api/",
+		"transaction_id": transactionId,
+		"message_id": uuid(),
+		"city": "*",
+		"country": "IND",
+		"timestamp": new Date().toISOString(),
+		"ttl": "PT60S"
+	},
+	"message": {
+		"order": {
+			"provider": {
+				"id": "e649c7a6-7cce-48bb-82bb-8d5341a0a9c7",
+				"locations": [{
+					"id": "f5f41af3-30ec-41be-bace-880c96e5f59e"
+				}]
+			},
+			"items": [{
+				"id": "143141",
+				"fulfillment_id": "1",
+				"quantity": {
+					"count": 1
+				}
+			}],
+			"billing": {
+				"name": "Ekansh Katiyar",
+				"address": {
+					"door": "B005 aaspire heights",
+					"name": "33rd Cross Road, Vinayaka Layout",
+					"locality": "33rd Cross Road, Vinayaka Layout",
+					"city": "Mumbai",
+					"state": "Maharashtra",
+					"country": "IND",
+					"area_code": "400076"
+				},
+				"email": "ekansh@gmail.com",
+				"phone": "9886098860",
+				"created_at": new Date().toISOString(),
+				"updated_at": new Date().toISOString()
+			},
+			"fulfillments": [{
+				"id": "1",
+				"type": "delivery",
+				"provider_id": "e649c7a6-7cce-48bb-82bb-8d5341a0a9c7",
+				"tracking": false,
+				"end": {
+					"location": {
+						"gps": gps,
+						"address": {
+							"door": "B005 aaspire heights",
+							"name": "3rd Cross Road, Vinayaka Layout",
+							"locality": "3rd Cross Road, Vinayaka Layout",
+							"city": "Mumbai",
+							"state": "Maharashtra",
+							"country": "IND",
+							"area_code": "400076"
+						}
+					},
+					"contact": {
+						"phone": "9886098860"
+					}
+				}
+			}],
+			"tags": [{
+				"code": "bap_terms_fee",
+				"list": [{
+						"code": "finder_fee_type",
+						"value": "percent"
+					},
+					{
+						"code": "finder_fee_amount",
+						"value": "3"
+					}
+				]
+			}]
+		}
+	}
+};
+
+const initPayloadParsed = JSON.parse(JSON.stringify(initPayload));
+console.log('initPayload', JSON.stringify(initPayloadParsed));
+
+let initPayloadSign = createAuthorizationHeader(selectPayloadStr, 'INIT').then(sig => selectSignature = sig);
+
+// ******************************* Confirm starts *******************************
+
+
+const confirmPayload = {
+	"context": {
+		"domain": "nic2004:52110",
+		"action": "confirm",
+		"core_version": "1.1.0",
+		"bap_id": "olamoney-website-3000a.stg.corp.olacabs.com",
+		"bap_uri": "https://olamoney-website-3000a.stg.corp.olacabs.com/ondc",
+		"bpp_id": "seller.instastack.io",
+		"bpp_uri": "https://seller.instastack.io/api/",
+		"transaction_id": transactionId,
+		"message_id": uuid(),
+		"city": "*",
+		"country": "IND",
+		"timestamp": new Date().toISOString(),
+		"ttl": "PT60S"
+	},
+	"message": {
+		"order": {
+			"id": uuid(),
+			"state": "Created",
+			"provider": {
+				"id": "e649c7a6-7cce-48bb-82bb-8d5341a0a9c7",
+				"locations": [{
+					"id": "f5f41af3-30ec-41be-bace-880c96e5f59e"
+				}]
+			},
+			"items": [{
+				"id": "143141",
+				"fulfillment_id": "1",
+				"quantity": {
+					"count": 1
+				}
+			}],
+			"billing": {
+				"name": "Ekansh Katiyar",
+				"address": {
+					"door": "B005 aaspire heights",
+					"name": "3rd Cross Road, Vinayaka Layout",
+					"locality": "3rd Cross Road, Vinayaka Layout",
+					"city": "Mumbai",
+					"state": "Maharashtra",
+					"country": "IND",
+					"area_code": "400076"
+				},
+				"phone": "9886098860",
+				"email": "ekansh.katiyar@gmail.com"
+			},
+			"fulfillments": [{
+				"id": "1",
+				"type": "Delivery",
+				"tracking": false,
+				"provider_id": "e649c7a6-7cce-48bb-82bb-8d5341a0a9c7",
+				"end": {
+					"person": {
+						"name": "Ramu"
+					},
+					"contact": {
+						"email": "aditya@dataorc.in",
+						"phone": "8793771717"
+					},
+					"location": {
+						"gps": gps,
+						"address": {
+							"door": "B005 aaspire heights",
+							"name": "33rd Cross Road, Vinayaka Layout",
+							"locality": "33rd Cross Road, Vinayaka Layout",
+							"city": "Mumbai",
+							"state": "Maharashtra",
+							"country": "IND",
+							"area_code": "400076"
+						}
+					}
+				}
+			}],
+			"quote": {
+				"price": {
+					"currency": "INR",
+					"value": "20"
+				},
+				"breakup": [{
+						"@ondc/org/item_id": "143141",
+						"@ondc/org/item_quantity": {
+							"count": 1
+						},
+						"title": "Maggi 2 Minute Chicken Noodles, 76 g",
+						"@ondc/org/title_type": "item",
+						"price": {
+							"currency": "INR",
+							"value": "20"
+						}
+					},
+					{
+						"@ondc/org/item_id": "143141",
+						"title": "Delivery charges",
+						"@ondc/org/title_type": "delivery",
+						"price": {
+							"currency": "INR",
+							"value": "0.0"
+						}
+					},
+					{
+						"@ondc/org/item_id": "143141",
+						"title": "Packing charges",
+						"@ondc/org/title_type": "packing",
+						"price": {
+							"currency": "INR",
+							"value": "0.0"
+						}
+					},
+					{
+						"@ondc/org/item_id": "143141",
+						"title": "Tax",
+						"@ondc/org/title_type": "tax",
+						"price": {
+							"currency": "INR",
+							"value": "0.0"
+						}
+					}
+				]
+			},
+			"payment": {
+				"uri": "https://ondc.transaction.com/payment",
+				"tl_method": "http/get",
+				"params": {
+					"currency": "INR",
+					"transaction_id": transactionId,
+					"amount": "20"
+				},
+				"status": "PAID",
+				"type": "ON-ORDER",
+				"collected_by": "BAP",
+				"@ondc/org/buyer_app_finder_fee_type": "Percent",
+				"@ondc/org/buyer_app_finder_fee_amount": "0.0",
+				"@ondc/org/withholding_amount": "0.0",
+				"@ondc/org/return_window": "0",
+				"@ondc/org/settlement_basis": "Collection",
+				"@ondc/org/settlement_window": "P2D",
+				"@ondc/org/settlement_details": [{
+					"settlement_counterparty": "seller-app",
+					"settlement_phase": "sale-amount",
+					"settlement_type": "upi",
+					"upi_address": "gft@oksbi",
+					"settlement_bank_account_no": "XXXXXXXXXX",
+					"settlement_ifsc_code": "XXXXXXXXX",
+					"beneficiary_name": "xxxxx",
+					"bank_name": "xxxx",
+					"branch_name": "xxxx"
+				}]
+			},
+			"tags": [{
+					"code": "bap_terms_fee",
+					"list": [{
+							"code": "finder_fee_type",
+							"value": "percent"
+						},
+						{
+							"code": "finder_fee_amount",
+							"value": "3"
+						},
+						{
+							"code": "accept",
+							"value": "Y"
+						}
+					]
+				},
+				{
+					"code": "bpp_terms_liability",
+					"list": [{
+							"code": "max_liability_cap",
+							"value": "10000"
+						},
+						{
+							"code": "max_liability",
+							"value": "2"
+						},
+						{
+							"code": "accept",
+							"value": "Y"
+						}
+					]
+				},
+				{
+					"code": "bpp_terms_arbitration",
+					"list": [{
+							"code": "mandatory_arbitration",
+							"value": "false"
+						},
+						{
+							"code": "court_jurisdiction",
+							"value": "KA"
+						},
+						{
+							"code": "accept",
+							"value": "Y"
+						}
+					]
+				},
+				{
+					"code": "bpp_terms_charges",
+					"list": [{
+							"code": "delay_interest",
+							"value": "1000"
+						},
+						{
+							"code": "accept",
+							"value": "Y"
+						}
+					]
+				},
+				{
+					"code": "bpp_seller_gst",
+					"list": [{
+						"code": "GST",
+						"value": "XXXXXXXXXXXXXXX"
+					}]
+				}
+			],
+			"created_at": "2022-05-10T18:01:53.000Z",
+			"updated_at": "2022-05-10T18:02:19.000Z"
+		}
+	}
+};
+
+const confirmPayloadParsed = JSON.parse(JSON.stringify(confirmPayload));
+console.log('confirmPayload', JSON.stringify(confirmPayloadParsed));
+createAuthorizationHeader(JSON.stringify(confirmPayloadParsed));
