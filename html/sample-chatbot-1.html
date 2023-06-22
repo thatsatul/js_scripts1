@@ -1,0 +1,240 @@
+<style>
+    .user-text-cb {
+        color: green;
+    }
+</style>
+<script
+  src="https://code.jquery.com/jquery-3.7.0.min.js"
+  integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
+  crossorigin="anonymous">
+</script>
+<div class="cb-comp">
+    <div class="cb-header"></div>
+    <div id="cb-main" class="cb-main"></div>
+    <div id="cb-footer" class="cb-footer"></div>
+</div>
+<script>
+    const masterObj = {
+        o_ela: {
+            text: 'o_ela !!! Send Hi to see what I can do for you',
+            nextActionType: 'USER_INPUT'
+        },
+        hi: {
+            text: 'Hi, What do you need help with?',
+            nextActionType: 'SELECT_OPTION',
+            options: [
+                { text: 'Explore S1 Pro'},
+                { text: 'Book test ride'},
+                { text: 'Nothing' }
+            ]
+        },
+        'Explore S1 Pro': {
+            text: 'Redirecting to S1 Pro page',
+            nextActionType: 'REDIRECT',
+            url: '/s1-pro'
+        },
+        'Book test ride': {
+            text: 'Please select your city',
+            nextActionType: 'FETCH_DATA',
+            entity: 'EXPERIENCE_CENTER_CITIES',
+        },
+        'Nothing': {
+            text: 'Okay, Bye',
+            nextActionType: 'END'
+        }
+    };
+    const masterIntentObj = {
+        'GET_EXPERIENCE_CENTERS': {
+            text: 'Please select your experience center',
+            nextActionType: 'FETCH_DATA',
+            entity: 'EXPERIENCE_CENTERS',
+        },
+        'REDIRECT_TO_EXP_CENTER': {
+            text: 'Redirecting to experience center',
+            nextActionType: 'REDIRECT_TO_EXP_CENTER',
+        }
+    };
+    const conversationArr = [];
+    const dummyClient = () => {
+        const dummyServerObj = dummyServer();
+        const userInputState = {};
+        const init = () => {
+            const replyObj = dummyServerObj.getReply('o_ela');
+            replyObj.usertype = 'BOT';
+            conversationArr.push(replyObj);
+            console.log('conversationArr 1', conversationArr);
+            parseConversationThreads();
+        }
+        const sendUserInput = (inp, extra = {}) => {
+            conversationArr.push({ text: inp, usertype: 'USER' });
+            const replyObj = dummyServerObj.getReply(inp, extra.nextIntent);
+            replyObj.usertype = 'BOT';
+            conversationArr.push(replyObj);
+            console.log('conversationArr 2', conversationArr);
+            parseConversationThreads();
+            window.userInteraction = 1;
+        }
+        const parseConversationThreads = () => {
+            document.getElementById('cb-main').innerHTML = '';
+            document.getElementById('cb-footer').innerHTML = '';
+            if (conversationArr.length === 0) {
+                return;
+            } else {
+                conversationArr.forEach((thr, indx) => {
+                    const isLast = indx === conversationArr.length - 1;
+                    parseConversationThread(thr, isLast);
+                });
+            }
+        }
+        const parseConversationThread = (currentThread, isLast) => {
+            currentThread.isLast = isLast;
+            if (currentThread.nextActionType === 'USER_INPUT') {
+                _createDomToFetchUserInput(currentThread);
+            } else if (currentThread.nextActionType === 'SELECT_OPTION') {
+                _createTextAndOptionsDom(currentThread);
+            } else if (currentThread.nextActionType === 'REDIRECT') {
+                location.href = currentThread.url;
+            } else if (currentThread.nextActionType === 'FETCH_DATA') {
+                _createDomPostDataFetch(currentThread);
+            } else if (currentThread.nextActionType === 'END') {
+                _createTextDom(currentThread);
+            } else if (currentThread.nextActionType === 'REDIRECT_TO_EXP_CENTER') {
+                const expCode = userInputState.expCitiesCenters[currentThread.passedInput];
+                location.href = `/experience-centres/book-appointment?expCenterId=${expCode}`;
+            } else {
+                _createTextDom(currentThread);
+            }
+        }
+
+        const _createTextDom = (obj) => {
+            const cbComp = document.getElementById('cb-main');
+            const textDom = document.createElement('div');
+            textDom.classList.add(`${obj.usertype === 'BOT' ? 'bot' : 'user'}-text-cb`);
+            textDom.innerText = obj.text;
+            cbComp.appendChild(textDom);
+        }
+
+        const _createDomPostDataFetch = (obj) => {
+            _createTextDom(obj);
+            if (!obj.isLast) {
+                return;
+            }
+            if (obj.entity === 'EXPERIENCE_CENTER_CITIES') {
+                _fetchExpCitiesData();
+            } else if (obj.entity === 'EXPERIENCE_CENTERS') {
+                _fetchExpCentersData();
+            }
+        }
+
+        const _createDomToFetchUserInput = (obj) => {
+            _createTextDom(obj);
+            if (!obj.isLast) {
+                return;
+            }
+            _createDomToEnterInput(obj);
+        }
+
+        const _createTextAndOptionsDom = (obj) => {
+            _createTextDom(obj);
+            if (!obj.isLast) {
+                return;
+            }
+            _createOptionsDom(obj.options);
+        }
+
+        const _createDomToEnterInput = (obj) => {
+            const inputDom = document.createElement('input');
+            inputDom.classList.add('input');
+            inputDom.setAttribute('type', 'text');
+            inputDom.setAttribute('placeholder', 'Type here...');
+            inputDom.addEventListener('keyup', (e) => {
+                if (e.keyCode === 13) {
+                    const inp = e.target.value;
+                    sendUserInput(inp);
+                    e.target.value = '';
+                }
+            });
+            const cbFooter = document.querySelector('.cb-footer');
+            cbFooter.appendChild(inputDom);
+        }
+
+        const _createOptionsDom = (options, nextIntent) => {
+            const cbComp = document.getElementById('cb-main');
+            const optionsDom = document.createElement('div');
+            optionsDom.classList.add('options');
+            options.forEach((opt) => {
+                const optionDom = document.createElement('div');
+                optionDom.classList.add('option');
+                optionDom.innerText = opt.text;
+                optionDom.addEventListener('click', (e) => {
+                    const inp = e.target.innerText;
+                    sendUserInput(inp, { nextIntent });
+                });
+                optionsDom.appendChild(optionDom);
+            });
+            cbComp.appendChild(optionsDom);
+        }
+
+        const _fetchExpCitiesData = (obj) => {
+            jQuery.ajax({
+                url: 'https://kong-o_ela-apigateway-oem-stg.o_elacabs-dev.in/api/contact/v1/city-codes',
+                type: 'GET',
+                success: function (response) {
+                    window.cities = response.data;
+                    window.cities.forEach((city) => {
+                        userInputState.expCities = userInputState.expCities || {};
+                        userInputState.expCities[city.cityName] = city.cityCode;
+                        city.text = city.cityName;
+                    });
+                    _createOptionsDom(window.cities, 'GET_EXPERIENCE_CENTERS');
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        }
+
+        const _fetchExpCentersData = (obj) => {
+            jQuery.ajax({
+                url: 'https://kong-o_ela-apigateway-oem-stg.o_elacabs-dev.in/thor/v1/testride/getByCityCodeCampInfo/unauth-check-service?exp_center=ACTIVE&city_code=DEL',
+                type: 'GET',
+                success: function (response) {
+                    window.expCentrs = response.data.exp_center;
+                    window.expCentrs.forEach((expCentr) => {
+                        userInputState.expCitiesCenters = userInputState.expCitiesCenters || {};
+                        userInputState.expCitiesCenters[expCentr.name] = expCentr.businessUnitId;
+                        expCentr.text = expCentr.name;
+                    });
+                    _createOptionsDom(window.expCentrs, 'REDIRECT_TO_EXP_CENTER');
+                },
+                error: function (error) {
+                    console.log(error);
+                },
+            });
+        }
+
+        return {
+            init,
+            sendUserInput,
+        };
+    }
+
+    const dummyServer = () => {
+        const getReply = (ukey, intent) => {
+            if (masterObj[ukey]) {
+                return masterObj[ukey];
+            }
+            else if (masterIntentObj[intent]) {
+                const masterIntentCopy = JSON.parse(JSON.stringify(masterIntentObj[intent]));
+                masterIntentCopy.passedInput = ukey;
+                return masterIntentCopy;
+            }
+        }
+        return {
+            getReply
+        };
+    }
+
+    const dummyClientObj = dummyClient();
+    dummyClientObj.init();
+</script>

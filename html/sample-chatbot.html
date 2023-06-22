@@ -1,605 +1,406 @@
+<style>
+  #cb-search {
+    display: none;
+  }
+  .cb-footer {
+    position: fixed;
+    bottom: 0;
+  }
+</style>
+<script
+  src="https://code.jquery.com/jquery-3.7.0.min.js"
+  integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
+  crossorigin="anonymous">
+</script>
 <script>
-  require(['jquery'], function ($) {
-      //Phone number 
-      //Name
-      jQuery('.chat_bot_name_field').on('keyup', function () {
-          if (jQuery(this).val().length > 3) {
-              jQuery(".chat_bot_input_name_btn").removeAttr('disabled')
-          } else {
-              jQuery(".chat_bot_input_name_btn").attr('disabled', 'disabled')
-          }
-      });
-  });	
-
-function maxLengthCheck(object) {
-    if (object.value.length > 10){
-      object.value = object.value.slice(0, 10);
-    }  
-}			
-function isNumericCheck (evt) {
-var theEvent = evt || window.event;
-var key = theEvent.keyCode || theEvent.which;
-key = String.fromCharCode (key);
-var regex = /[0-9]|\./;
-if ( !regex.test(key) ) {
-  theEvent.returnValue = false;
-  if(theEvent.preventDefault) theEvent.preventDefault();
-}
-}	
+const $ = jQuery;
+let citycodes = [];
 </script>
 <div class="chat_bot_info">
-  <a href="javascript:;">
-      <img class="chat_message_icon" src="{{media url=New-Homepage/chat.svg}}" />
-      <img class="chat_down_arrow"
-          src="{{media url=New-Homepage/chat_arrow_down.svg}}" />
-  </a>
-  <div class="chat_popup_view">
-      <div class="chat_popup" id="conversation">
-          <!-- Header -->
-          <div class="chat_popup_header">
-              <img class="chat_popup_logo"
-                  src="{{media url=New-Homepage/ola_black_logo.svg}}" />
-              <a href="javascript:;" class="chat_popup_close">
-                  <img src="{{media url=New-Homepage/chat_popup_close.svg}}" />
-              </a>
-          </div>
-          <!-- Take user input - Phone -->
-          <form id="chat_bot_form">
-              <div class="chat_bot_field_option" id="chat_bot_field_option">
-                  <div class="chat_bot_field">
-                      <input type="number" onkeydown="maxLengthCheck(this);" onkeyup="maxLengthCheck(this);" onkeypress="return isNumericCheck(event)" oninput="maxLengthCheck(this)" class="chat_bot_number_field" placeholder="Enter your mobile number" maxlength="10"
-                          min="1" max="9999999999" id="chat_bot_number_field_id" autocomplete="off" autofocus />
-                      <button type="button" onclick="return Chatbot_submit_number();" class="chat_bot_send_btn"
-                          id="chat_bot_send_number" value="" disabled></button>
-                  </div>
-              </div>
-          </form>
-          <!-- Take user input - Name -->
-          <form id="chat_bot_form_name">
-              <div class="chat_bot_field_option_name" id="chat_bot_field_option_name">
-                  <div class="chat_bot_field">
-                      <input type="text" class="chat_bot_name_field" placeholder="Please tell us your name"
-                          onkeypress="return onlyLettersAndSpaces();"  maxlength="20" id="chat_bot_name_field_id" autocomplete="off" />
-                      <button type="button" onclick="return nameSubmit();" class="chat_bot_input_name_btn"
-                          id="chat_bot_send_name" value="" disabled></button>
-                  </div>
-              </div>
-          </form>
-      </div>
-  </div>
+    <div class="chat_popup_view">
+        <div class="chat_popup" id="conversation">
+            <!-- Header -->
+            <div class="chat_popup_header">
+            </div>
+            <div class="cb-footer">
+              <input type="text" id="cb-search" placeholder="Enter city name" onchange="handleCitySearch" />
+            </div>
+        </div>
+    </div>
 </div>
 <!-- <div style="display:none;" id="chat_bot_msg_success">
-  <div class='chat_bot_response'>Thanks, Our Support Expert will get back to you soon, Meanwhile you can reach us at
-    xxxxxxxxxxx</div>
-</div> -->
+    <div class='chat_bot_response'>Thanks, Our Support Expert will get back to you soon, Meanwhile you can reach us at
+      xxxxxxxxxxx</div>
+  </div> -->
 
 <script type="text/javascript">
-  var chatUserName = '';
-  const nestedJson = {
-      "Scooter variants": {
-          "content": "Looking to join the Electric Revolution, eh? I have exactly what you need. And thensome. Come, choose your revolution.",
-          "S1 Pro": {
-              "content": "All out performance. Engineered to thrill. Hold on tight!",
-              "linkLabel": "Know more about S1 Pro",
-              "link": "/s1-pro"
-          },
-          "S1": {
-              "content": "Cutting-edge green tech. For everyone. The S1 is waiting to be explored.",
-              "linkLabel": "Know more about S1",
-              "link": "/s1"
-          },
-          "S1 Air": {
-              "content": "An electric scooter that’s up for anything. Nimble, zippy, waiting for your next everyday adventure.",
-              "linkLabel": "Know more about S1 Air",
-              "link": "/s1-air"
-          }
-      },
-      "Network Location": {
-          "content": "India is ready to End ICE age. Come see for yourself.",
-          "Ola Experience Centre Network": {
-              "content": "With 600+ Ola Experience Centres across the country, we are always just around the corner.",
-              "linkLabel": "Come, visit us here",
-              "link": "/experience-centre-info"
-          },
-          "HyperCharging Network": {
-              "content": "Here’s to the revolution never running out of juice! We have 200+ Hypercharging Stations across the country.",
-              "linkLabel": "Find one near you",
-              "link": "/hyper-charger-network"
-          }
-      },
-      "Taking a Test Ride": {
-          "content": "Meet the scooters in person. At your leisure.",
-          "At Home": {
-              "content": "Our Brand Champion brings the EV Revolution to your door-step."
-          },
-          "At an Experience Center near you": {
-              "content": "Enter the heart of the EV Revolution at the OLA Experience Centre."
-          }
-      },
-      "The latest offers": {
-          "content": "Owning the future, made easy.",
-          "linkLabel": "Check out our latest offers here",
-          "link": "/offer"
-      },
-      "After Sales": {
-          "content": "Everything you need to know about ownership minus the fluff. Check it out here.",
-          "Ola Care": {
-              "content": "India’s most comprehensive maintenance and hassle-free service plans.",
-              "linkLabel": "Know more about Ola care",
-              "link": "/ola-care"
-          },
-          "Extended Warranty": {
-              "content": "Know what comes free with our extended warranty? Peace of mind.",
-              "linkLabel": "Know more about Extended Warranty",
-              "link": "/extended-warranty"
-          },
-          "Service": {
-              "content": "Service Champions, always at your service. Explore everything you need to know about maintenance.",
-              "linkLabel": "Know more about Service",
-              "link": "/service"
-          }
-      },
-      "Whats New at Ola!": {
-          "content": "Here’s everything new, engineered just for you at Ola.",
-          "MoveOS": {
-              "content": "Ready. Set. MoveOs. Custom developed OS by OLA’s very own engineers, just for you.",
-              "linkLabel": "Know more about MoveOS",
-              "link": "https://moveos.olaelectric.com"
-          },
-          "S1 Air": {
-              "content": "It’s agile. It’s nimble. It’s up for anything. The Ola S1 Air. Coming this July.",
-              "linkLabel": "Know more about S1 Air",
-              "link": "/s1-air"
-          },
-          "Battery Innovation Centre": {
-              "content": "Take a sneak peak at all innovation action. This is ground zero of making India the energy hub of the world.",
-              "linkLabel": "Check out the video here",
-              "link": "/#bic"
-          },
-          "Accessories and Merchandise": {
-              "content": "The Drip Is Real. From scooter accessories to carefully curated t-shirts, check out the latest collection on our Accessory store.",
-              "linkLabel": "Explore store here",
-              "link": "https://book.olaelectric.com/accessorystore"
-          },
-          "500th Experience Centre": {
-              "content": "It’s only a celebration if we celebrate together. See everything that went down when we opened our 500th experience centre.",
-              "linkLabel": "Check out the video here",
-              "link": "https://www.youtube.com/watch?v=M3WKGLmR04g&ab_channel=OlaElectric"
-          }
-      }
-  };
+    var chatUserName = '';
+    const nestedJson = {
+        "Scooter variants": {
+            "content": "Looking to join the Electric Revolution, eh? I have exactly what you need. And thensome. Come, choose your revolution.",
+            "S1 Pro": {
+                "content": "All out performance. Engineered to thrill. Hold on tight!",
+                "linkLabel": "Know more about S1 Pro",
+                "link": "/s1-pro"
+            },
+            "S1": {
+                "content": "Cutting-edge green tech. For everyone. The S1 is waiting to be explored.",
+                "linkLabel": "Know more about S1",
+                "link": "/s1"
+            },
+            "S1 Air": {
+                "content": "An electric scooter that’s up for anything. Nimble, zippy, waiting for your next everyday adventure.",
+                "linkLabel": "Know more about S1 Air",
+                "link": "/s1-air"
+            }
+        },
+        "Network Location": {
+            "content": "India is ready to End ICE age. Come see for yourself.",
+            "o_ela Experience Centre Network": {
+                "content": "With 600+ o_ela Experience Centres across the country, we are always just around the corner.",
+                "linkLabel": "Come, visit us here",
+                "link": "/experience-centre-info"
+            },
+            "HyperCharging Network": {
+                "content": "Here’s to the revolution never running out of juice! We have 200+ Hypercharging Stations across the country.",
+                "linkLabel": "Find one near you",
+                "link": "/hyper-charger-network"
+            }
+        },
+        "Taking a Test Ride": {
+            "content": "Meet the scooters in person. At your leisure.",
+            "At Home": {
+                "content": "Our Brand Champion brings the EV Revolution to your door-step."
+            },
+            "At an Experience Center near you": {
+                "content": "Enter the heart of the EV Revolution at the o_ela Experience Centre."
+            },
+            "Book Test Ride": {
+                "content": "Please wait while we are fetching city details for you.",
+                "customOptionsNext": true
+            },
+        },
+        "The latest offers": {
+            "content": "Owning the future, made easy.",
+            "linkLabel": "Check out our latest offers here",
+            "link": "/offer"
+        },
+        "After Sales": {
+            "content": "Everything you need to know about ownership minus the fluff. Check it out here.",
+            "o_ela Care": {
+                "content": "India’s most comprehensive maintenance and hassle-free service plans.",
+                "linkLabel": "Know more about o_ela care",
+                "link": "/o_ela-care"
+            },
+            "Extended Warranty": {
+                "content": "Know what comes free with our extended warranty? Peace of mind.",
+                "linkLabel": "Know more about Extended Warranty",
+                "link": "/extended-warranty"
+            },
+            "Service": {
+                "content": "Service Champions, always at your service. Explore everything you need to know about maintenance.",
+                "linkLabel": "Know more about Service",
+                "link": "/service"
+            }
+        },
+        "Whats New at o_ela!": {
+            "content": "Here’s everything new, engineered just for you at o_ela.",
+            "MoveOS": {
+                "content": "Ready. Set. MoveOs. Custom developed OS by o_ela’s very own engineers, just for you.",
+                "linkLabel": "Know more about MoveOS",
+                "link": "https://moveos.o_elaelectric.com"
+            },
+            "S1 Air": {
+                "content": "It’s agile. It’s nimble. It’s up for anything. The o_ela S1 Air. Coming this July.",
+                "linkLabel": "Know more about S1 Air",
+                "link": "/s1-air"
+            },
+            "Battery Innovation Centre": {
+                "content": "Take a sneak peak at all innovation action. This is ground zero of making India the energy hub of the world.",
+                "linkLabel": "Check out the video here",
+                "link": "/#bic"
+            },
+            "Accessories and Merchandise": {
+                "content": "The Drip Is Real. From scooter accessories to carefully curated t-shirts, check out the latest collection on our Accessory store.",
+                "linkLabel": "Explore store here",
+                "link": "https://book.o_elaelectric.com/accessorystore"
+            },
+            "500th Experience Centre": {
+                "content": "It’s only a celebration if we celebrate together. See everything that went down when we opened our 500th experience centre.",
+                "linkLabel": "Check out the video here",
+                "link": "https://www.youtube.com/watch?v=M3WKGLmR04g&ab_channel=o_elaElectric"
+            }
+        }
+    };
 
-  // Chat bot function
-  function chatBot(json) {
-      const masterJson = json;
-      let currentJson = json;
-      const conversationDiv = document.getElementById('conversation');
-      var displayLoaderFlag = true;
+    // Chat bot function
+    function chatBot(json) {
+        const masterJson = json;
+        let currentJson = json;
+        const conversationDiv = document.getElementById('conversation');
+        var displayLoaderFlag = true;
 
-      /**
-       * Display a message from the bot to the user
-       */
-      function displayMessage(sender, content, className) {
-          // if ((className !== "user")) {
-          //     console.log("Bot message");
-          //     displayLoader();
-          //     setTimeout(function () {
-          //         let loaderContainerToRemove = document.getElementsByClassName("loader-container");
-          //         for (let i = 0; i < loaderContainerToRemove.length; i++) {
-          //             loaderContainerToRemove[i].remove();
-          //         }
+        /**
+         * Display a message from the bot to the user
+         */
+        function displayMessage(sender, content, className) {
+            // if ((className !== "user")) {
+            //     console.log("Bot message");
+            //     displayLoader();
+            //     setTimeout(function () {
+            //         let loaderContainerToRemove = document.getElementsByClassName("loader-container");
+            //         for (let i = 0; i < loaderContainerToRemove.length; i++) {
+            //             loaderContainerToRemove[i].remove();
+            //         }
 
-          //         displayContent(sender, content, className);
-          //     }, 5000);
-          // } else {
-          //     displayContent(sender, content, className);
-          // }
+            //         displayContent(sender, content, className);
+            //     }, 5000);
+            // } else {
+            //     displayContent(sender, content, className);
+            // }
 
-          if ((className !== "user")) {
-              if (displayLoaderFlag) {
-                  displayLoaderFlag = false;
-                  displayLoader();
-              }
+            if ((className !== "user")) {
+                if (displayLoaderFlag) {
+                    displayLoaderFlag = false;
+                    displayLoader();
+                }
 
-              setTimeout(function () {
-                  let loaderContainerToRemove = document.getElementsByClassName("loader-container");
-                  for (let i = 0; i < loaderContainerToRemove.length; i++) {
-                      loaderContainerToRemove[i].remove();
-                  }
-                  displayContent(sender, content, className);
-                  displayLoaderFlag = true;
-              }, 700);
-          } else {
-              displayContent(sender, content, className);
-          }
-      }
+                setTimeout(function () {
+                    let loaderContainerToRemove = document.getElementsByClassName("loader-container");
+                    for (let i = 0; i < loaderContainerToRemove.length; i++) {
+                        loaderContainerToRemove[i].remove();
+                    }
+                    displayContent(sender, content, className);
+                    displayLoaderFlag = true;
+                }, 700);
+            } else {
+                displayContent(sender, content, className);
+            }
+        }
 
-      function displayContent(sender, content, className) {
-          let subclass = "";
+        function displayContent(sender, content, className) {
+            let subclass = "";
 
-          const messageContainer = document.createElement('div');
-          messageContainer.classList.add('message-container');
-          if (sender === "User") {
-              subclass = "user"
-              messageContainer.classList.add(`${subclass}`);
-          }
-          const senderSpan = document.createElement('span');
-          senderSpan.classList.add('sender');
-          //senderSpan.textContent = `${sender}: `;
-          const messageDiv = document.createElement('div');
-          messageDiv.classList.add('message', className);
-          messageDiv.innerHTML = content; // Use innerHTML to render HTML tags
-          messageContainer.appendChild(senderSpan);
-          messageContainer.appendChild(messageDiv);
-          conversationDiv.appendChild(messageContainer);
-          conversationDiv.scrollTop = conversationDiv.scrollHeight;
-      }
+            const messageContainer = document.createElement('div');
+            messageContainer.classList.add('message-container');
+            if (sender === "User") {
+                subclass = "user"
+                messageContainer.classList.add(`${subclass}`);
+            }
+            const senderSpan = document.createElement('span');
+            senderSpan.classList.add('sender');
+            //senderSpan.textContent = `${sender}: `;
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', className);
+            messageDiv.innerHTML = content; // Use innerHTML to render HTML tags
+            messageContainer.appendChild(senderSpan);
+            messageContainer.appendChild(messageDiv);
+            conversationDiv.appendChild(messageContainer);
+            conversationDiv.scrollTop = conversationDiv.scrollHeight;
+        }
 
-      /**
-       * Display a loader gif from the bot to the user
-       */
-      function displayLoader() {
-          const loaderContainer = document.createElement('div');
-          loaderContainer.classList.add('message-container', 'loader-container');
-          const loaderDiv = document.createElement('div');
-          loaderDiv.classList.add('message', 'loader');
-          loaderDiv.innerHTML = '<img style="margin-left:-45px;" src="{{media url=chatbox/loader-transparent-hq.gif}}"></img>';
-          loaderContainer.appendChild(loaderDiv);
-          conversationDiv.appendChild(loaderContainer);
-          conversationDiv.scrollTop = conversationDiv.scrollHeight;
-      }
+        /**
+         * Display a loader gif from the bot to the user
+         */
+        function displayLoader() {
+            const loaderContainer = document.createElement('div');
+            loaderContainer.classList.add('message-container', 'loader-container');
+            const loaderDiv = document.createElement('div');
+            loaderDiv.classList.add('message', 'loader');
+            loaderDiv.innerHTML = '<img style="margin-left:-45px;" src="{{media url=chatbox/loader-transparent-hq.gif}}"></img>';
+            loaderContainer.appendChild(loaderDiv);
+            conversationDiv.appendChild(loaderContainer);
+            conversationDiv.scrollTop = conversationDiv.scrollHeight;
+        }
 
 
 
-      var SelectOptionsCount = 0;
+        var SelectOptionsCount = 0;
 
-      /**
-       * Display options from the bot to the user
-       */
-      function displayOptions(ctaOptions = null) {
-          //Helps in getting the right node level and hence right options from there
-          if (SelectOptionsCount > 0) {
-              var MessageContainerRemove = document.getElementById("No_of_node" + SelectOptionsCount);
-              MessageContainerRemove.remove();
-          }
-          SelectOptionsCount = SelectOptionsCount + 1;
-          const options = Object.keys(currentJson);
+        /**
+         * Display options from the bot to the user
+         */
+        function displayOptions(ctaOptions = null) {
+            //Helps in getting the right node level and hence right options from there
+            if (SelectOptionsCount > 0) {
+                var MessageContainerRemove = document.getElementById("No_of_node" + SelectOptionsCount);
+                MessageContainerRemove.remove();
+            }
+            SelectOptionsCount = SelectOptionsCount + 1;
+            const options = Object.keys(currentJson);
 
-          /**
-           * When all the options are exhausted, displays the final set of options for re-direction.
-           */
-          if (options.length === 0) {
-              //if ctaOnSelection is available and not null, then display the ctaOnSelection
-              let ctaOnSelectionHTML = '';
-              //if ctaOptions is available and not null, then display the ctaOptions
-              if ((ctaOptions != null) && (Object.keys(ctaOptions).length > 0)) {
-                  ctaOnSelectionHTML = '<div class="cta-btn message_options"><a target="_blank" href="' + ctaOptions.ctaLink + '" class="buy-now btn btn2 external-cta">' + ctaOptions.ctaText + '</a></div>';
-              }
-             
-              displayMessage('User', '<div class="message bot" id="footerOptionsOne">' + ctaOnSelectionHTML + '<div class="cta-btn message_options"><a target="_blank" href="https://book.olaelectric.com/" class="buy-now btn btn2 external-cta" >Buy Now</a></div><div class="cta-btn message_options"><a target="_blank" href="https://tr.olaelectric.com/" class="buy-now btn option external-cta">Book Test Ride</a></div><div class="cta-btn message_options"><a href="javascript:;" class="buy-now btn btn2" onclick="bot.restartBot();">Have another query?</a></div></div>', 'bot_message_menus');
-              //displayMessage('Bot', '<div class="message bot_message">Let’s toast for a Greener world! <a href=\"\/s1-pro\" target=\"_blank\" class=\"chatbot_redirect\">Explore<\/a>.</div>', 'bot_message');
-              conversationDiv.classList.add('chat_form_show');
-              return;
-          }
+            /**
+             * When all the options are exhausted, displays the final set of options for re-direction.
+             */
+            if (options.length === 0) {
+                //if ctaOnSelection is available and not null, then display the ctaOnSelection
+                let ctaOnSelectionHTML = '';
+                //if ctaOptions is available and not null, then display the ctaOptions
+                if ((ctaOptions != null) && (Object.keys(ctaOptions).length > 0)) {
+                    ctaOnSelectionHTML = '<div class="cta-btn message_options"><a target="_blank" href="' + ctaOptions.ctaLink + '" class="buy-now btn btn2 external-cta">' + ctaOptions.ctaText + '</a></div>';
+                }
+               
+                displayMessage('User', '<div class="message bot" id="footerOptionsOne">' + ctaOnSelectionHTML + '<div class="cta-btn message_options"><a target="_blank" href="https://book.o_elaelectric.com/" class="buy-now btn btn2 external-cta" >Buy Now</a></div><div class="cta-btn message_options"><a target="_blank" href="https://tr.o_elaelectric.com/" class="buy-now btn option external-cta">Book Test Ride</a></div><div class="cta-btn message_options"><a href="javascript:;" class="buy-now btn btn2" onclick="bot.restartBot();">Have another query?</a></div></div>', 'bot_message_menus');
+                //displayMessage('Bot', '<div class="message bot_message">Let’s toast for a Greener world! <a href=\"\/s1-pro\" target=\"_blank\" class=\"chatbot_redirect\">Explore<\/a>.</div>', 'bot_message');
+                conversationDiv.classList.add('chat_form_show');
+                return;
+            }
 
-          const filteredOptions = options.filter(option => option !== 'content').filter(option => option !== 'link').filter(option => option !== 'linkLabel'); // Exclude 'content' from options
+            const filteredOptions = options.filter(option => option !== 'content').filter(option => option !== 'link').filter(option => option !== 'linkLabel'); // Exclude 'content' from options
 
-          /**
-           * When all the filtered options are exhausted, displays the final set of options for re-direction.
-           */
-          if (filteredOptions.length === 0) {
-              let ctaOnSelectionHTML = '';
-              if ((ctaOptions != null) && (Object.keys(ctaOptions).length > 0)) {
-                  ctaOnSelectionHTML = '<div class="cta-btn message_options"><a target="_blank" href="' + ctaOptions.ctaLink + '" class="buy-now btn btn2 external-cta">' + ctaOptions.ctaText + '</a></div>';
-              }
+            /**
+             * When all the filtered options are exhausted, displays the final set of options for re-direction.
+             */
+            if (filteredOptions.length === 0) {
+                let ctaOnSelectionHTML = '';
+                if ((ctaOptions != null) && (Object.keys(ctaOptions).length > 0)) {
+                    ctaOnSelectionHTML = '<div class="cta-btn message_options"><a target="_blank" href="' + ctaOptions.ctaLink + '" class="buy-now btn btn2 external-cta">' + ctaOptions.ctaText + '</a></div>';
+                }
 
-              displayMessage('User', '<div class="message bot" id="footerOptionsTwo">' + ctaOnSelectionHTML + '<div class="cta-btn message_options"><a href="https://book.olaelectric.com/" target="_blank" class="buy-now btn btn2 external-cta" >Buy Now</a></div><div class="cta-btn message_options"><a href="https://tr.olaelectric.com/" target="_blank" class="buy-now btn external-cta" >Book Test Ride</a></div><div class="cta-btn message_options"><a href="javascript:;" class="buy-now btn btn2" onclick="bot.restartBot();">Have another query?</a></div></div>', 'bot_message_menus');
-              //displayMessage('Bot', '<div class="message bot_message">Let’s toast for a Greener world! <a href=\"\/s1-pro\" target=\"_blank\" class=\"chatbot_redirect\">Explore<\/a>.</div>', 'bot_message');
-              conversationDiv.classList.add('chat_form_show');
-              return;
-          }
+                displayMessage('User', '<div class="message bot" id="footerOptionsTwo">' + ctaOnSelectionHTML + '<div class="cta-btn message_options"><a href="https://book.o_elaelectric.com/" target="_blank" class="buy-now btn btn2 external-cta" >Buy Now</a></div><div class="cta-btn message_options"><a href="https://tr.o_elaelectric.com/" target="_blank" class="buy-now btn external-cta" >Book Test Ride</a></div><div class="cta-btn message_options"><a href="javascript:;" class="buy-now btn btn2" onclick="bot.restartBot();">Have another query?</a></div></div>', 'bot_message_menus');
+                //displayMessage('Bot', '<div class="message bot_message">Let’s toast for a Greener world! <a href=\"\/s1-pro\" target=\"_blank\" class=\"chatbot_redirect\">Explore<\/a>.</div>', 'bot_message');
+                conversationDiv.classList.add('chat_form_show');
+                return;
+            }
 
-          const optionsMessage = filteredOptions.map(option => `<div class="option" onclick="bot.handleNodeClick('${option}')">${option}</div>`).join('');
-          const optionsContainer = document.createElement('div');
-          optionsContainer.classList.add('options');
-          optionsContainer.innerHTML = optionsMessage;
-          const optionsMessageContainer = document.createElement('div');
-          optionsMessageContainer.classList.add('message', 'bot', 'message_options');
-          optionsMessageContainer.setAttribute("id", "No_of_node" + SelectOptionsCount);
-          optionsMessageContainer.innerHTML = '<span>I want to know about</span>';
-          optionsMessageContainer.appendChild(optionsContainer);
-          displayMessage('User', optionsMessageContainer.outerHTML, 'bot_message_menus');
+            const optionsMessage = filteredOptions.map(option => `<div class="option" onclick="bot.handleNodeClick('${option}')">${option}</div>`).join('');
+            const optionsContainer = document.createElement('div');
+            optionsContainer.classList.add('options');
+            optionsContainer.innerHTML = optionsMessage;
+            const optionsMessageContainer = document.createElement('div');
+            optionsMessageContainer.classList.add('message', 'bot', 'message_options');
+            optionsMessageContainer.setAttribute("id", "No_of_node" + SelectOptionsCount);
+            optionsMessageContainer.innerHTML = '<span>I want to know about</span>';
+            optionsMessageContainer.appendChild(optionsContainer);
+            displayMessage('User', optionsMessageContainer.outerHTML, 'bot_message_menus');
 
-          // Add click event listeners to options
-          // const optionElements = document.getElementsByClassName('option');
-          // Array.from(optionElements).forEach(element => {
-          //     element.addEventListener('click', () => handleNodeClick(element.textContent));
-          // });
+            // Add click event listeners to options
+            // const optionElements = document.getElementsByClassName('option');
+            // Array.from(optionElements).forEach(element => {
+            //     element.addEventListener('click', () => handleNodeClick(element.textContent));
+            // });
 window?.sendMoengageEvent({label: 'Chatbot_option_opened', event: 'evdp-cta-clicked', description: 'Chatbot option opened'});
-      }   //displayOptions ends here
+        }   //displayOptions ends here
 
-      /**
-       * Handles the click on the options
-       */
-      function handleNodeClick(option) {
-          const selectedJson = currentJson[option];
-          if (selectedJson) {
-              currentJson = selectedJson;
-              displayMessage('User', option, 'user');
-              displayMessage('Bot', selectedJson.content, 'bot_message');
-              //if selectedJson.link exists and is not empty, then display the link
-              let ctaOptions = {};
-              if (selectedJson.link && selectedJson.link !== "") {
-                  ctaOptions = { ctaLink: selectedJson.link, ctaText: selectedJson.linkLabel };
-              }
-              displayOptions(ctaOptions);
-          } else {
-              displayMessage('User', option, 'user');
-              //displayMessage('Bot', '<div class="message bot_message">Let’s toast for a Greener world! <a href=\"\/s1-pro\" target=\"_blank\" class=\"chatbot_redirect\">Explore<\/a>.</div>', 'bot_message');
+        /**
+         * Handles the click on the options
+         */
+        function handleNodeClick(option) {
+          displayMessage('User', option, 'user');
+          if (option === 'Book Test Ride') {
+            _handleFetchingCityCodes(option);
+            return;
           }
+            const selectedJson = currentJson[option];
+            if (selectedJson) {
+                if (selectedJson.customOptionsNext) {
+                    return;
+                }
+                currentJson = selectedJson;
+                displayMessage('Bot', selectedJson.content, 'bot_message');
+                //if selectedJson.link exists and is not empty, then display the link
+                let ctaOptions = {};
+                if (selectedJson.link && selectedJson.link !== "") {
+                    ctaOptions = { ctaLink: selectedJson.link, ctaText: selectedJson.linkLabel };
+                }
+                displayOptions(ctaOptions);
+            } else {
+                displayMessage('User', option, 'user');
+                //displayMessage('Bot', '<div class="message bot_message">Let’s toast for a Greener world! <a href=\"\/s1-pro\" target=\"_blank\" class=\"chatbot_redirect\">Explore<\/a>.</div>', 'bot_message');
+            }
 window?.sendMoengageEvent({label: 'Chatbot_option_selected', event: 'evdp-input-entered', description: 'Option selected: ' + option});
-      }
+        }
 
-      function welcomeUser(userName) {
-          displayMessage('User', userName, 'user');
-          displayMessage('Bot', "Hi <b>" + userName + "</b>. Ready to dive into the electrifying future? <br />Let me know where to contact you in case we are unable to complete our conversation..", 'bot_message');
-      }
+        function welcomeUser(userName) {
+            displayMessage('User', userName, 'user');
+            displayMessage('Bot', "Hi <b>" + userName + "</b>. Ready to dive into the electrifying future? <br />Let me know where to contact you in case we are unable to complete our conversation..", 'bot_message');
+        }
 
-      function restartBot() {
-          currentJson = masterJson;
-          SelectOptionsCount = 0;
+        function restartBot() {
+            currentJson = masterJson;
+            SelectOptionsCount = 0;
 
-          //get DOM element and remove it
-          if (document.getElementById("footerOptionsOne")) {
-              let FooterContainerOneRemove = document.getElementById("footerOptionsOne");
-              FooterContainerOneRemove.remove();
-          }
+            //get DOM element and remove it
+            if (document.getElementById("footerOptionsOne")) {
+                let FooterContainerOneRemove = document.getElementById("footerOptionsOne");
+                FooterContainerOneRemove.remove();
+            }
 
-          if (document.getElementById("footerOptionsTwo")) {
-              let FooterContainerTwoRemove = document.getElementById("footerOptionsTwo");
-              FooterContainerTwoRemove.remove();
-          }
+            if (document.getElementById("footerOptionsTwo")) {
+                let FooterContainerTwoRemove = document.getElementById("footerOptionsTwo");
+                FooterContainerTwoRemove.remove();
+            }
 
-          displayMessage('Bot', "Fire away with your questions and let's roll into a greener world, one chat at a time!", 'bot_message');
-          displayMessage('User', "Have another query?", 'user');
-          displayOptions();
-      }
+            displayMessage('Bot', "Fire away with your questions and let's roll into a greener world, one chat at a time!", 'bot_message');
+            displayMessage('User', "Have another query?", 'user');
+            displayOptions();
+        }
 
-      displayMessage('Bot', "Ola! I’m <b>Ion</b>, your navigator on this electric journey to <b>#EndICEAge</b> I have everything you need and much more. <br />Whom do I have the pleasure of talking to today?", 'bot_message');
-      conversationDiv.classList.add('chat_form_show');
-      document.getElementById("chat_bot_name_field_id").focus();
-      //chat_bot_field_option_name.style.display = 'block';
+        displayMessage('Bot', "o_ela! I’m <b>Ion</b>, your navigator on this electric journey to <b>#EndICEAge</b> I have everything you need and much more. <br />Whom do I have the pleasure of talking to today?", 'bot_message');
+        conversationDiv.classList.add('chat_form_show');
 
-      function userPhonenumber(phone_number) {
-          conversationDiv.classList.remove('chat_form_show');
-          displayMessage('User', phone_number, 'user');
-          displayMessage('Bot', "Perfect! We are all set. Fire away with your questions and let's roll into a greener world, one chat at a time!", 'bot_message');
-          displayOptions();
+        function userPhonenumber(phone_number) {
+            conversationDiv.classList.remove('chat_form_show');
+            displayMessage('User', phone_number, 'user');
+            displayMessage('Bot', "Perfect! We are all set. Fire away with your questions and let's roll into a greener world, one chat at a time!", 'bot_message');
+            displayOptions();
 
-      }
+        }
 
-      return {
-          handleNodeClick,
-          welcomeUser,
-          userPhonenumber,
-          restartBot,
-      };
+        function _handleFetchingCityCodes(option) {
+          // show loader
+          jQuery.ajax({
+            url: 'https://kong-o_ela-apigateway-oem-stg.o_elacabs-dev.in/api/contact/v1/city-codes',
+            type: 'GET',
+            success: function (response) {
+              cities = response.data;
+              displayMessage('Bot', 'Choose from below cities', 'bot_message');
+              cities.forEach((city) => {
+                displayMessage('Bot', city.cityName, 'bot_message');
+              });
+            },
+            error: function (error) {
+              console.log(error);
+            },
+          });
+        }
 
-  }
-  // Usage
-  var bot = chatBot(nestedJson);
+        function _handleFetchingExperienceCentres(option) {
+          // show loader
+          jQuery.ajax({
+            url: 'https://kong-o_ela-apigateway-oem-stg.o_elacabs-dev.in/api/contact/v1/city-codes',
+            type: 'GET',
+            success: function (response) {
+              cities = response.data;
+              const resJson = {
+                content: 'Choose from below cities'
+              };
+              cities.forEach((city) => {
+                resJson[city.cityName] = {
+                  content: city.cityName,
+                  customOptionsNext: true,
+                };
+              });
+              currentJson = resJson;
+              handleNodeClick(resJson);
+            },
+            error: function (error) {
+              console.log(error);
+            },
+          });
+        }
 
-function sendExternalTelemetry(linkName) {
-      window?.sendMoengageEvent({label: 'Chatbot_external_link', event: 'evdp-cta-clicked', description: linkName});
-  }
+        return {
+            handleNodeClick,
+            welcomeUser,
+            userPhonenumber,
+            restartBot,
+        };
 
-  function nameSubmit() {
-      chatUserName = jQuery('.chat_bot_name_field').val();
-      jQuery("#chat_bot_field_option_name").hide();
-      jQuery('#chat_bot_field_option').show();
-      bot.welcomeUser(chatUserName);
-      document.getElementById("chat_bot_number_field_id").focus();
-      window?.sendMoengageEvent({label: 'Chatbot_username_entered', event: 'evdp-input-entered', description: 'Chatbot username entered'});
-  }
+    }
+    // Usage
+    var bot = chatBot(nestedJson);
 
-  function isNameText(event) {
-      var key = event.which || event.keyCode || 0;
-      return ((key >= 65 && key <= 92) ||
-          (key >= 97 && key <= 124) || (k == 32))
-  }
-
-  function Chatbot_submit_number() {
-      var ChatPhoneNumber = jQuery('.chat_bot_number_field').val();
-      var ChatPhoneUser = jQuery('.chat_bot_name_field').val();
-      jQuery('#conversation').removeClass('chat_form_show');
-      jQuery("#chat_bot_field_option").hide();
-      bot.userPhonenumber(ChatPhoneNumber);
-      jQuery.ajax({
-          type: "POST",
-          url: "/exp_center/experience/contact",
-          data: {
-              chatbot: "yes",
-              lastname: 'N/A',
-              name: FormInputSanitize(ChatPhoneUser),
-              email: 'N/A',
-              telephone: FormInputSanitize(ChatPhoneNumber),
-              city: 'Chatbot',
-              city_code: 'Chatbot',
-              comment: "Chatbot",
-              enquiry_type: "Sales",
-              leadSource: siteSource ? lsqMapping[siteSource] : '',
-              insideSalesCohort: 'Auto PopUp Form'
-          },
-          dataType: "json",
-          success: function (ChatbotData) {
-              //if ChatbotData is object, stringify and parse
-              if (typeof ChatbotData === 'object') {
-                  ChatbotData = JSON.stringify(ChatbotData);
-              }
-              var ChatBotResponse = JSON.parse(ChatbotData);
-              if (ChatBotResponse.status == "Success" || ChatBotResponse.status == "SUCCESS") {
-
-              }
-          },
-          error: function (data) {
-              console.log(data);
-          }
-      });
-window?.sendMoengageEvent({label: 'Chatbot_mobile_number_entered', event: 'evdp-input-entered', description: 'Chatbot mobile number entered'});
-  }
-
-  var chat_bot_number_key = document.getElementById("chat_bot_number_field_id");
-  chat_bot_number_key.addEventListener("keyup", function (event) {
-      if (event.keyCode === 13) {
-          event.preventDefault();
-          document.getElementById("chat_bot_send_number").click();
-      }
-  });
-
-  var input = document.getElementById("chat_bot_name_field_id");
-  chat_bot_name_field_id.addEventListener("keyup", function (event) {
-      if (event.keyCode === 13) {
-          event.preventDefault();
-          document.getElementById("chat_bot_send_name").click();
-      }
-  });
+    bot.userPhonenumber('9900990099');
 
 </script>
-<style>
-.cms-ola-for-business .chat_bot_info{display: none;}
-.chat_bot_info > .chat_popup_view {
-z-index: 3;
-}
-.bot_message > a.chatbot_redirect {
-width: auto;
-height: auto;
-background: none;
-border: none;
-box-shadow: none;
-border-radius: none;
-display: inline-block;
-position: static;
-font-family:Gentona-Semibold;
-color: #16AA51;
-}
-.chat_bot_field > input[type="text"] {
-  border: none !important;
-  width: calc(100% - 56px)  !important;
-  height: inherit  !important;
-  font-size: 16px  !important;
-  line-height: 19px  !important;
-  color: #41515C  !important;
-  padding: 0 24px  !important;
-  font-family: Gentona-Regular  !important;
-}
-.chat_bot_field > input[type="text"]::-webkit-input-placeholder {	
-color: #8D9DA5  !important;	
-}	
-.chat_bot_field > input[type="text"]::-moz-placeholder {	
-  color: #8D9DA5  !important;	
-}	
-.chat_bot_field > input[type="text"]:-ms-input-placeholder {	
-  color: #8D9DA5  !important;	
-}	
-.chat_bot_field > input[type="text"]:-moz-placeholder {	
-  color: #8D9DA5  !important;	
-}	
-.chat_bot_field > input[type="text"]:focus{	
-  box-shadow: none;	
-}
-.chat_bot_field > button {	
-width: 40px  !important;	
-height: 40px  !important;	
-background: #E0FEF5  !important;	
-display: flex  !important;	
-align-items: center  !important;	
-justify-content: center  !important;	
-border-radius: 50%  !important;	
-padding: 0px  !important;	
-border: none  !important;	
-margin: 0 16px 0 0  !important;	
-}
-.chat_bot_field > button:before{	
-content: ""  !important;	
-background-repeat: no-repeat  !important;	
-width: 17px  !important;	
-height: 17px  !important;	
-}	
-.chat_bot_field > button[disabled]::before{	
-opacity: .2;	
-}	
-.chat_bot_field > button[disabled]{	
-background: #F3F7F9;	
-}	
-.chat_bot_field > button:hover {	
-border: none;	
-background: #E0FEF5;	
-}
-.chat_bot_field > button:before {
-background-image: url(https://cdn.olaelectric.com/ev-discovery-platform/New-Homepage/chat_bot_send.svg) !important;
-}
-.chat_bot_info .options > .option:first-child {
-border-radius: 8px 8px 0px 0px;
-}
-
-.message > .cta-btn > .buy-now {
-width: 100%;
-height: 100%;
-border: none;
-border-bottom: 0.5px solid rgba(0,0,0,.1);
-box-shadow: none;
-font-size: 16px;
-line-height: 130%;
-letter-spacing: -.02em;
-color: #1d67dd;
-font-weight: 500;
-font-family: 'Gentona-Medium';
-padding: 16px;
-background: #f8fafb;
-cursor: pointer;
-position: static;
-border-radius: 0px;
-display: block;
-}
-.message > .cta-btn:last-child > a {
-border: none;
-}
-.bot_message_menus > .message {
-border: 0.5px solid rgba(0,0,0,.1);
-max-width: 290px;
-border-radius: 8px 8px 8px 0px;
-}
-.message > .cta-btn:first-child > a {
-border-radius: 8px 8px 8px 0px;
-}
-.message > .cta-btn:last-child > a {
-border-radius: 0px 0px 8px 0px;
-}
-.chat_bot_response {
-margin: 0 0 20px;
-background: #f8fafb;
-border: 0.5px solid rgba(0,0,0,.07);
-border-radius: 8px 8px 8px 0;
-padding: 12px 16px;
-max-width: 100%;
-width: 290px;
-font-size: 16px;
-line-height: 140%;
-letter-spacing: -.01em;
-color: #41515c;
-}
-.bot_message b {
-  font-family: Gentona-Semibold;
-}
-.message > .cta-btn > .buy-now.external-cta:after {
-  content: '';
-  background-image: url(https://cdn.olaelectric.com/ev-discovery-platform/chatbox/chatbot_arrow_icon_blue.svg) !important;
-  width: 8px;
-  display: inline-block;
-  height: 8px;
-  margin-left: 7px;
-  margin-top: 0;
-  background-size: cover !important;
-  background-repeat: no-repeat;
-}
-</style>
