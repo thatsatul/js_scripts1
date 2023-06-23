@@ -1,5 +1,5 @@
 <style>
-    .user-text-cb {
+    .cb-text-user {
         color: green;
     }
 </style>
@@ -15,43 +15,50 @@
 </div>
 <script>
     const masterObj = {
-        o_ela: {
-            text: 'o_ela !!! Send Hi to see what I can do for you',
-            nextActionType: 'USER_INPUT'
+        'Explore S1 Pro': {
+            text: 'Redirecting to S1 Pro page',
+            currentActionType: 'REDIRECT',
+            url: '/s1-pro'
         },
-        hi: {
-            text: 'Hi, What do you need help with?',
-            nextActionType: 'SELECT_OPTION',
+        'Book test ride': {
+            text: 'Please select your city',
+            currentActionType: 'FETCH_DATA',
+            entity: 'EXPERIENCE_CENTER_CITIES',
+        },
+        'Nothing': {
+            text: 'Okay, Bye',
+            currentActionType: 'END'
+        }
+    };
+    const masterIntentObj = {
+        o_ela: {
+            text: 'o_ela !!! This is o_ela assistant. Please enter your name first',
+            currentActionType: 'ENTER_NAME',
+            placeholderText: 'Type name here..'
+        },
+        HI: {
+            text: 'Hi {{user_name}}, nice to meet you. How can I help you',
+            currentActionType: 'SELECT_OPTION',
+            replaceUserData: true,
             options: [
                 { text: 'Explore S1 Pro'},
                 { text: 'Book test ride'},
                 { text: 'Nothing' }
             ]
         },
-        'Explore S1 Pro': {
-            text: 'Redirecting to S1 Pro page',
-            nextActionType: 'REDIRECT',
-            url: '/s1-pro'
+        'ENTER_PHONE': {
+            text: 'Please enter your phone number',
+            currentActionType: 'ENTER_PHONE',
+            placeholderText: 'Type phone here..'
         },
-        'Book test ride': {
-            text: 'Please select your city',
-            nextActionType: 'FETCH_DATA',
-            entity: 'EXPERIENCE_CENTER_CITIES',
-        },
-        'Nothing': {
-            text: 'Okay, Bye',
-            nextActionType: 'END'
-        }
-    };
-    const masterIntentObj = {
         'GET_EXPERIENCE_CENTERS': {
             text: 'Please select your experience center',
-            nextActionType: 'FETCH_DATA',
+            currentActionType: 'FETCH_DATA',
             entity: 'EXPERIENCE_CENTERS',
         },
         'REDIRECT_TO_EXP_CENTER': {
             text: 'Redirecting to experience center',
-            nextActionType: 'REDIRECT_TO_EXP_CENTER',
+            currentActionType: 'REDIRECT_TO_EXP_CENTER',
         }
     };
     const conversationArr = [];
@@ -59,7 +66,7 @@
         const dummyServerObj = dummyServer();
         const userInputState = {};
         const init = () => {
-            const replyObj = dummyServerObj.getReply('o_ela');
+            const replyObj = dummyServerObj.getReply('', 'o_ela');
             replyObj.usertype = 'BOT';
             conversationArr.push(replyObj);
             console.log('conversationArr 1', conversationArr);
@@ -67,38 +74,54 @@
         }
         const sendUserInput = (inp, extra = {}) => {
             conversationArr.push({ text: inp, usertype: 'USER' });
+            parseConversationThreads();
+            _showLoading();
+            console.log('Sending inp and intent', inp, extra);
             const replyObj = dummyServerObj.getReply(inp, extra.nextIntent);
             replyObj.usertype = 'BOT';
             conversationArr.push(replyObj);
             console.log('conversationArr 2', conversationArr);
-            parseConversationThreads();
-            window.userInteraction = 1;
+            const tmOut = setTimeout(() => {
+                clearTimeout(tmOut);
+                parseConversationThreads();
+            }, 1500);
         }
         const parseConversationThreads = () => {
-            document.getElementById('cb-main').innerHTML = '';
-            document.getElementById('cb-footer').innerHTML = '';
+            _clearConversationDom();
             if (conversationArr.length === 0) {
                 return;
             } else {
                 conversationArr.forEach((thr, indx) => {
                     const isLast = indx === conversationArr.length - 1;
-                    parseConversationThread(thr, isLast);
+                    if (isLast) {
+                        parseConversationThread(thr, isLast);
+                    }
                 });
             }
         }
         const parseConversationThread = (currentThread, isLast) => {
+            if (currentThread.currentActionType !== 'FETCH_DATA') {
+                _removeLoading();
+            }
             currentThread.isLast = isLast;
-            if (currentThread.nextActionType === 'USER_INPUT') {
+            if (currentThread.replaceUserData) {
+                currentThread.text = currentThread.text.replace('{{user_name}}', userInputState.name);
+            }
+            if (
+                currentThread.currentActionType === 'USER_INPUT'
+                || currentThread.currentActionType === 'ENTER_NAME'
+                || currentThread.currentActionType === 'ENTER_PHONE'
+            ) {
                 _createDomToFetchUserInput(currentThread);
-            } else if (currentThread.nextActionType === 'SELECT_OPTION') {
+            } else if (currentThread.currentActionType === 'SELECT_OPTION') {
                 _createTextAndOptionsDom(currentThread);
-            } else if (currentThread.nextActionType === 'REDIRECT') {
+            } else if (currentThread.currentActionType === 'REDIRECT') {
                 location.href = currentThread.url;
-            } else if (currentThread.nextActionType === 'FETCH_DATA') {
+            } else if (currentThread.currentActionType === 'FETCH_DATA') {
                 _createDomPostDataFetch(currentThread);
-            } else if (currentThread.nextActionType === 'END') {
+            } else if (currentThread.currentActionType === 'END') {
                 _createTextDom(currentThread);
-            } else if (currentThread.nextActionType === 'REDIRECT_TO_EXP_CENTER') {
+            } else if (currentThread.currentActionType === 'REDIRECT_TO_EXP_CENTER') {
                 const expCode = userInputState.expCitiesCenters[currentThread.passedInput];
                 location.href = `/experience-centres/book-appointment?expCenterId=${expCode}`;
             } else {
@@ -109,7 +132,7 @@
         const _createTextDom = (obj) => {
             const cbComp = document.getElementById('cb-main');
             const textDom = document.createElement('div');
-            textDom.classList.add(`${obj.usertype === 'BOT' ? 'bot' : 'user'}-text-cb`);
+            textDom.classList.add(`cb-text-${obj.usertype === 'BOT' ? 'bot' : 'user'}`);
             textDom.innerText = obj.text;
             cbComp.appendChild(textDom);
         }
@@ -143,14 +166,24 @@
         }
 
         const _createDomToEnterInput = (obj) => {
+            const placeholderText = obj.placeholderText || 'Type here...';
             const inputDom = document.createElement('input');
-            inputDom.classList.add('input');
+            inputDom.classList.add('cb-input');
+            inputDom.classList.add('cb-temp');
             inputDom.setAttribute('type', 'text');
-            inputDom.setAttribute('placeholder', 'Type here...');
+            inputDom.setAttribute('placeholder', placeholderText);
             inputDom.addEventListener('keyup', (e) => {
                 if (e.keyCode === 13) {
                     const inp = e.target.value;
-                    sendUserInput(inp);
+                    const extra = {};
+                    if (obj.currentActionType === 'ENTER_NAME') {
+                        userInputState.name = inp;
+                        extra.nextIntent = 'ENTER_PHONE';
+                    } else if (obj.currentActionType === 'ENTER_PHONE') {
+                        userInputState.phone = inp;
+                        extra.nextIntent = 'HI';
+                    }
+                    sendUserInput(inp, extra);
                     e.target.value = '';
                 }
             });
@@ -159,12 +192,14 @@
         }
 
         const _createOptionsDom = (options, nextIntent) => {
+            _removeLoading();
             const cbComp = document.getElementById('cb-main');
             const optionsDom = document.createElement('div');
-            optionsDom.classList.add('options');
+            optionsDom.classList.add('cb-options');
+            optionsDom.classList.add('cb-temp');
             options.forEach((opt) => {
                 const optionDom = document.createElement('div');
-                optionDom.classList.add('option');
+                optionDom.classList.add('cb-option');
                 optionDom.innerText = opt.text;
                 optionDom.addEventListener('click', (e) => {
                     const inp = e.target.innerText;
@@ -211,6 +246,33 @@
                     console.log(error);
                 },
             });
+        }
+
+        const _clearConversationDom = () => {
+            const els = document.getElementsByClassName('cb-temp');
+            if (!els || els.length === 0) {
+                return;
+            }
+            for (var i = 0; i < els.length; i++) {
+                els[i].remove();
+            }
+            document.getElementById('cb-footer').innerHTML = '';
+        }
+
+        const _showLoading = () => {
+            const cbComp = document.getElementById('cb-main');
+            const loadingDom = document.createElement('div');
+            loadingDom.setAttribute('id', 'cb-loading');
+            loadingDom.innerText = 'Loading...';
+            cbComp.appendChild(loadingDom);
+        }
+
+        const _removeLoading = () => {
+            const loadingDom = document.getElementById('cb-loading');
+            if (!loadingDom) {
+                return;
+            }
+            loadingDom.remove();
         }
 
         return {
