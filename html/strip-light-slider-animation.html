@@ -1,0 +1,51 @@
+<style>
+  * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+.test {
+  position: relative;
+}
+.test1 {
+  height: 40px;
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+}
+
+.light {
+  display: inline-block;
+  width: 400px;
+  height: 40px;
+  position: absolute;
+  left: -300px;
+  background-color: transparent;
+  background-image: linear-gradient(
+      to right, 
+      #1DD89f11 0%,
+      #1DD89f22 15%,
+      #1DD89f66 50%,
+      #1DD89f22 85%,
+      #1DD89f11 100%
+    );
+  top: 0;
+  animation: move 3s linear infinite;
+}
+
+@keyframes move {
+  100% {
+    transform: translateX(1500px);
+  }
+}
+</style>
+
+<div class="test">
+	<div class="test1">
+	  This is test text
+	</div>
+  <div class="light">
+  </div>
+</div>

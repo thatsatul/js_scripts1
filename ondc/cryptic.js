@@ -26,7 +26,14 @@ export const createKeyPair = async () => {
 
 
 const transactionId = uuid();
-const gps = "19.124398,72.910208";
+// const gps = "19.124398,72.910208";
+// const pincode = "400076";
+
+const gps = "12.953085,77.5838393";
+const pincode = "560001";
+
+// const cityCode = 'std:080';
+const cityCode = '*';
 
 const createSigningString = async (message, created, expires) => {
     if (!created) created = Math.floor(new Date().getTime() / 1000).toString();
@@ -77,7 +84,7 @@ const createAuthorizationHeader = async (message, type) => {
 
     const signature = await signMessage(signing_string, 'SPHSGdE7O2PAsTqlHe2TlBuaRuvGd5PwcikI2Enl20Swi6VOnQhKTkNzy0ap+66DqUMn6TWcQVDDbdI7va2ELQ==' || "");
 
-    const subscriber_id = 'o_elamoney-website-3000a.stg.corp.o_elacabs.com';
+    const subscriber_id = 'k-ronosmoney-website-3000a.stg.corp.k-ronoscabs.com';
     const unique_key_id = '643';
     const header = `Signature keyId="${subscriber_id}|${unique_key_id}|ed25519",algorithm="ed25519",created="${created}",expires="${expires}",headers="(created) (expires) digest",signature="${signature}"`
     console.log('Signature header', type, header);
@@ -95,20 +102,30 @@ let searchObj = {
 	"context": {
 		"domain": "nic2004:52110",
 		"country": "IND",
-		"city": "*",
+		"city": cityCode,
 		"action": "search",
 		"core_version": "1.1.0",
-		"bap_id": "o_elamoney-website-3000a.stg.corp.o_elacabs.com",
-		"bap_uri": "https://o_elamoney-website-3000a.stg.corp.o_elacabs.com/ondc",
+		"bap_id": "k-ronosmoney-website-3000a.stg.corp.k-ronoscabs.com",
+		"bap_uri": "https://k-ronosmoney-website-3000a.stg.corp.k-ronoscabs.com/ondc",
 		"transaction_id": transactionId,
+		// "transaction_id": "e430cfc9-a2bb-4a78-8c1c-405376er45ty",
 		"message_id": uuid(),
+		// "message_id": "fdab890b-ffef-453b-a17c-dc1232dfr45t",
 		"timestamp": new Date().toISOString(),
 		"ttl": "PT60S"
 	},
 	"message": {
 		"intent": {
 			"fulfillment": {
-				"type": "delivery"
+				"type": "delivery",
+				"end": {
+					"location": {
+						"gps": gps,
+						"address": {
+							"area_code": pincode
+						}
+					}
+				}
 			},
 			"payment": {
 				"@ondc/org/buyer_app_finder_fee_type": "percent",
@@ -265,13 +282,13 @@ const selectPayload = {
 		"domain": "nic2004:52110",
 		"action": "select",
 		"core_version": "1.1.0",
-		"bap_id": "o_elamoney-website-3000a.stg.corp.o_elacabs.com",
-		"bap_uri": "https://o_elamoney-website-3000a.stg.corp.o_elacabs.com/ondc",
+		"bap_id": "k-ronosmoney-website-3000a.stg.corp.k-ronoscabs.com",
+		"bap_uri": "https://k-ronosmoney-website-3000a.stg.corp.k-ronoscabs.com/ondc",
 		"bpp_id": "seller.instastack.io",
 		"bpp_uri": "https://seller.instastack.io/api/",
 		"transaction_id": transactionId,
 		"message_id": uuid(),
-		"city": "*",
+		"city": cityCode,
 		"country": "IND",
 		"timestamp": new Date().toISOString(),
 		"ttl": "PT60S"
@@ -296,7 +313,7 @@ const selectPayload = {
 					"location": {
 						"gps": gps,
 						"address": {
-							"area_code": "400076"
+							"area_code": pincode
 						}
 					}
 				}
@@ -305,7 +322,52 @@ const selectPayload = {
 	}
 };
 
-// const selectPayload = {"context":{"domain":"nic2004:52110","action":"select","core_version":"1.1.0","bap_id":"o_elamoney-website-3000a.stg.corp.o_elacabs.com","bap_uri":"https://o_elamoney-website-3000a.stg.corp.o_elacabs.com/ondc","bpp_id":"staging-ondc-seller.viranc.com","bpp_uri":"https://staging-ondc-seller.viranc.com/protocol/v1/retail","transaction_id":"16018b5c-96fe-472e-ab64-92ac9c7b0060","message_id":"184a20fd-7442-47e2-ab18-ff73d48a2aee","city":"std:080","country":"IND","timestamp":"2023-06-16T07:51:52.992Z","ttl":"PT60S"},"message":{"order":{"provider":{"id":"d04c6a6c-7601-11ed-b223-0242ac120003","locations":[{"id":"d04c6a6c-7601-11ed-b223-0242ac120003-location"}]},"items":[{"id":"d05a195a-7601-11ed-b223-0242ac120003","location_id":"d04c6a6c-7601-11ed-b223-0242ac120003-location","quantity":{"count":1}}],"fulfillments":[{"end":{"location":{"gps":gps,"address":{"area_code":"560068"}}}}]}}}const selectPayloadStr = JSON.stringify(selectPayload);
+// const selectPayload = {
+// 	"context": {
+// 		"domain": "nic2004:52110",
+// 		"action": "select",
+// 		"core_version": "1.1.0",
+// 		"bap_id": "k-ronosmoney-website-3000a.stg.corp.k-ronoscabs.com",
+// 		"bap_uri": "https://k-ronosmoney-website-3000a.stg.corp.k-ronoscabs.com/ondc",
+// 		"bpp_id": "staging-ondc-seller.viranc.com",
+// 		"bpp_uri": "https://staging-ondc-seller.viranc.com/protocol/v1/retail",
+// 		"transaction_id": transactionId,
+// 		"message_id": uuid(),
+// 		"city": "*",
+// 		"country": "IND",
+// 		"timestamp": new Date().toISOString(),
+// 		"ttl": "PT60S"
+// 	},
+// 	"message": {
+// 		"order": {
+// 			"provider": {
+// 				"id": "d04c6a6c-7601-11ed-b223-0242ac120003",
+// 				"locations": [{
+// 					"id": "d04c6a6c-7601-11ed-b223-0242ac120003-location"
+// 				}]
+// 			},
+// 			"items": [{
+// 				"id": "d05a195a-7601-11ed-b223-0242ac120003",
+// 				"location_id": "d04c6a6c-7601-11ed-b223-0242ac120003-location",
+// 				"quantity": {
+// 					"count": 1
+// 				}
+// 			}],
+// 			"fulfillments": [{
+// 				"end": {
+// 					"location": {
+// 						"gps": gps,
+// 						"address": {
+// 							"area_code": pincode
+// 						}
+// 					}
+// 				}
+// 			}]
+// 		}
+// 	}
+// };
+
+// const selectPayload = {"context":{"domain":"nic2004:52110","action":"select","core_version":"1.1.0","bap_id":"k-ronosmoney-website-3000a.stg.corp.k-ronoscabs.com","bap_uri":"https://k-ronosmoney-website-3000a.stg.corp.k-ronoscabs.com/ondc","bpp_id":"staging-ondc-seller.viranc.com","bpp_uri":"https://staging-ondc-seller.viranc.com/protocol/v1/retail","transaction_id":"16018b5c-96fe-472e-ab64-92ac9c7b0060","message_id":"184a20fd-7442-47e2-ab18-ff73d48a2aee","city":cityCode,"country":"IND","timestamp":"2023-06-16T07:51:52.992Z","ttl":"PT60S"},"message":{"order":{"provider":{"id":"d04c6a6c-7601-11ed-b223-0242ac120003","locations":[{"id":"d04c6a6c-7601-11ed-b223-0242ac120003-location"}]},"items":[{"id":"d05a195a-7601-11ed-b223-0242ac120003","location_id":"d04c6a6c-7601-11ed-b223-0242ac120003-location","quantity":{"count":1}}],"fulfillments":[{"end":{"location":{"gps":gps,"address":{"area_code":"560068"}}}}]}}}const selectPayloadStr = JSON.stringify(selectPayload);
 const selectPayloadStr = JSON.stringify(selectPayload);
 console.log('selectPayloadStr', selectPayloadStr);
 
@@ -322,8 +384,8 @@ const initPayload = {
 		"domain": "nic2004:52110",
 		"action": "init",
 		"core_version": "1.1.0",
-		"bap_id": "o_elamoney-website-3000a.stg.corp.o_elacabs.com",
-		"bap_uri": "https://o_elamoney-website-3000a.stg.corp.o_elacabs.com/ondc",
+		"bap_id": "k-ronosmoney-website-3000a.stg.corp.k-ronoscabs.com",
+		"bap_uri": "https://k-ronosmoney-website-3000a.stg.corp.k-ronoscabs.com/ondc",
 		"bpp_id": "seller.instastack.io",
 		"bpp_uri": "https://seller.instastack.io/api/",
 		"transaction_id": transactionId,
@@ -357,7 +419,7 @@ const initPayload = {
 					"city": "Mumbai",
 					"state": "Maharashtra",
 					"country": "IND",
-					"area_code": "400076"
+					"area_code": pincode
 				},
 				"email": "ekansh@gmail.com",
 				"phone": "9886098860",
@@ -379,7 +441,7 @@ const initPayload = {
 							"city": "Mumbai",
 							"state": "Maharashtra",
 							"country": "IND",
-							"area_code": "400076"
+							"area_code": pincode
 						}
 					},
 					"contact": {
@@ -416,13 +478,13 @@ const confirmPayload = {
 		"domain": "nic2004:52110",
 		"action": "confirm",
 		"core_version": "1.1.0",
-		"bap_id": "o_elamoney-website-3000a.stg.corp.o_elacabs.com",
-		"bap_uri": "https://o_elamoney-website-3000a.stg.corp.o_elacabs.com/ondc",
+		"bap_id": "k-ronosmoney-website-3000a.stg.corp.k-ronoscabs.com",
+		"bap_uri": "https://k-ronosmoney-website-3000a.stg.corp.k-ronoscabs.com/ondc",
 		"bpp_id": "seller.instastack.io",
 		"bpp_uri": "https://seller.instastack.io/api/",
 		"transaction_id": transactionId,
 		"message_id": uuid(),
-		"city": "*",
+		"city": cityCode,
 		"country": "IND",
 		"timestamp": new Date().toISOString(),
 		"ttl": "PT60S"
@@ -453,7 +515,7 @@ const confirmPayload = {
 					"city": "Mumbai",
 					"state": "Maharashtra",
 					"country": "IND",
-					"area_code": "400076"
+					"area_code": pincode
 				},
 				"phone": "9886098860",
 				"email": "ekansh.katiyar@gmail.com"
@@ -480,7 +542,7 @@ const confirmPayload = {
 							"city": "Mumbai",
 							"state": "Maharashtra",
 							"country": "IND",
-							"area_code": "400076"
+							"area_code": pincode
 						}
 					}
 				}
@@ -636,4 +698,33 @@ const confirmPayload = {
 
 const confirmPayloadParsed = JSON.parse(JSON.stringify(confirmPayload));
 console.log('confirmPayload', JSON.stringify(confirmPayloadParsed));
-createAuthorizationHeader(JSON.stringify(confirmPayloadParsed));
+createAuthorizationHeader(JSON.stringify(confirmPayloadParsed), 'INIT');
+
+
+
+// ******************* STATUS *******************
+
+const statusPayload = {
+	"context": {
+		"domain": "nic2004:52110",
+		"action": "confirm",
+		"core_version": "1.1.0",
+		"bap_id": "k-ronosmoney-website-3000a.stg.corp.k-ronoscabs.com",
+		"bap_uri": "https://k-ronosmoney-website-3000a.stg.corp.k-ronoscabs.com/ondc",
+		"bpp_id": "seller.instastack.io",
+		"bpp_uri": "https://seller.instastack.io/api/",
+		"transaction_id": "f799383c-24a6-4dba-8a84-3d5406c8ae2e",
+		"message_id": "ed1974e0-0c29-4dd8-91a3-94ac1970800f",
+		"city": cityCode,
+		"country": "IND",
+		"timestamp": new Date().toISOString(),
+		"ttl": "PT60S"
+	},
+	"message": {
+		"order_id": "4a9d9373-3c34-47e6-a38f-251b02265656"
+	}
+};
+
+const statusPayloadParsed = JSON.parse(JSON.stringify(statusPayload));
+console.log('statusPayload', JSON.stringify(statusPayloadParsed));
+createAuthorizationHeader(JSON.stringify(confirmPayloadParsed), 'CONFIRM');
