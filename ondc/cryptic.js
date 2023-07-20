@@ -18,13 +18,6 @@ export const createKeyPair = async () => {
     return { publicKey: publicKey_base64, privateKey: privateKey_base64 };
 }
 
-
-
-
-
-
-
-
 const transactionId = uuid();
 // const gps = "19.124398,72.910208";
 // const pincode = "400076";
@@ -32,8 +25,8 @@ const transactionId = uuid();
 const gps = "12.953085,77.5838393";
 const pincode = "560001";
 
-// const cityCode = 'std:080';
-const cityCode = '*';
+const cityCode = 'std:080';
+// const cityCode = '*';
 
 const createSigningString = async (message, created, expires) => {
     if (!created) created = Math.floor(new Date().getTime() / 1000).toString();
@@ -84,7 +77,7 @@ const createAuthorizationHeader = async (message, type) => {
 
     const signature = await signMessage(signing_string, 'SPHSGdE7O2PAsTqlHe2TlBuaRuvGd5PwcikI2Enl20Swi6VOnQhKTkNzy0ap+66DqUMn6TWcQVDDbdI7va2ELQ==' || "");
 
-    const subscriber_id = 'k-ronosmoney-website-3000a.stg.corp.k-ronoscabs.com';
+    const subscriber_id = '-test-money-website-3000a.stg.corp.-test-cabs.com';
     const unique_key_id = '643';
     const header = `Signature keyId="${subscriber_id}|${unique_key_id}|ed25519",algorithm="ed25519",created="${created}",expires="${expires}",headers="(created) (expires) digest",signature="${signature}"`
     console.log('Signature header', type, header);
@@ -105,8 +98,8 @@ let searchObj = {
 		"city": cityCode,
 		"action": "search",
 		"core_version": "1.1.0",
-		"bap_id": "k-ronosmoney-website-3000a.stg.corp.k-ronoscabs.com",
-		"bap_uri": "https://k-ronosmoney-website-3000a.stg.corp.k-ronoscabs.com/ondc",
+		"bap_id": "-test-money-website-3000a.stg.corp.-test-cabs.com",
+		"bap_uri": "https://-test-money-website-3000a.stg.corp.-test-cabs.com/ondc",
 		"transaction_id": transactionId,
 		// "transaction_id": "e430cfc9-a2bb-4a78-8c1c-405376er45ty",
 		"message_id": uuid(),
@@ -282,10 +275,10 @@ const selectPayload = {
 		"domain": "nic2004:52110",
 		"action": "select",
 		"core_version": "1.1.0",
-		"bap_id": "k-ronosmoney-website-3000a.stg.corp.k-ronoscabs.com",
-		"bap_uri": "https://k-ronosmoney-website-3000a.stg.corp.k-ronoscabs.com/ondc",
-		"bpp_id": "seller.instastack.io",
-		"bpp_uri": "https://seller.instastack.io/api/",
+		"bap_id": "-test-money-website-3000a.stg.corp.-test-cabs.com",
+		"bap_uri": "https://-test-money-website-3000a.stg.corp.-test-cabs.com/ondc",
+		"bpp_id": "staging-ondc-seller.viranc.com",
+		"bpp_uri": "https://staging-ondc-seller.viranc.com/protocol/v1/retail",
 		"transaction_id": transactionId,
 		"message_id": uuid(),
 		"city": cityCode,
@@ -296,18 +289,27 @@ const selectPayload = {
 	"message": {
 		"order": {
 			"provider": {
-				"id": "e649c7a6-7cce-48bb-82bb-8d5341a0a9c7",
+				"id": "d04c6a6c-7601-11ed-b223-0242ac120003",
 				"locations": [{
-					"id": "f5f41af3-30ec-41be-bace-880c96e5f59e"
+					"id": "d04c6a6c-7601-11ed-b223-0242ac120003-location"
 				}]
 			},
-			"items": [{
-				"id": "143141",
-				"location_id": "f5f41af3-30ec-41be-bace-880c96e5f59e",
-				"quantity": {
-					"count": 1
-				}
-			}],
+			"items": [
+				{
+					"id": "d05a195a-7601-11ed-b223-0242ac120003",
+					"location_id": "d04c6a6c-7601-11ed-b223-0242ac120003-location",
+					"quantity": {
+						"count": 1
+					}
+				},
+				{
+					"id": "d9086493-f5b9-434e-ac0f-08131a31c5dc",
+					"location_id": "d04c6a6c-7601-11ed-b223-0242ac120003-location",
+					"quantity": {
+						"count": 2
+					}
+				},
+			],
 			"fulfillments": [{
 				"end": {
 					"location": {
@@ -327,8 +329,8 @@ const selectPayload = {
 // 		"domain": "nic2004:52110",
 // 		"action": "select",
 // 		"core_version": "1.1.0",
-// 		"bap_id": "k-ronosmoney-website-3000a.stg.corp.k-ronoscabs.com",
-// 		"bap_uri": "https://k-ronosmoney-website-3000a.stg.corp.k-ronoscabs.com/ondc",
+// 		"bap_id": "-test-money-website-3000a.stg.corp.-test-cabs.com",
+// 		"bap_uri": "https://-test-money-website-3000a.stg.corp.-test-cabs.com/ondc",
 // 		"bpp_id": "staging-ondc-seller.viranc.com",
 // 		"bpp_uri": "https://staging-ondc-seller.viranc.com/protocol/v1/retail",
 // 		"transaction_id": transactionId,
@@ -367,7 +369,7 @@ const selectPayload = {
 // 	}
 // };
 
-// const selectPayload = {"context":{"domain":"nic2004:52110","action":"select","core_version":"1.1.0","bap_id":"k-ronosmoney-website-3000a.stg.corp.k-ronoscabs.com","bap_uri":"https://k-ronosmoney-website-3000a.stg.corp.k-ronoscabs.com/ondc","bpp_id":"staging-ondc-seller.viranc.com","bpp_uri":"https://staging-ondc-seller.viranc.com/protocol/v1/retail","transaction_id":"16018b5c-96fe-472e-ab64-92ac9c7b0060","message_id":"184a20fd-7442-47e2-ab18-ff73d48a2aee","city":cityCode,"country":"IND","timestamp":"2023-06-16T07:51:52.992Z","ttl":"PT60S"},"message":{"order":{"provider":{"id":"d04c6a6c-7601-11ed-b223-0242ac120003","locations":[{"id":"d04c6a6c-7601-11ed-b223-0242ac120003-location"}]},"items":[{"id":"d05a195a-7601-11ed-b223-0242ac120003","location_id":"d04c6a6c-7601-11ed-b223-0242ac120003-location","quantity":{"count":1}}],"fulfillments":[{"end":{"location":{"gps":gps,"address":{"area_code":"560068"}}}}]}}}const selectPayloadStr = JSON.stringify(selectPayload);
+// const selectPayload = {"context":{"domain":"nic2004:52110","action":"select","core_version":"1.1.0","bap_id":"-test-money-website-3000a.stg.corp.-test-cabs.com","bap_uri":"https://-test-money-website-3000a.stg.corp.-test-cabs.com/ondc","bpp_id":"staging-ondc-seller.viranc.com","bpp_uri":"https://staging-ondc-seller.viranc.com/protocol/v1/retail","transaction_id":"16018b5c-96fe-472e-ab64-92ac9c7b0060","message_id":"184a20fd-7442-47e2-ab18-ff73d48a2aee","city":cityCode,"country":"IND","timestamp":"2023-06-16T07:51:52.992Z","ttl":"PT60S"},"message":{"order":{"provider":{"id":"d04c6a6c-7601-11ed-b223-0242ac120003","locations":[{"id":"d04c6a6c-7601-11ed-b223-0242ac120003-location"}]},"items":[{"id":"d05a195a-7601-11ed-b223-0242ac120003","location_id":"d04c6a6c-7601-11ed-b223-0242ac120003-location","quantity":{"count":1}}],"fulfillments":[{"end":{"location":{"gps":gps,"address":{"area_code":"560068"}}}}]}}}const selectPayloadStr = JSON.stringify(selectPayload);
 const selectPayloadStr = JSON.stringify(selectPayload);
 console.log('selectPayloadStr', selectPayloadStr);
 
@@ -384,8 +386,8 @@ const initPayload = {
 		"domain": "nic2004:52110",
 		"action": "init",
 		"core_version": "1.1.0",
-		"bap_id": "k-ronosmoney-website-3000a.stg.corp.k-ronoscabs.com",
-		"bap_uri": "https://k-ronosmoney-website-3000a.stg.corp.k-ronoscabs.com/ondc",
+		"bap_id": "-test-money-website-3000a.stg.corp.-test-cabs.com",
+		"bap_uri": "https://-test-money-website-3000a.stg.corp.-test-cabs.com/ondc",
 		"bpp_id": "seller.instastack.io",
 		"bpp_uri": "https://seller.instastack.io/api/",
 		"transaction_id": transactionId,
@@ -478,8 +480,8 @@ const confirmPayload = {
 		"domain": "nic2004:52110",
 		"action": "confirm",
 		"core_version": "1.1.0",
-		"bap_id": "k-ronosmoney-website-3000a.stg.corp.k-ronoscabs.com",
-		"bap_uri": "https://k-ronosmoney-website-3000a.stg.corp.k-ronoscabs.com/ondc",
+		"bap_id": "-test-money-website-3000a.stg.corp.-test-cabs.com",
+		"bap_uri": "https://-test-money-website-3000a.stg.corp.-test-cabs.com/ondc",
 		"bpp_id": "seller.instastack.io",
 		"bpp_uri": "https://seller.instastack.io/api/",
 		"transaction_id": transactionId,
@@ -709,8 +711,8 @@ const statusPayload = {
 		"domain": "nic2004:52110",
 		"action": "confirm",
 		"core_version": "1.1.0",
-		"bap_id": "k-ronosmoney-website-3000a.stg.corp.k-ronoscabs.com",
-		"bap_uri": "https://k-ronosmoney-website-3000a.stg.corp.k-ronoscabs.com/ondc",
+		"bap_id": "-test-money-website-3000a.stg.corp.-test-cabs.com",
+		"bap_uri": "https://-test-money-website-3000a.stg.corp.-test-cabs.com/ondc",
 		"bpp_id": "seller.instastack.io",
 		"bpp_uri": "https://seller.instastack.io/api/",
 		"transaction_id": "f799383c-24a6-4dba-8a84-3d5406c8ae2e",

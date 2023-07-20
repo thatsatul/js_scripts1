@@ -3,7 +3,7 @@ const path = require('path');
 var express = require('express');
 var app = express();
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use('/static', express.static(path.join(__dirname, 'public')));
 
 app.get('/test', function (req, res) {
   res.status(200);
@@ -38,6 +38,11 @@ app.get('/chat-bot', function (req, res) {
 app.post('/oauth-login', function (req, res) {
   res.status(201);
   res.json({test: 2});
+});
+
+app.get('/view-3d', function (req, res) {
+  res.status(200);
+  res.sendFile('./test-app/image-360.html', {root: __dirname});
 });
 
 app.get('*', function (req, res) {
