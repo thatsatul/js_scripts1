@@ -6,12 +6,19 @@
           var el = document.getElementById('otp');
           var val = el.value;
           console.log(' val1 ', val);
+          // Logic to encrypt the value
           val = CryptoJS.AES.encrypt(
             val,
             '123456789',
           ).toString();
           console.log(' val2 ', val);
           document.getElementById('encrypted-val').innerText = val;
+          // Logic to decrypt the encrypted value
+          var val1 = CryptoJS.AES.decrypt(
+            val,
+            '123456789',
+          ).toString(CryptoJS.enc.Utf8);
+          console.log(' val3 ', val1);
         }
     </script>
   </head>

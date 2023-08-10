@@ -1,0 +1,140 @@
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+ 
+<head>
+<title>Timeline structure</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="Timeline structure" />
+<meta name="keywords" content="Timeline structure" />
+<meta name="author" content="Timeline structure" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  .reaching-title {
+    color: #242424;
+    font-family: Roboto;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px; /* 120% */
+    margin-bottom: 24px;
+    padding: 16px 16px;
+  }
+  .row {
+    display: flex;
+    padding-top: 12px;
+  }
+
+  .status-icon {
+    width: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .status-desc {
+    width: 50%;
+    text-align: left;
+    /* height: 300px; */
+  }
+  .bdr-btm {
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .call-icon {
+    width: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .status-title {
+    color: rgba(0, 0, 0, 0.86);
+    font-family: Roboto;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px; /* 150% */
+    margin-bottom: 4px;
+  }
+
+  .status-time {
+    color: rgba(0, 0, 0, 0.56);
+    font-family: Roboto;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px; /* 142.857% */
+    margin-bottom: 8px;
+  }
+  .time-line {
+    width: 1px;
+    height: 100%;
+    background-color: #e0e0e0;
+    position: absolute;
+    left: 50%;
+    top: 53%;
+    z-index: -1;
+  }
+</style>
+</head>
+
+<body>
+  <div>
+    <div class="reaching-title">Reaching in 15 minutes</div>
+    <div class="timeline-comp">
+      <div class="row row-completed">
+        <div class="status-icon">
+          <div class="time-line"></div>
+          <img src="https://-test-money-website.s3.ap-south-1.amazonaws.com/-test--foods/completed.svg" />
+        </div>
+        <div class="status-desc bdr-btm">
+          <div class="status-title">Order recieved</div>
+          <div class="status-time">at 10:00 AM</div>
+        </div>
+        <div class="call-icon"></div>
+      </div>
+      <div class="row row-completed">
+        <div class="status-icon">
+          <div class="time-line"></div>
+          <img src="https://-test-money-website.s3.ap-south-1.amazonaws.com/-test--foods/completed.svg" />
+        </div>
+        <div class="status-desc bdr-btm">
+          <div class="status-title">Order prepared</div>
+          <div class="status-time">at 10:00 AM</div>
+        </div>
+        <div class="call-icon"></div>
+      </div>
+      <div class="row row-completed">
+        <div class="status-icon">
+          <div class="time-line"></div>
+          <img src="https://-test-money-website.s3.ap-south-1.amazonaws.com/-test--foods/completed.svg" />
+        </div>
+        <div class="status-desc bdr-btm">
+          <div class="status-title">Order picked up</div>
+          <div class="status-time">at 10:00 AM</div>
+        </div>
+        <div class="call-icon"></div>
+      </div>
+      <div class="row row-in-progress">
+        <div class="status-icon">
+          <div class="time-line"></div>
+          <img src="https://-test-money-website.s3.ap-south-1.amazonaws.com/-test--foods/in-progress.svg" />
+        </div>
+        <div class="status-desc bdr-btm">
+          <div class="status-title">Order on the way</div>
+          <div class="status-time">at 10:00 AM</div>
+        </div>
+        <div class="call-icon">
+          <img src="https://-test-money-website.s3.ap-south-1.amazonaws.com/-test--foods/call-icon.svg" />
+        </div>
+      </div>
+      <div class="row row-pending">
+        <div class="status-icon">
+          <img src="https://-test-money-website.s3.ap-south-1.amazonaws.com/-test--foods/pending.svg" />
+        </div>
+        <div class="status-desc">
+          <div class="status-title">Order Delivered</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

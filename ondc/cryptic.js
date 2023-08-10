@@ -2,11 +2,6 @@ import _sodium from 'libsodium-wrappers';
 import _ from 'lodash';
 import { v4 as uuid } from 'uuid';
 
-
-
-
-
-
 export const createKeyPair = async () => {
     await _sodium.ready;
     const sodium = _sodium;
@@ -22,8 +17,8 @@ const transactionId = uuid();
 // const gps = "19.124398,72.910208";
 // const pincode = "400076";
 
-const gps = "12.953085,77.5838393";
-const pincode = "560001";
+const gps = "12.889864,77.64095";
+const pincode = "560068";
 
 const cityCode = 'std:080';
 // const cityCode = '*';
@@ -225,37 +220,49 @@ let searchObj = {
 		"bap_id": "-test-money-website-3000a.stg.corp.-test-cabs.com",
 		"bap_uri": "https://-test-money-website-3000a.stg.corp.-test-cabs.com/ondc",
 		"transaction_id": transactionId,
-		// "transaction_id": "e430cfc9-a2bb-4a78-8c1c-405376er45ty",
 		"message_id": uuid(),
+		// "transaction_id": "e430cfc9-a2bb-4a78-8c1c-405376er45ty",
 		// "message_id": "fdab890b-ffef-453b-a17c-dc1232dfr45t",
 		"timestamp": new Date().toISOString(),
-		"ttl": "PT60S"
+		"ttl": "PT30S"
 	},
 	"message": {
 		"intent": {
+			// "category": {
+			// 	"id": "f&b"
+			// },
+			"item": {
+				"descriptor": {
+					"name": "chakki",
+				},
+			},
+			// "provider": {
+			// 	"id": "d04c6a6c-7601-11ed-b223-0242ac120003"
+			// },
 			"fulfillment": {
-				"type": "delivery",
+				"type": "Delivery",
 				"end": {
 					"location": {
 						"gps": gps,
-						"address": {
-							"area_code": pincode
-						}
+						// "address": {
+						// 	"area_code": pincode
+						// }
 					}
 				}
 			},
-			"payment": {
-				"@ondc/org/buyer_app_finder_fee_type": "percent",
-				"@ondc/org/buyer_app_finder_fee_amount": "3"
-			}
+			// "payment": {
+			// 	"@ondc/org/buyer_app_finder_fee_type": "percent",
+			// 	"@ondc/org/buyer_app_finder_fee_amount": "3"
+			// }
 		}
 	}
 };
 const searchObjParsed = JSON.parse(JSON.stringify(searchObj));
 console.log('searchObj', JSON.stringify(searchObjParsed));
-createAuthorizationHeader(searchObjParsed, 'SEARCH').then(sig => setTmOut(sig, searchObj));;
+createAuthorizationHeader(searchObjParsed, 'SEARCH').then(sig => setTmOut(sig, searchObjParsed, 'SEARCH'));
 
 // ****************************************************************** Select starts ******************************************************************
+
 
 const selectPayload = {
 	"context": {
@@ -271,7 +278,7 @@ const selectPayload = {
 		"city": cityCode,
 		"country": "IND",
 		"timestamp": new Date().toISOString(),
-		"ttl": "PT60S"
+		"ttl": "PT30M"
 	},
 	"message": {
 		"order": {
@@ -281,22 +288,13 @@ const selectPayload = {
 					"id": "d04c6a6c-7601-11ed-b223-0242ac120003-location"
 				}]
 			},
-			"items": [
-				{
-					"id": "d05a195a-7601-11ed-b223-0242ac120003",
-					"location_id": "d04c6a6c-7601-11ed-b223-0242ac120003-location",
-					"quantity": {
-						"count": 1
-					}
-				},
-				{
-					"id": "d9086493-f5b9-434e-ac0f-08131a31c5dc",
-					"location_id": "d04c6a6c-7601-11ed-b223-0242ac120003-location",
-					"quantity": {
-						"count": 2
-					}
-				},
-			],
+			"items": [{
+				"id": "d05a195a-7601-11ed-b223-0242ac120003",
+				"location_id": "d04c6a6c-7601-11ed-b223-0242ac120003-location",
+				"quantity": {
+					"count": 1
+				}
+			}],
 			"fulfillments": [{
 				"end": {
 					"location": {
@@ -311,58 +309,10 @@ const selectPayload = {
 	}
 };
 
-// const selectPayload = {
-// 	"context": {
-// 		"domain": "nic2004:52110",
-// 		"action": "select",
-// 		"core_version": "1.1.0",
-// 		"bap_id": "-test-money-website-3000a.stg.corp.-test-cabs.com",
-// 		"bap_uri": "https://-test-money-website-3000a.stg.corp.-test-cabs.com/ondc",
-// 		"bpp_id": "staging-ondc-seller.viranc.com",
-// 		"bpp_uri": "https://staging-ondc-seller.viranc.com/protocol/v1/retail",
-// 		"transaction_id": transactionId,
-// 		"message_id": uuid(),
-// 		"city": "*",
-// 		"country": "IND",
-// 		"timestamp": new Date().toISOString(),
-// 		"ttl": "PT60S"
-// 	},
-// 	"message": {
-// 		"order": {
-// 			"provider": {
-// 				"id": "d04c6a6c-7601-11ed-b223-0242ac120003",
-// 				"locations": [{
-// 					"id": "d04c6a6c-7601-11ed-b223-0242ac120003-location"
-// 				}]
-// 			},
-// 			"items": [{
-// 				"id": "d05a195a-7601-11ed-b223-0242ac120003",
-// 				"location_id": "d04c6a6c-7601-11ed-b223-0242ac120003-location",
-// 				"quantity": {
-// 					"count": 1
-// 				}
-// 			}],
-// 			"fulfillments": [{
-// 				"end": {
-// 					"location": {
-// 						"gps": gps,
-// 						"address": {
-// 							"area_code": pincode
-// 						}
-// 					}
-// 				}
-// 			}]
-// 		}
-// 	}
-// };
-
-// const selectPayload = {"context":{"domain":"nic2004:52110","action":"select","core_version":"1.1.0","bap_id":"-test-money-website-3000a.stg.corp.-test-cabs.com","bap_uri":"https://-test-money-website-3000a.stg.corp.-test-cabs.com/ondc","bpp_id":"staging-ondc-seller.viranc.com","bpp_uri":"https://staging-ondc-seller.viranc.com/protocol/v1/retail","transaction_id":"16018b5c-96fe-472e-ab64-92ac9c7b0060","message_id":"184a20fd-7442-47e2-ab18-ff73d48a2aee","city":cityCode,"country":"IND","timestamp":"2023-06-16T07:51:52.992Z","ttl":"PT60S"},"message":{"order":{"provider":{"id":"d04c6a6c-7601-11ed-b223-0242ac120003","locations":[{"id":"d04c6a6c-7601-11ed-b223-0242ac120003-location"}]},"items":[{"id":"d05a195a-7601-11ed-b223-0242ac120003","location_id":"d04c6a6c-7601-11ed-b223-0242ac120003-location","quantity":{"count":1}}],"fulfillments":[{"end":{"location":{"gps":gps,"address":{"area_code":"560068"}}}}]}}}const selectPayloadStr = JSON.stringify(selectPayload);
 const selectPayloadStr = JSON.stringify(selectPayload);
 console.log('selectPayloadStr', selectPayloadStr);
 
-let selectSignature = createAuthorizationHeader(selectPayloadStr, 'SELECT').then(sig => selectSignature = sig);
-
-
+let selectSignature = createAuthorizationHeader(JSON.parse(selectPayloadStr), 'SELECT').then(sig => selectSignature = sig).then(sig => setTmOut(sig, selectPayloadStr, 'SELECT'));
 
 
 // ****************************************************************** Select ends ******************************************************************
@@ -457,7 +407,7 @@ const initPayload = {
 const initPayloadParsed = JSON.parse(JSON.stringify(initPayload));
 console.log('initPayload', JSON.stringify(initPayloadParsed));
 
-let initPayloadSign = createAuthorizationHeader(selectPayloadStr, 'INIT').then(sig => selectSignature = sig);
+let initPayloadSign = createAuthorizationHeader(initPayloadParsed, 'INIT').then(sig => selectSignature = sig).then(sig => setTmOut(sig, initPayloadParsed, 'INIT'));
 
 // ******************************* Confirm starts *******************************
 
@@ -479,7 +429,7 @@ const confirmPayload = {
 	},
 	"message": {
 		"order": {
-			"id": "87bb80e9-e2b0-4c1a-8034-93c6b51bc27f",
+			"id": uuid(),
 			"provider": {
 				"id": "d04c6a6c-7601-11ed-b223-0242ac120003",
 				"locations": [{
@@ -631,7 +581,7 @@ const confirmPayload = {
 
 const confirmPayloadParsed = JSON.parse(JSON.stringify(confirmPayload));
 console.log('confirmPayload', JSON.stringify(confirmPayloadParsed));
-createAuthorizationHeader(JSON.stringify(confirmPayloadParsed), 'CONFIRM');
+createAuthorizationHeader(confirmPayloadParsed, 'CONFIRM').then(sig => setTmOut(sig, confirmPayloadParsed, 'CONFIRM'));
 
 
 
@@ -639,28 +589,27 @@ createAuthorizationHeader(JSON.stringify(confirmPayloadParsed), 'CONFIRM');
 
 const statusPayload = {
 	"context": {
-		"domain": "nic2004:52110",
-		"action": "confirm",
-		"core_version": "1.1.0",
-		"bap_id": "-test-money-website-3000a.stg.corp.-test-cabs.com",
-		"bap_uri": "https://-test-money-website-3000a.stg.corp.-test-cabs.com/ondc",
-		"bpp_id": "seller.instastack.io",
-		"bpp_uri": "https://seller.instastack.io/api/",
-		"transaction_id": "f799383c-24a6-4dba-8a84-3d5406c8ae2e",
-		"message_id": "ed1974e0-0c29-4dd8-91a3-94ac1970800f",
-		"city": cityCode,
-		"country": "IND",
-		"timestamp": new Date().toISOString(),
-		"ttl": "PT60S"
+		action: "status",
+		bap_id: "-test-money-website-3000a.stg.corp.-test-cabs.com",
+		bap_uri: "https://-test-money-website-3000a.stg.corp.-test-cabs.com/ondc",
+		bpp_id: "staging-ondc-seller.viranc.com",
+		bpp_uri: "https://staging-ondc-seller.viranc.com/protocol/v1/retail",
+		city: "std:080",
+		core_version: "1.1.0",
+		country: "IND",
+		domain: "nic2004:52110",
+		message_id: "5fe1ff44-8944-4f83-990b-15d6040f12ede",
+		timestamp: new Date().toISOString(),
+		transaction_id: "76d6d2b9-e522-41d7-9219-eca3f033320f"
 	},
 	"message": {
-		"order_id": "4a9d9373-3c34-47e6-a38f-251b02265656"
+		"order_id": "ac2f335b-3af6-4d37-b022-4f539c823470"
 	}
 };
 
 const statusPayloadParsed = JSON.parse(JSON.stringify(statusPayload));
 console.log('statusPayload', JSON.stringify(statusPayloadParsed));
-createAuthorizationHeader(JSON.stringify(confirmPayloadParsed), 'STATUS');
+createAuthorizationHeader(statusPayloadParsed, 'STATUS').then(sig => setTmOut(sig, statusPayloadParsed, 'STATUS'));
 
 
 // ******************* Validate signature *******************
@@ -669,11 +618,11 @@ createAuthorizationHeader(JSON.stringify(confirmPayloadParsed), 'STATUS');
 // const validateSignature = 'Signature keyId="-test-money-website-3000a.stg.corp.-test-cabs.com|643|ed25519",algorithm="ed25519",created="1689842770",expires="1689846370",headers="(created) (expires) digest",signature="AWNbBj9tqreh2fcgT5jT5zpyiJ6X9VzGG71RL98d6Dupott49r0J6dqG0pUBgRxltMsSThVRYR5bIKVQMANBCg=="';
 // const isValid = await isSignatureValid(validateSignature, validateSignaturePayload);
 
-const setTmOut = (sig, payload) => {
+const setTmOut = (sig, payload, type) => {
 	const tmOut = setTimeout(async () => {
     // Just checking if signature is valid
     const isSignatureValidRes = await isSignatureValid(sig, payload);
-    console.log('Signature valid: ', isSignatureValidRes);
+    console.log(`Signature valid: ${type} : `, isSignatureValidRes);
     clearTimeout(tmOut);
-}, 5000);
+	}, 5000);
 }
