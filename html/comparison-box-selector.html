@@ -1,0 +1,137 @@
+<style>
+  .comp {
+    padding-top: 100px;
+    display: flex;
+    flex-direction: row;
+  }
+  .col {
+    width: 33%;
+    display: flex;
+    flex-direction: column;
+  }
+  .selected-col {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+</style>
+
+<div id="app"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+<script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+
+<script type='text/babel'>
+
+class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      modelsArr: [
+        'test1',
+        'test2',
+        'test3',
+        'test4',
+        'test5',
+        'test6',
+        'test7'
+      ],
+      selected: {
+        col1: 'test1',
+        col2: 'test2',
+        col3: 'test3',
+        col4: 'test4',
+      }
+    }
+    console.log('XX selected', this.state.selected);
+  }
+
+  getCurrentIndexOfModel = (model) => {
+    return this.state.modelsArr.indexOf(model);
+  }
+  chooseNextModel = (currentIndex, newModelsSelectedArr) => {
+    let nextIndexFound = false;
+    let nextIndex = currentIndex + 1;
+    while(!nextIndexFound) {
+      if (nextIndex >= this.state.modelsArr.length) {
+        nextIndex = 0;
+      }
+      if(newModelsSelectedArr.indexOf(this.state.modelsArr[nextIndex]) < 0) {
+        nextIndexFound = true;
+      } else {
+        nextIndex++;
+      }
+    }
+    
+    return this.state.modelsArr[nextIndex];
+  }
+  selectModel = (selectedCol, selectedModel) => {
+    const selectedCopy = JSON.parse(JSON.stringify(this.state.selected));
+    const selectedModelsNewArr = [selectedModel];
+    Object.keys(selectedCopy).forEach((col) => {
+      if (col !== selectedCol) {
+        selectedModelsNewArr.push(selectedCopy[col]);
+      }
+    });
+    selectedCopy[selectedCol] = selectedModel;
+    Object.keys(selectedCopy).forEach((col) => {
+      if (col !== selectedCol) {
+        if(selectedCopy[col] === selectedModel) {
+          const currentIndex = this.getCurrentIndexOfModel(selectedModel);
+          const nextModel = this.chooseNextModel(currentIndex, selectedModelsNewArr);
+          selectedCopy[col] = nextModel;
+          selectedModelsNewArr.push(nextModel);
+        } else {
+          selectedModelsNewArr.push(selectedCopy[col]);
+        }
+      }
+    });
+    console.log('XX selected', selectedCopy);
+    this.setState({
+      selected: selectedCopy
+    });
+  }
+
+  showModelOptions = (selectedCol) => {
+    const options = this.state.modelsArr.map((model) => {
+      return (
+        <div onClick={() => this.selectModel(selectedCol, model)}>{model}</div>
+      )
+    });
+    return options;
+  }
+
+  render() {
+  // App component that provides initial context values
+    return (
+      <div className="comp">
+        <div className="col">
+          <div className="selected-col">{this.state.selected.col1}</div>
+          {this.showModelOptions('col1')}
+        </div>
+        <div className="col">
+          <div className="selected-col">{this.state.selected.col2}</div>
+          {this.showModelOptions('col2')}
+        </div>
+        <div className="col">
+          <div className="selected-col">{this.state.selected.col3}</div>
+          {this.showModelOptions('col3')}
+        </div>
+        <div className="col">
+          <div className="selected-col">{this.state.selected.col4}</div>
+          {this.showModelOptions('col4')}
+        </div>
+      </div>
+    );
+  }
+}
+
+
+
+ReactDOM.render(<App />, document.querySelector("#app"))
+
+</script>
+
+</body>
+
+</html>
