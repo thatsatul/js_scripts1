@@ -1,0 +1,78 @@
+<!-- https://stackoverflow.com/questions/22675126/what-is-offsetheight-clientheight-scrollheight -->
+<head>
+  <style>
+    /* Hides the horizontal overflow */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    .no-effect {
+      height: 100vh;
+      width: 100vw;
+      background: #ffffff url("https://images.unsplash.com/photo-1443827423664-eac70d49dd0d?fit=crop&fm=jpg&h=950&q=80&w=1920") no-repeat;
+      background-size: cover;
+      background-position: 50% 50%;
+    }
+    .no-effect1 {
+      height: 100vh;
+      width: 100vw;
+      background-color: red;
+      z-index: 5;
+      position:relative;
+    }
+    .no-effect2 {
+      height: 100vh;
+      width: 100vw;
+      background-color: brown;
+      z-index: 6;
+      position:relative;
+    }
+    section, div[class^="section"]{height:100vh;width:100%;position:sticky;padding:0;margin:0;}
+
+    .section1{top:0;background: #090057;color:white;text-align: center;}
+
+    .section2{top:0;background:#c400c6 ;z-index:2}
+
+    .section3{top:0;background: #ffa069;z-index:3}
+    .section4{top:0;background: green;z-index:4}
+
+
+    section > div{
+      position:absolute;
+      top:50%;
+      left:50%;
+      justify-content: center;
+      transform: translate(-50%,-50%);
+    }
+</style>
+</head>
+<body>
+  <div class="no-effect"></div>
+  <section id="home" class="section1">
+    <div>
+      <h1 class="line-1 anim-typewriterqq">This is a new Section 1</h1>
+    </div>
+  </section>
+  <section id="abouteee" class="section2">
+    <div>
+      <div>
+        <h1 style="color:#090057">This is a new Section 2</h1>
+      </div>
+    </div>
+  </section>
+  <section id="feedbackwww" class="section3">
+    <div>
+  
+        <h1 style="color:#090057">This is a new Section 3</h1>
+    </div>
+  </section>
+  <section id="feedbackwww" class="section4">
+    <div>
+  
+        <h1 style="color:#090057">This is a new Section 4</h1>
+    </div>
+  </section>
+  <div class="no-effect1"></div>
+  <div class="no-effect2"></div>
+</body>
