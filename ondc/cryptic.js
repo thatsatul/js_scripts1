@@ -312,7 +312,7 @@ const selectPayload = {
 const selectPayloadStr = JSON.stringify(selectPayload);
 console.log('selectPayloadStr', selectPayloadStr);
 
-let selectSignature = createAuthorizationHeader(JSON.parse(selectPayloadStr), 'SELECT').then(sig => selectSignature = sig).then(sig => setTmOut(sig, selectPayloadStr, 'SELECT'));
+let selectSignature = createAuthorizationHeader(JSON.parse(selectPayloadStr), 'SELECT').then(sig => selectSignature = sig).then(sig => setTmOut(sig, selectPayload, 'SELECT'));
 
 
 // ****************************************************************** Select ends ******************************************************************
