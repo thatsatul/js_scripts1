@@ -1,0 +1,46 @@
+<div id="app"></div>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.min.js"></script>
+<script crossorigin src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+
+<script type='text/babel'>
+class App extends React.Component {
+		constructor() {
+			super();
+			this.state = {
+				finalVal: 100
+			};
+			this.handleInfiniteScroll();
+		}
+
+		handleInfiniteScroll = () => {
+			$(window).on('scroll', () => {
+				if($(window).scrollTop() >= $('.inf-scroll').offset().top + $('.inf-scroll').outerHeight() - window.innerHeight) {
+					this.setState({
+						finalVal: this.state.finalVal + 50
+					});
+				}
+			});
+		}
+
+		showNumbersRows = () => {
+			const numArr = [];
+			for(let i = 1; i <= this.state.finalVal; i++) {
+				numArr.push(<div>{i}</div>);
+			}
+			return numArr;
+		}
+
+  	render() {
+    // App component that provides initial context values
+    return (
+      <div className="inf-scroll">{this.showNumbersRows()}</div>
+    );
+  }
+}
+
+ReactDOM.render(<App />, document.querySelector("#app"))
+
+
+</script>
