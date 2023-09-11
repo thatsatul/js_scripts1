@@ -45,6 +45,13 @@ app.get('/view-3d', function (req, res) {
   res.sendFile('./test-app/image-360.html', {root: __dirname});
 });
 
+app.get('/iframe-cookie', function (req, res) {
+  res.set('Content-Security-Policy', 'frame-ancestors *')
+  res.set('X-Frame-Options', 'ALLOW-FROM *');
+  res.status(200);
+  res.sendFile('./test-app/iframe-cookie.html', {root: __dirname});
+});
+
 app.get('*', function (req, res) {
   res.status(404).send('Not Found');
 });

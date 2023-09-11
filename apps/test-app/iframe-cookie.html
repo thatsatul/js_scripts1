@@ -1,0 +1,46 @@
+<body>
+  <div id="cookie-val"></div>
+  <iframe = src="http://test.magento.com:3333/iframe-cookie" id="iframe" height="300" width="100%"></iframe>
+  <script>
+    function getCookie(name) {
+      // Split the cookies into an array using the semicolon and space as a delimiter
+      const cookies = document.cookie.split('; ');
+
+      // Iterate through the cookies to find the one with the specified name
+      for (const cookie of cookies) {
+        const [cookieName, cookieValue] = cookie.split('=');
+
+        // Trim any leading or trailing whitespace
+        const trimmedCookieName = cookieName.trim();
+
+        // Check if the current cookie matches the name you're looking for
+        if (trimmedCookieName === name) {
+          // Return the cookie value
+          return decodeURIComponent(cookieValue);
+        }
+      }
+
+      // If the cookie with the specified name is not found, return null
+      return null;
+    }
+
+    function setCookie(name, value, days, domain) {
+      const expires = new Date();
+      expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+
+      const cookieOptions = {
+        expires: expires.toUTCString(),
+        path: '/',
+      };
+
+      if (domain) {
+        cookieOptions.domain = domain;
+      }
+
+      document.cookie = `${name}=${encodeURIComponent(value)}; ${Object.entries(cookieOptions)
+        .map(([key, val]) => `${key}=${val}`)
+        .join('; ')}`;
+    }
+    document.getElementById('cookie-val').innerText = 'Value: ' + getCookie('xyz');
+  </script>
+</body>
