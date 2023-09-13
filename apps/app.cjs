@@ -3,6 +3,9 @@ const path = require('path');
 var express = require('express');
 var app = express();
 
+let timer = 1;
+const timerMap = {};
+
 app.use('/static', express.static(path.join(__dirname, 'public')));
 
 app.get('/test', function (req, res) {
@@ -43,6 +46,16 @@ app.post('/oauth-login', function (req, res) {
 app.get('/view-3d', function (req, res) {
   res.status(200);
   res.sendFile('./test-app/image-360.html', {root: __dirname});
+});
+
+app.get('/increase-timer', function (req, res) {
+  res.status(200);
+  res.json({
+    timer,
+    timerMap
+  });
+  timer = timer + 1;
+  timerMap[timer] = true;
 });
 
 app.get('/iframe-cookie', function (req, res) {
