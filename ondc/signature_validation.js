@@ -115,7 +115,7 @@ export const isSignatureValid = async (header, body) => {
       const subscriber_id = keyIdSplit[0]
       const keyId = keyIdSplit[1]
       // const public_key = await lookupRegistry(subscriber_id, keyId)
-      const public_key = 'sIulTp0ISk5Dc8tGqfuug6lDJ+k1nEFQw23SO72thC0=';
+      const public_key = PUBLIC_KEY_GLOBAL;
 
       console.log('isSignatureValid public_key', public_key);
 
@@ -126,8 +126,9 @@ export const isSignatureValid = async (header, body) => {
   }
 }
 
-const sig = 'Signature keyId="-test-money-website-3000a.stg.corp.-test-cabs.com|643|ed25519",algorithm="ed25519",created="1692701922",expires="1692705522",headers="(created) (expires) digest",signature="BfDEgohpFcus3S/DcIADvqo7h+McmS+i87A/pCOiQdDJ2ZIw1QNg17WYffXDvz0GR4BSAfsxl6YeFGh/ROOFAQ=="';
-const payload = {"context":{"domain":"nic2004:52110","country":"IND","city":"std:080","action":"search","core_version":"1.1.0","bap_id":"-test-money-website-3000a.stg.corp.-test-cabs.com","bap_uri":"https://-test-money-website-3000a.stg.corp.-test-cabs.com/ondc","transaction_id":"6326c35d-939e-40fd-8dc5-5954baef32d8","message_id":"9cc47415-f83f-42ac-aad5-ae8d7fc45a6e","timestamp":"2023-08-22T10:58:42.832Z","ttl":"PT30S"},"message":{"intent":{"item":{"descriptor":{"name":"chakki"}},"fulfillment":{"type":"Delivery","end":{"location":{"gps":"12.889864,77.64095"}}}}}};
-const signatureRes = await isSignatureValid(sig, payload);
+const PUBLIC_KEY_GLOBAL = "IB/nqGyzfZStw4pizbgdIXP6rsibqAurg0ibSJH7vE8=";
+const sig = 'Signature keyId="staging-ondc-seller.viranc.com|475|ed25519",algorithm="ed25519",created="1692703775",expires="1692707375",headers="(created) (expires) digest",signature="fkH0i+gekN8Df2Rv42IkxtgUVckTrdy/sy9Vu+uVM7ihMuayJ6cr36ZEm5VMEhF31VGGInuQW0wQIRYK9FecBw=="';
+const payload = {"context":{"domain":"nic2004:52110","country":"IND","city":"std:080","action":"on_select","core_version":"1.1.0","bap_id":"-test-money-website-3000a.stg.corp.-test-cabs.com","bap_uri":"https://-test-money-website-3000a.stg.corp.-test-cabs.com/ondc","bpp_id":"staging-ondc-seller.viranc.com","bpp_uri":"https://staging-ondc-seller.viranc.com/protocol/v1/retail","transaction_id":"1c7fc9a1-dcdf-4379-a0c4-6b1bbc916f10","message_id":"f013262f-9f20-4785-b03b-aa2051c12274","timestamp":"2023-08-22T11:29:35.718Z"},"message":{"order":{"items":[{"id":"d05a195a-7601-11ed-b223-0242ac120003","fulfillment_id":"93e79127-7c0a-5eff-9c2a-792252d18f61"}],"quote":{"price":{"currency":"INR","value":"450.11"},"breakup":[{"@ondc/org/item_id":"d05a195a-7601-11ed-b223-0242ac120003","@ondc/org/item_quantity":{"count":1},"title":"Aashirvaad Shudh Chakki Atta, 10kg Pack","@ondc/org/title_type":"item","price":{"currency":"INR","value":"437.00"},"item":{"price":{"currency":"INR","value":"437.00"},"quantity":{"available":{"count":"676"},"maximum":{"count":"676"}}}},{"@ondc/org/item_id":"93e79127-7c0a-5eff-9c2a-792252d18f61","title":"Delivery charges","@ondc/org/title_type":"delivery","price":{"currency":"INR","value":"0.00"}},{"@ondc/org/item_id":"93e79127-7c0a-5eff-9c2a-792252d18f61","title":"Convenience Fee","@ondc/org/title_type":"misc","price":{"currency":"INR","value":"13.11"}}],"ttl":"P1D"},"provider":{"id":"d04c6a6c-7601-11ed-b223-0242ac120003","descriptor":{"name":"ONDC Test Seller Store","short_desc":"ONDC Test Seller Store","long_desc":"ONDC Test Seller Store","images":["https://viranc.com/placeholder.jpg"],"symbol":"https://viranc.com/placeholder.jpg"}},"fulfillments":[{"id":"93e79127-7c0a-5eff-9c2a-792252d18f61","@ondc/org/provider_name":"ONDC Test Seller Store","tracking":false,"state":{"descriptor":{"code":"Serviceable"}},"@ondc/org/category":"Standard Delivery","@ondc/org/TAT":"P1DT2M"}]}}};
+const signatureRes = await isSignatureValid(sig, JSON.parse(JSON.stringify(payload)));
 
 console.log('signatureRes', signatureRes);
