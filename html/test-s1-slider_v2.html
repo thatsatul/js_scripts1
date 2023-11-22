@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        @font-face {
+            font-family: Gentona-Semibold;
+            src: url("https://-test-electric.com/static/frontend/-test-/Electric/en_GB/css/fonts/Gentona-SemiBold.woff");
+            /* font-display: swap; */
+        }
+
+        @font-face {
+            font-family: Gentona-SemiBold-Italic;
+            src: url("https://-test-electric.com/static/frontend/-test-/Electric/en_GB/css/fonts/Gentona-SemiBoldItalic.woff");
+            /* font-display: swap; */
+        }
+
+        @font-face {
+            font-family: Gentona-Book;
+            src: url("https://-test-electric.com/static/frontend/-test-/Electric/en_GB/css/fonts/Gentona-Book.woff");
+            /* font-display: swap; */
+        }
+
+        * {
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+        }
+
+        /* Above part not required */
+
+
+        @media only screen and (max-width: 1024px) {
+            .fixed-toggle-card-slider-outer {
+                display: none;
+            }
+        }
+
+        .fixed-toggle-card-slider-outer {
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-color: black;
+            width: 100%;
+            text-align: center;
+            padding: 96px 62px;
+        }
+
+        .fixed-toggle-card-slider-outer .mgz-element-inner {
+            text-align: center;
+        }
+
+        .fixed-toggle-card-slider-inner {
+            text-align: center;
+        }
+
+        .fixed-toggle-card-slider-outer .toggle-cards-collection-outer .title {
+            font-family: 'Gentona-Semibold';
+            font-style: normal;
+            font-weight: 600;
+            font-size: 48px;
+            line-height: 116%;
+            letter-spacing: -0.02em;
+            color: #F7FBFF;
+            margin-bottom: 34px;
+        }
+
+        .fixed-toggle-card-slider-outer .toggle-cards-collection-outer {
+            display: inline-block;
+            width: 1268px;
+            max-width: 1268px;
+            text-align: left;
+        }
+
+        .fixed-toggle-card-slider-outer .toggle-cards-collection-inner {
+            display: none;
+            padding-left: 10px;
+        }
+
+        .fixed-toggle-card-slider-outer .toggle-cards-collection-inner .small {
+            width: 10%;
+        }
+
+        .fixed-toggle-card-slider-outer .toggle-cards-collection-inner .big {
+            width: 44%;
+        }
+
+        .fixed-toggle-card-slider-outer .toggle-cards-collection-inner .tile {
+            transition: all .5s;
+            height: 620px;
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .fixed-toggle-card-slider-outer .toggle-cards-collection-inner .img {
+            max-width: none;
+            height: 455px;
+            width: 606px;
+            transition: all 0.5s;
+            display: block;
+            /* border-radius: 4px; */
+        }
+
+        .fixed-toggle-card-slider-outer .toggle-cards-collection-inner .current .img:hover {
+            margin-top: 0px !important;
+        }
+
+        .fixed-toggle-card-slider-outer .toggle-cards-collection-inner .tile .img:hover {
+            margin-top: -6px;
+        }
+
+        .fixed-toggle-card-slider-outer .toggle-cards-collection-inner .txt-block {
+            z-index: 1;
+            top: 80%;
+            transition: all 0.5s;
+            font-size: 20px;
+            color: white;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .fixed-toggle-card-slider-outer .toggle-cards-collection-inner .txt-block .card-title {
+            display: inline-block;
+            width: 200px;
+            font-family: 'Gentona-SemiBold-Italic';
+            font-weight: 400;
+            font-style: italic;
+            font-size: 33.1163px;
+            line-height: 117%;
+            /* identical to box height, or 39px */
+
+            letter-spacing: -0.03em;
+
+            color: #FFFFFF;
+            margin-bottom: 8px;
+        }
+
+        .fixed-toggle-card-slider-outer .toggle-cards-collection-inner .txt-block .card-desc {
+            display: inline-block;
+            width: 264px;
+            font-family: 'Gentona-Book';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 18px;
+            line-height: 140%;
+            /* or 25px */
+
+            display: flex;
+            align-items: center;
+            /* text-align: center; */
+
+            color: #9ACDF3;
+            transition: all 0.4s;
+
+        }
+
+        .fixed-toggle-card-slider-outer .toggle-cards-collection-inner-inner .vid {
+            display: none;
+            height: 455px;
+            position: absolute;
+            width: 606px;
+            transition: all 0.2s;
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .fixed-toggle-card-slider-outer .fadeOut {
+            -webkit-animation-name: fadeOut;
+            animation-name: fadeOut;
+        }
+
+        .fixed-toggle-card-slider-outer .fadeIn {
+            -webkit-animation-name: fadeIn;
+            animation-name: fadeIn;
+        }
+
+        .fixed-toggle-card-slider-outer .animated {
+            -webkit-animation-duration: 0.5s;
+            animation-duration: 0.5s;
+            -webkit-animation-fill-mode: both;
+            animation-fill-mode: both;
+        }
+
+        .toggle-cards-collection-inner .tile .card-progress-bar {
+            height: 2px;
+            margin: 24px 0px;
+            background: rgba(39, 73, 98, 0.1);
+        }
+
+        .toggle-cards-collection-inner .tile .card-progress-bar .card-progress-bar-progress {
+            display: none;
+        }
+
+        .img-wrapper {
+            overflow: hidden;
+            border-radius: 4px;
+        }
+
+        .toggle-cards-collection-inner .tile.current .card-progress-bar .card-progress-bar-progress {
+            display: block;
+            background-color: #274962;
+            height: 2px;
+            width: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="fixed-toggle-card-slider-outer" class="fixed-toggle-card-slider-outer">
+        <div class="fixed-toggle-card-slider-inner">
+            <div class="toggle-cards-collection-outer">
+                <div class="title">Pro Design, Pro Tech<br>Pro Performance</div>
+                <div class="toggle-cards-collection-inner">
+                    <div id="tile1" class="big tile tile1" onclick="toggleClass(event,0)">
+                        <div class="img-wrapper"><img class="img"
+                                src="https://evprodcdn.blob.core.windows.net/ev-discovery-platform/New-Homepage/slider-nav-video-img1.webp" />
+                        </div>
+                        <div class="bg-info"
+                            data-url="https://cdn.-test-electric.com/ev-discovery-platform/New-Homepage/slider-for-bg-img1.webp">
+                        </div>
+                        <div class="card-progress-bar">
+                            <div class="card-progress-bar-progress"></div>
+                        </div>
+                        <div class="txt-block">
+                            <div class="card-title">Party mode 1</div>
+                            <div class="card-desc">Turn any song into a synchronised into a light show, wherever you go
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tile2" class="small tile tile2" onclick="toggleClass(event,1)">
+                        <div class="img-wrapper"><img class="img"
+                                src="https://evprodcdn.blob.core.windows.net/ev-discovery-platform/New-Homepage/slider-nav-video-img2.webp" />
+                        </div>
+                        <div class="bg-info"
+                            data-url="https://cdn.-test-electric.com/ev-discovery-platform/New-Homepage/slider-for-bg-img2.webp">
+                        </div>
+                        <div class="card-progress-bar">
+                            <div class="card-progress-bar-progress"></div>
+                        </div>
+                        <div class="txt-block">
+                            <div class="card-title">Party mode 2</div>
+                            <div class="card-desc">Turn any song into a synchronised into a light show, wherever you go
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tile3" class="small tile tile3" onclick="toggleClass(event,2)">
+                        <div class="img-wrapper">
+                            <video class="vid" width="606" height="455" autoplay loop muted>
+                                <source
+                                    src="https://cdn.-test-electric.com/ev-discovery-platform/video/Web_Proximity_26042023.mp4"
+                                    type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <img class="img"
+                                src="https://evprodcdn.blob.core.windows.net/ev-discovery-platform/New-Homepage/slider-nav-video-img3.webp" />
+                        </div>
+                        <div class="bg-info"
+                            data-url="https://cdn.-test-electric.com/ev-discovery-platform/New-Homepage/slider-for-bg-img3.webp">
+                        </div>
+                        <div class="card-progress-bar">
+                            <div class="card-progress-bar-progress"></div>
+                        </div>
+                        <div class="txt-block">
+                            <div class="card-title">Party mode 3</div>
+                            <div class="card-desc">Turn any song into a synchronised into a light show, wherever you go
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js">
+</script>
+<script type="text/javascript" defer>
+    const $ = jQuery;
+
+    /* Above part not required */
+    function toggleClass(evt = null, index) {
+        window.data.current = index;
+        // Note: Need to state width and height as same everywhere in JS and CSS as required
+        const cardWidth = 606;
+        if (window.innerWidth < $('.toggle-cards-collection-outer').width()) {
+            $('.toggle-cards-collection-outer').css('width', window.innerWidth);
+        }
+        let screenWidth = $('.toggle-cards-collection-outer').width();
+        const allTiles = $('.tile');
+        const smallCardWidth = ((screenWidth - cardWidth - 10 - (allTiles.length * 10)) / (allTiles.length - 1)) - 1;
+        console.log('Screen, card width, small', screenWidth, cardWidth, smallCardWidth);
+        let el = allTiles[0];
+        if (evt) { el = evt.target; }
+        else if (index) { el = allTiles[index]; }
+        const nearTile = $(el).closest('.tile');
+        if (!nearTile.hasClass("current")) {
+            $(".current").removeClass('current');
+            const progress_bar_progress = $(nearTile).find(".card-progress-bar-progress");
+            let progress_length = 0;
+            let progress_interval = setInterval(() => {
+                progress_length = progress_length + 0.5;
+                progress_bar_progress.css("width", `${progress_length}%`);
+                if (progress_length >= 100) clearInterval(progress_interval);
+            }, 25);
+            $(nearTile).addClass('current');
+        }
+        allTiles.each((index, element) => {
+            const videoEl = $(element).find('video');
+            const imgEl = $(element).find('img');
+            const txtEl = $(element).find('.txt-block');
+
+            imgEl && imgEl.css('width', cardWidth);
+            if ($(element).hasClass('current')) {
+                const bgUrl = $(element).find('.bg-info').attr('data-url');
+                $('#fixed-toggle-card-slider-outer').css('background-image', `url(${bgUrl})`);
+                $(element).removeClass('small');
+                $(element).css('width', cardWidth);
+                $(element).addClass('big');
+                imgEl && imgEl.css('transform', 'translate(0, 0)');
+                txtEl && txtEl.css('font-size', 20);
+                txtEl && txtEl.find('.card-desc').css('opacity', 1);
+                const tmOut = setTimeout(function () {
+                    if (videoEl && videoEl.length > 0) {
+                        $(videoEl).removeClass('fadeOut');
+                        $(videoEl).addClass('animated fadeIn');
+                        $(videoEl).css('display', 'block');
+                        $(videoEl).get(0).play();
+                        imgEl && imgEl.css('display', 'none');
+                    }
+                }, 700);
+            } else {
+                $(element).removeClass('big');
+                $(element).css('width', smallCardWidth);
+                $(element).addClass('small');
+                imgEl.css('transform', 'translate(-30%, 0)');
+                txtEl && txtEl.find('.card-desc').css('opacity', 0);
+                txtEl && txtEl.css('font-size', 0);
+                if (videoEl && videoEl.length > 0) {
+                    $(videoEl).removeClass('fadeIn');
+                    $(videoEl).addClass('animated fadeOut');
+                }
+                const tmOut = setTimeout(function () {
+                    imgEl && imgEl.css('display', 'block');
+                    $(videoEl).css('display', 'none');
+                }, 200);
+            }
+        });
+        if (!evt) {
+            $('.toggle-cards-collection-inner').show();
+            $('.toggle-cards-collection-inner').css("display", "flex");
+        }
+    }
+    document.addEventListener("DOMContentLoaded", () => {
+        window.data = { current: 1, num_tile: document.querySelectorAll(".tile").length };
+        toggleClass(null, data.current);
+        const tileInterval = setInterval(() => {
+            data.current = (data.current + 1) % data.num_tile;
+            toggleClass(null, data.current);
+        }, 5000);
+    });
+</script>
+
+</html>

@@ -4,17 +4,17 @@
         <style>
             @font-face {
                 font-family: Gentona-Semibold;
-                src: url("https://OE.com/static/frontend/o-la/Electric/en_GB/css/fonts/Gentona-SemiBold.woff");
+                src: url("https://-test-electric.com/static/frontend/-test-/Electric/en_GB/css/fonts/Gentona-SemiBold.woff");
                 /* font-display: swap; */
             }
             @font-face {
                 font-family: Gentona-Semibold-Italic;
-                src: url("https://OE.com/static/frontend/o-la/Electric/en_GB/css/fonts/Gentona-SemiBoldItalic.woff");
+                src: url("https://-test-electric.com/static/frontend/-test-/Electric/en_GB/css/fonts/Gentona-SemiBoldItalic.woff");
                 /* font-display: swap; */
             }
             @font-face {
                 font-family: Gentona-Book;
-                src: url("https://OE.com/static/frontend/o-la/Electric/en_GB/css/fonts/Gentona-Book.woff");
+                src: url("https://-test-electric.com/static/frontend/-test-/Electric/en_GB/css/fonts/Gentona-Book.woff");
                 /* font-display: swap; */
             }
             * {
@@ -181,25 +181,25 @@
                             <div class="card-desc">Turn any song into a synchronised into a light show, wherever you go</div>
                         </div>
                         <img class="img" src="https://evprodcdn.blob.core.windows.net/ev-discovery-platform/New-Homepage/slider-nav-video-img1.webp" />
-                        <div class="bg-info" data-url="https://cdn.OE.com/ev-discovery-platform/New-Homepage/slider-for-bg-img1.webp"></div>
+                        <div class="bg-info" data-url="https://cdn.-test-electric.com/ev-discovery-platform/New-Homepage/slider-for-bg-img1.webp"></div>
                     </div><div id="tile2" class="small tile tile2" onclick="toggleClass(event)">
                         <div class="txt-block">
                             <div class="card-title">Party mode 2</div>
                             <div class="card-desc">Turn any song into a synchronised into a light show, wherever you go</div>
                         </div>
                         <img class="img" src="https://evprodcdn.blob.core.windows.net/ev-discovery-platform/New-Homepage/slider-nav-video-img2.webp" />
-                        <div class="bg-info" data-url="https://cdn.OE.com/ev-discovery-platform/New-Homepage/slider-for-bg-img2.webp"></div>
+                        <div class="bg-info" data-url="https://cdn.-test-electric.com/ev-discovery-platform/New-Homepage/slider-for-bg-img2.webp"></div>
                     </div><div id="tile3" class="small tile tile3" onclick="toggleClass(event)">
                         <div class="txt-block">
                             <div class="card-title">Party mode 3</div>
                             <div class="card-desc">Turn any song into a synchronised into a light show, wherever you go</div>
                         </div>
                         <video class="vid" width="634" height="400" autoplay loop muted>
-                            <source src="https://cdn.OE.com/ev-discovery-platform/video/Web_Proximity_26042023.mp4" type="video/mp4">
-                            Your browser does not support the video tag.
+                            <source src="https://cdn.-test-electric.com/ev-discovery-platform/video/Web_Proximity_26042023.mp4" type="video/mp4">
+                            Your browser d-test-electrics not support the video tag.
                         </video>
                         <img class="img" src="https://evprodcdn.blob.core.windows.net/ev-discovery-platform/New-Homepage/slider-nav-video-img3.webp" />
-                        <div class="bg-info" data-url="https://cdn.OE.com/ev-discovery-platform/New-Homepage/slider-for-bg-img3.webp"></div>
+                        <div class="bg-info" data-url="https://cdn.-test-electric.com/ev-discovery-platform/New-Homepage/slider-for-bg-img3.webp"></div>
                     </div>
                 </div>
             </div>
@@ -233,7 +233,7 @@
             allTiles.removeClass('current');
             $(nearTile).addClass('current');
             allTiles.each((index, element) => {
-                const videoEl = $(element).find('video');
+                const vide-test-electricl = $(element).find('video');
                 const imgEl = $(element).find('img');
                 const txtEl = $(element).find('.txt-block');
 
@@ -248,11 +248,11 @@
                     txtEl && txtEl.css('font-size', 20);
                     txtEl && txtEl.find('.card-desc').css('opacity', 1);
                     const tmOut = setTimeout(function() {
-                        if (videoEl && videoEl.length > 0) {
-                            $(videoEl).removeClass('fadeOut');
-                            $(videoEl).addClass('animated fadeIn');
-                            $(videoEl).css('display', 'block');
-                            $(videoEl).get(0).play();
+                        if (vide-test-electricl && vide-test-electricl.length > 0) {
+                            $(vide-test-electricl).removeClass('fadeOut');
+                            $(vide-test-electricl).addClass('animated fadeIn');
+                            $(vide-test-electricl).css('display', 'block');
+                            $(vide-test-electricl).get(0).play();
                             imgEl && imgEl.css('display', 'none');
                         }
                     }, 700);
@@ -263,13 +263,13 @@
                     imgEl.css('transform', 'translate(-30%, 0)');
                     txtEl && txtEl.find('.card-desc').css('opacity', 0);
                     txtEl && txtEl.css('font-size', 0);
-                    if (videoEl && videoEl.length > 0) {
-                        $(videoEl).removeClass('fadeIn');
-                        $(videoEl).addClass('animated fadeOut');
+                    if (vide-test-electricl && vide-test-electricl.length > 0) {
+                        $(vide-test-electricl).removeClass('fadeIn');
+                        $(vide-test-electricl).addClass('animated fadeOut');
                     }
                     const tmOut = setTimeout(function() {
                         imgEl && imgEl.css('display', 'block');
-                        $(videoEl).css('display', 'none');
+                        $(vide-test-electricl).css('display', 'none');
                     }, 200);
                 }
             });
