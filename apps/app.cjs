@@ -40,6 +40,11 @@ app.get('/chat-bot', function (req, res) {
   res.sendFile('./test-app/sample-chatbot-1.html', {root: __dirname});
 });
 
+app.get('/model-loader-3d', function (req, res) {
+  res.status(200);
+  res.sendFile('./test-app/model_loader_glb.html', {root: __dirname});
+});
+
 app.post('/oauth-login', function (req, res) {
   res.status(201);
   res.json({test: 2});
